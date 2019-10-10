@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Capstone.Models
 {
-    class Slot
+    public class Slot
     {
         // TODO Set up summary
         // TODO Populate in constructor
