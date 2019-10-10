@@ -136,7 +136,7 @@ namespace Capstone.Models
             // TODO Determine return value
         }
 
-        //TODO check path location for Log
+        //TODO check path location for Log and Write a Catch block
         private void  TransactionLog(string logText)
         {
             string time = DateTime.Now.ToString();
@@ -146,6 +146,8 @@ namespace Capstone.Models
                 log.WriteLine($"{time} {logText} {balance}");
             }
         }
+
+
 
         // TODO Set up summary
         private void MakeChange()
@@ -167,8 +169,32 @@ namespace Capstone.Models
         }
 
         // TODO Set up summary
-        public void FinishTransaction()
+        public string FinishTransaction()
         {
+            int quarters = 0;
+            int dimes = 0;
+            int nickels = 0;
+            while (Balance > 0)
+            {
+                if (Balance >= (decimal).25)
+                {
+                    Balance -= (decimal).25;
+                    quarters++;
+                }
+                else if (Balance >= (decimal).10)
+                {
+                    Balance -= (decimal).10;
+                    dimes++;
+                }
+                else if (Balance >= (decimal).05)
+                {
+                    Balance -= (decimal).05;
+                    nickels++;
+                }
+            }
+            Balance = 0;
+            string totalChange = $"Your Change is {quarters} Quarters, {dimes} Dimes, and {nickels} Nickels";
+            return totalChange;
             // TODO Call MakeChange()
             // TODO Determine return value
         }

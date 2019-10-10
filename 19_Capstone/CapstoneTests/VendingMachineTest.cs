@@ -47,5 +47,19 @@ namespace CapstoneTests
             Assert.AreEqual(expectedSlots[1].Price, vm.Slots[1].Price);
             Assert.AreEqual(expectedSlots[1].Product.Name, vm.Slots[1].Product.Name);
         }
+
+        [TestMethod]
+        public void FinishTransactionTest()
+        {
+            //Arrange
+            VendingMachine bob = new VendingMachine();
+            bob.FeedMoney(1);
+            //Act
+            string bobsEx = bob.FinishTransaction();
+            //Assert
+            Assert.AreEqual($"Your Change is 4 Quarters, 0 Dimes, and 0 Nickels", bobsEx);
+        }
+
+
     }
 }
