@@ -6,8 +6,14 @@ namespace Capstone.Models
 {
     public abstract class Product
     {
+        // TODO Set up summary
         public string Name { get; }
+
+
+        // TODO Is this needed here?
         public string Price { get; }
+
+
         private int quantitySold;
 
         // TODO Override this method

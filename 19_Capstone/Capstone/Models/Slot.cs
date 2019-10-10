@@ -22,5 +22,9 @@ namespace Capstone.Models
         // TODO Is this where this should go?
         // TODO Populate in constructor
         public Product Product { get; }
+
+        // TODO Set up summary
+        // TODO Populate in constructor
+        public decimal Price { get; }
     }
 }

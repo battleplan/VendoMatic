@@ -9,7 +9,7 @@ namespace Capstone.Models
         private decimal balance;
 
         // TODO Assign this in constructor
-        private string inputFilePath;
+        private readonly string inputFilePath;
 
         // TODO Relevant methods should update this
         private decimal totalSales;
