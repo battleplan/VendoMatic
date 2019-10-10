@@ -26,5 +26,16 @@ namespace Capstone.Models
         // TODO Set up summary
         // TODO Populate in constructor
         public decimal Price { get; }
+
+        //constructor
+
+        //constructor
+        public Slot(string identifier, Product product, decimal price)
+        {
+            Identifier = identifier;
+            Product = product;
+            Price = price;
+            QuantityRemaining = 5;
+        }
     }
 }
