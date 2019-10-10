@@ -17,7 +17,12 @@ namespace Capstone.Models
         // TODO Set up summary
         // TODO Set up Product class
         // TODO Should this be private?
+        // TODO Is this needed at all now that we have Slot?
         public List<Product> Products { get; private set; }
+
+
+        // TODO Set up summary
+        public List<Slot> Slots { get; private set; }
 
 
         // TODO Set up summary

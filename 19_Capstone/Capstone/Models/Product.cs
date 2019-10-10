@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Capstone.Models
 {
-    abstract class Product
+    public abstract class Product
     {
         public string Name { get; }
         public string Price { get; }
