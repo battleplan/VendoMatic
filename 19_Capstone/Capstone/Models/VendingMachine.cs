@@ -124,8 +124,13 @@ namespace Capstone.Models
         }
 
         // TODO Set up summary
-        public void FeedMoney()
+        public void FeedMoney(int money)
         {
+
+            Balance += money;
+            string logText = ($"FEED MONEY: ${money}.00"); 
+            WriteLog(logText);
+            //TODO transaction log
             // TODO Set up parameters
             // TODO Adjust Balance
             // TODO Determine return value
