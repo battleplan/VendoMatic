@@ -6,6 +6,14 @@ namespace Capstone.Models
 {
     public class Beverage : Product
     {
+        //constructor
+        public Beverage(string name) : base(name)
+        {
+            
+        }
+
+
+
         // TODO Set up summary
         public override void YumYum()
         {

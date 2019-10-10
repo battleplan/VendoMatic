@@ -6,6 +6,12 @@ namespace Capstone.Models
 {
     public class Chip : Product
     {
+
+        //constructor
+        public Chip(string name) : base(name)
+        {
+
+        }
         // TODO Set up summary
         public override void YumYum()
         {

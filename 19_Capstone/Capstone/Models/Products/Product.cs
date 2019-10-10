@@ -19,5 +19,11 @@ namespace Capstone.Models
 
         // TODO Override this method
         public abstract void YumYum();
+
+        //constructor
+        public Product(string name)
+        {
+            Name = name;
+        }
     }
 }
