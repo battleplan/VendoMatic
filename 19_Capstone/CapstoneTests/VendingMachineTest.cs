@@ -41,14 +41,14 @@ namespace CapstoneTests
             };
 
             // Assert
-            Assert.AreEqual(expectedProducts[0].Name, vm.Products[0].Name);
-            Assert.AreEqual(expectedProducts[1].Name, vm.Products[1].Name);
-            Assert.AreEqual(expectedSlots[0].Identifier, vm.Slots[0].Identifier);
-            Assert.AreEqual(expectedSlots[0].Price, vm.Slots[0].Price);
-            Assert.AreEqual(expectedSlots[0].Product.Name, vm.Slots[0].Product.Name);
-            Assert.AreEqual(expectedSlots[1].Identifier, vm.Slots[1].Identifier);
-            Assert.AreEqual(expectedSlots[1].Price, vm.Slots[1].Price);
-            Assert.AreEqual(expectedSlots[1].Product.Name, vm.Slots[1].Product.Name);
+            Assert.AreEqual(expectedProducts[0].Name, vm.Products["Potato Crisps"].Name);
+            Assert.AreEqual(expectedProducts[1].Name, vm.Products["Stackers"].Name);
+            Assert.AreEqual(expectedSlots[0].Identifier, vm.Slots["A1"].Identifier);
+            Assert.AreEqual(expectedSlots[0].Price, vm.Slots["A1"].Price);
+            Assert.AreEqual(expectedSlots[0].Product.Name, vm.Slots["A1"].Product.Name);
+            Assert.AreEqual(expectedSlots[1].Identifier, vm.Slots["A2"].Identifier);
+            Assert.AreEqual(expectedSlots[1].Price, vm.Slots["A2"].Price);
+            Assert.AreEqual(expectedSlots[1].Product.Name, vm.Slots["A2"].Product.Name);
         }
 
         [TestMethod]
@@ -88,21 +88,21 @@ namespace CapstoneTests
 
             vm.Stock(inputLines);
 
-            decimal expectedTotalSales = vm.TotalSales + vm.Slots[0].Price;
-            int expectedQuantitySold = vm.Slots[0].Product.QuantitySold + 1;
+            decimal expectedTotalSales = vm.TotalSales + vm.Slots["A1"].Price;
+            int expectedQuantitySold = vm.Slots["A1"].Product.QuantitySold + 1;
 
             vm.FeedMoney(4);
 
             decimal expectedBalance = 0.95M;
 
             // Act
-            vm.Purchase(vm.Slots[0]);
+            vm.Purchase(vm.Slots["A1"]);
 
             // Assert
-            Assert.AreEqual(4, vm.Slots[0].QuantityRemaining);
+            Assert.AreEqual(4, vm.Slots["A1"].QuantityRemaining);
             Assert.AreEqual(expectedTotalSales, vm.TotalSales);
             Assert.AreEqual(expectedBalance, vm.Balance);
-            Assert.AreEqual(expectedQuantitySold, vm.Slots[0].Product.QuantitySold);
+            Assert.AreEqual(expectedQuantitySold, vm.Slots["A1"].Product.QuantitySold);
 
             // TODO Sales report totals
             //Assert.AreEqual(, vm.Slots[0].Product.QuantitySold)

@@ -15,17 +15,17 @@ namespace Capstone.Models
         public decimal TotalSales { get; private set; }
 
         // TODO Set up summary
-        public List<Product> Products { get; private set; }
+        public Dictionary<string, Product> Products { get; private set; }
 
 
         // TODO Set up summary
-        public List<Slot> Slots { get; private set; }
+        public Dictionary<string, Slot> Slots { get; private set; }
 
         // Constructor
         public VendingMachine()
         {
-            Products = new List<Product>();
-            Slots = new List<Slot>();
+            Products = new Dictionary<string, Product>();
+            Slots = new Dictionary<string, Slot>();
         }
 
 
@@ -78,15 +78,9 @@ namespace Capstone.Models
                 {
                     // Find if Product already exists
                     Product product = null;
-                    if (Products.Count > 0)
+                    if (Products.ContainsKey(nameProduct))
                     {
-                        foreach (Product productExisting in Products)
-                        {
-                            if (productExisting.Name == nameProduct)
-                            {
-                                product = productExisting;
-                            }
-                        }
+                        product = Products[nameProduct];
                     }
                     if (product == null)
                     {
@@ -96,7 +90,7 @@ namespace Capstone.Models
                             case "Chip":
                                 product = new Chip(nameProduct);
                                 break;
-                            case "Beverage":
+                            case "Drink":
                                 product = new Beverage(nameProduct);
                                 break;
                             case "Gum":
@@ -106,12 +100,12 @@ namespace Capstone.Models
                                 product = new Candy(nameProduct);
                                 break;
                         }
-                        Products.Add(product);
+                        Products[nameProduct] = product;
                     }
 
 
                     // Create slot and put product in it
-                    Slots.Add(new Slot(identifier, product, priceDecimal));
+                    Slots[identifier] = (new Slot(identifier, product, priceDecimal));
                 }
             }
         }
