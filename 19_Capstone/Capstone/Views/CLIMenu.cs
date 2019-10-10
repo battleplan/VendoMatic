@@ -49,7 +49,7 @@ namespace Capstone.Views
 
                 Console.Clear();
                 Console.WriteLine(this.Title);
-                Console.WriteLine(new string('=', this.Title.Length));
+                Console.WriteLine(new string('=', 120));
                 Console.WriteLine();
 
                 // Display slots
@@ -65,14 +65,20 @@ namespace Capstone.Views
                         columnCounter = -1;
                     }
                 }
-
-                Console.WriteLine("\r\nPlease make a selection:");
+                Console.WriteLine(new string('=', 120));
+                Console.WriteLine($@"  ___   _   _      _   _  _  ___ ___ 
+ | _ ) /_\ | |    /_\ | \| |/ __| __|
+ | _ \/ _ \| |__ / _ \| .` | (__| _| 
+ |___/_/ \_\____/_/ \_\_|\_|\___|___|  {vm.Balance:C}");
+                Console.WriteLine(new string('=', 120));
+                
+                
                 foreach (KeyValuePair<string, string> menuItem in menuOptions)
                 {
-                    Console.WriteLine($"{menuItem.Key} - {menuItem.Value}");
+                    Console.Write($" {menuItem.Key} - {menuItem.Value} ");
                 }
-
-                string choice = GetString("Selection:").ToUpper();
+        Console.Write("\r\nPlease make a ");
+                string choice = GetString("selection:").ToUpper();
 
                 if (menuOptions.ContainsKey(choice))
                 {
