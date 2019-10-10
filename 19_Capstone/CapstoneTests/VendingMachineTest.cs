@@ -47,7 +47,7 @@ namespace CapstoneTests
             Assert.AreEqual(expectedSlots[1].Price, vm.Slots[1].Price);
             Assert.AreEqual(expectedSlots[1].Product.Name, vm.Slots[1].Product.Name);
         }
-
+        //TODO write another test for Transactions non whole dollar amounts
         [TestMethod]
         public void FinishTransactionTest()
         {
