@@ -63,5 +63,9 @@ namespace Capstone.Models
             // TODO Call MakeChange()
             // TODO Determine return value
         }
+
+        // TODO Log transaction
+
+        // TODO Sales report
     }
 }
