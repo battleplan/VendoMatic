@@ -7,20 +7,14 @@ namespace Capstone.Models
 {
     public class VendingMachine
     {
-        // TODO Relevant methods should update this
-        // TODO Should this be rouded to 2 decimal places?
         public decimal Balance;
 
         // TODO Assign this in constructor
         //private readonly string inputFilePath;
 
-        // TODO Relevant methods should update this
         public decimal TotalSales { get; private set; }
 
         // TODO Set up summary
-        // TODO Set up Product class
-        // TODO Should this be private?
-        // TODO Is this needed at all now that we have Slot?
         public List<Product> Products { get; private set; }
 
 

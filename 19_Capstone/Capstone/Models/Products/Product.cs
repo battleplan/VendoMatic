@@ -12,7 +12,6 @@ namespace Capstone.Models
         //TODO Summary
         public int QuantitySold;
 
-        // TODO Override this method
         public abstract void YumYum();
 
         //constructor

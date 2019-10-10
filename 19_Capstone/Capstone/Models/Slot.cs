@@ -17,7 +17,6 @@ namespace Capstone.Models
         public bool HasStock => QuantityRemaining > 0;
 
         // TODO Set up summary
-        // TODO Is this where this should go?
         public Product Product { get; }
 
         // TODO Set up summary
