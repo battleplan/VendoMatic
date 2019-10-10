@@ -67,6 +67,7 @@ namespace Capstone.Models
         {
             foreach (string line in inputLines)
             {
+                // TODO Try Catch for reading these elements
                 string[] stockElements = line.Split("|");
                 string identifier = stockElements[0];
                 string nameProduct = stockElements[1];
