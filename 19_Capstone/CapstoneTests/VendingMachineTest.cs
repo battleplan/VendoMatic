@@ -86,6 +86,7 @@ namespace CapstoneTests
             vm.Stock(inputLines);
 
             decimal expectedTotalSales = vm.TotalSales + vm.Slots[0].Price;
+            int expectedQuantitySold = vm.Slots[0].Product.QuantitySold + 1;
 
             vm.FeedMoney(4);
 
@@ -98,6 +99,7 @@ namespace CapstoneTests
             Assert.AreEqual(4, vm.Slots[0].QuantityRemaining);
             Assert.AreEqual(expectedTotalSales, vm.TotalSales);
             Assert.AreEqual(expectedBalance, vm.Balance);
+            Assert.AreEqual(expectedQuantitySold, vm.Slots[0].Product.QuantitySold);
 
             // TODO Sales report totals
             //Assert.AreEqual(, vm.Slots[0].Product.QuantitySold)
