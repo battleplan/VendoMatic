@@ -40,9 +40,7 @@ namespace Capstone.Models
         public bool StockFromFile(string inputFilePath)
         {
             List<string> inputLines = new List<string>();
-            // TODO Read from input file
-            // TODO Create Product instances
-            // TODO Add Products to Products
+            // TODO Read from input file - check this!!
             //TODO bool?
             try
             {
@@ -133,8 +131,6 @@ namespace Capstone.Models
             TransactionLog(logText);
             // TODO Use C to make money into currency?
             //TODO transaction log - test that this works
-            // TODO Set up parameters
-            // TODO Adjust Balance
             // TODO Determine return value
         }
 
@@ -148,17 +144,6 @@ namespace Capstone.Models
             {
                 log.WriteLine($"{time} {logText} {balance}");
             }
-        }
-
-
-
-        // TODO Set up summary
-        private void MakeChange()
-        {
-            // TODO Set up parameters
-            // TODO Adjust Balance
-            // TODO Calculate quarters, dimes, and nickels
-            // TODO Determine return value
         }
 
         // TODO Set up summary
@@ -203,8 +188,7 @@ namespace Capstone.Models
             Balance = 0;
             string totalChange = $"Your Change is {quarters} Quarters, {dimes} Dimes, and {nickels} Nickels";
             return totalChange;
-            // TODO Call MakeChange()
-            // TODO Determine return value
+            // TODO Determine return value - new Money class with subclasses of Quarter, Dime, and Nickel?
         }
 
         // TODO Sales report

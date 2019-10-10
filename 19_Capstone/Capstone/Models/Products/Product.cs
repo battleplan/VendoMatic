@@ -9,11 +9,6 @@ namespace Capstone.Models
         // TODO Set up summary
         public string Name { get; }
 
-
-        // TODO Is this needed here?
-        // TODO Set up summary
-        //public string Price { get; }
-
         //TODO Summary
         public int QuantitySold;
 
