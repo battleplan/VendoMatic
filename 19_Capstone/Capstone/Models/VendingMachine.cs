@@ -129,13 +129,23 @@ namespace Capstone.Models
 
             Balance += money;
             string logText = ($"FEED MONEY: ${money}.00"); 
-            WriteLog(logText);
+            TransactionLog(logText);
             //TODO transaction log
             // TODO Set up parameters
             // TODO Adjust Balance
             // TODO Determine return value
         }
 
+        //TODO check path location for Log
+        private void  TransactionLog(string logText)
+        {
+            string time = DateTime.Now.ToString();
+            string balance = Balance.ToString();
+            using (StreamWriter log = new StreamWriter(@"..\..\..\..\Log.Txt", true))
+            {
+                log.WriteLine($"{time} {logText} {balance}");
+            }
+        }
 
         // TODO Set up summary
         private void MakeChange()
