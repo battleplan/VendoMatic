@@ -11,6 +11,7 @@ namespace Capstone.Models
 
 
         // TODO Is this needed here?
+        // TODO Set up summary
         public string Price { get; }
 
 

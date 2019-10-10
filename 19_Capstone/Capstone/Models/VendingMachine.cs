@@ -6,6 +6,7 @@ namespace Capstone.Models
 {
     public class VendingMachine
     {
+        // TODO Relevant methods should update this
         private decimal balance;
 
         // TODO Assign this in constructor
