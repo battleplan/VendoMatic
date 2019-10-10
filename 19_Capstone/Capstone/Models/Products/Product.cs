@@ -12,10 +12,10 @@ namespace Capstone.Models
 
         // TODO Is this needed here?
         // TODO Set up summary
-        public string Price { get; }
+        //public string Price { get; }
 
-
-        private int quantitySold;
+        //TODO Summary
+        public int QuantitySold;
 
         // TODO Override this method
         public abstract void YumYum();
@@ -24,6 +24,12 @@ namespace Capstone.Models
         public Product(string name)
         {
             Name = name;
+        }
+
+        // TODO Add Summary
+        public void SellProduct()
+        {
+            QuantitySold++;
         }
     }
 }

@@ -31,5 +31,19 @@ namespace Capstone.Models
             Price = price;
             QuantityRemaining = 5;
         }
+
+        public bool Dispense()
+        {
+            if (QuantityRemaining > 0)
+            {
+                QuantityRemaining--;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
     }
 }

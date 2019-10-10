@@ -47,6 +47,18 @@ namespace CapstoneTests
             Assert.AreEqual(expectedSlots[1].Price, vm.Slots[1].Price);
             Assert.AreEqual(expectedSlots[1].Product.Name, vm.Slots[1].Product.Name);
         }
+
+        [TestMethod]
+        public void FeedMoneyTest()
+        {
+            // Arrange
+            VendingMachine vm = new VendingMachine();
+            // Act
+            vm.FeedMoney((int)2.5);
+            // Assert
+            Assert.AreEqual(2M, vm.Balance);
+        }
+
         //TODO write another test for Transactions non whole dollar amounts
         [TestMethod]
         public void FinishTransactionTest()
@@ -60,6 +72,35 @@ namespace CapstoneTests
             Assert.AreEqual($"Your Change is 4 Quarters, 0 Dimes, and 0 Nickels", bobsEx);
         }
 
+        [TestMethod]
+        public void PurchaseTest()
+        {
+            // Arrange
+            VendingMachine vm = new VendingMachine();
+            string[] inputLines = new string[]
+            {
+                "A1|Potato Crisps|3.05|Chip",
+                "A2|Stackers|1.45|Chip"
+            };
 
+            vm.Stock(inputLines);
+
+            decimal expectedTotalSales = vm.TotalSales + vm.Slots[0].Price;
+
+            vm.FeedMoney(4);
+
+            decimal expectedBalance = 0.95M;
+
+            // Act
+            vm.Purchase(vm.Slots[0]);
+
+            // Assert
+            Assert.AreEqual(4, vm.Slots[0].QuantityRemaining);
+            Assert.AreEqual(expectedTotalSales, vm.TotalSales);
+            Assert.AreEqual(expectedBalance, vm.Balance);
+
+            // TODO Sales report totals
+            //Assert.AreEqual(, vm.Slots[0].Product.QuantitySold)
+        }
     }
 }

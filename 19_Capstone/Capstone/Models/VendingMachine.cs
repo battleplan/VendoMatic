@@ -15,7 +15,7 @@ namespace Capstone.Models
         //private readonly string inputFilePath;
 
         // TODO Relevant methods should update this
-        private decimal totalSales;
+        public decimal TotalSales { get; private set; }
 
         // TODO Set up summary
         // TODO Set up Product class
@@ -131,7 +131,8 @@ namespace Capstone.Models
             Balance += money;
             string logText = ($"FEED MONEY: ${money}.00"); 
             TransactionLog(logText);
-            //TODO transaction log
+            // TODO Use C to make money into currency?
+            //TODO transaction log - test that this works
             // TODO Set up parameters
             // TODO Adjust Balance
             // TODO Determine return value
@@ -140,6 +141,7 @@ namespace Capstone.Models
         //TODO check path location for Log and Write a Catch block
         private void  TransactionLog(string logText)
         {
+            // TODO Make sure this works
             string time = DateTime.Now.ToString();
             string balance = Balance.ToString();
             using (StreamWriter log = new StreamWriter(@"..\..\..\..\Log.Txt", true))
@@ -160,13 +162,18 @@ namespace Capstone.Models
         }
 
         // TODO Set up summary
-        public void Purchase()
+        public void Purchase(Slot slot)
         {
-            // TODO Set up parameters (Product? Slot?)
-            // TODO Call Dispense() - this will call some kind of adjust balance method back here?
+            bool slotDispensed = slot.Dispense();
+            if (slotDispensed)
+            {
+                slot.Product.SellProduct();
+                TotalSales += slot.Price;
+                Balance -= slot.Price;
+                TransactionLog($"{slot.Product.Name} {slot.Identifier} {slot.Price:C}");
+                // TODO Make sure transaction log works
+            }
             // TODO Determine return value
-            // TODO Should this be private? Abstract?
-            // TODO Update total sales
         }
 
         // TODO Set up summary
@@ -199,8 +206,6 @@ namespace Capstone.Models
             // TODO Call MakeChange()
             // TODO Determine return value
         }
-
-        // TODO Log transaction
 
         // TODO Sales report
     }
