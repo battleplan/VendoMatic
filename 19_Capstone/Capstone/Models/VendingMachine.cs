@@ -58,6 +58,8 @@ namespace Capstone.Models
                 return false;
             }
 
+            Stock(inputLines.ToArray());
+
             return true;
         }
 
@@ -149,9 +151,22 @@ namespace Capstone.Models
             // TODO Determine return value
         }
 
+        public List<string> GetSlotsDisplayNames()
+        {
+            List<string> slots = new List<string>();
+            List<string> slotIdentifiers = new List<string>(Slots.Keys);
+            foreach (string key in slotIdentifiers)
+            {
+                slots.Add(Slots[key].DisplayName);
+            }
+
+            return slots;
+        }
+
         // TODO Set up summary
         public string FinishTransaction()
         {
+            decimal changeGiven = Balance;
             int quarters = 0;
             int dimes = 0;
             int nickels = 0;
@@ -173,10 +188,14 @@ namespace Capstone.Models
                     nickels++;
                 }
             }
-            Balance = 0;
+            //Balance = 0;
+
+            TransactionLog($"GIVE CHANGE: {changeGiven:C}");
+
             string totalChange = $"Your Change is {quarters} Quarters, {dimes} Dimes, and {nickels} Nickels";
             return totalChange;
             // TODO Determine return value - new Money class with subclasses of Quarter, Dime, and Nickel?
+            // TODO Make sure this log works
         }
 
         // TODO Sales report

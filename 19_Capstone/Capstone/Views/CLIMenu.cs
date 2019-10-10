@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Capstone.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -39,13 +40,32 @@ namespace Capstone.Views
         /// <summary>
         /// Run starts the menu loop
         /// </summary>
-        public void Run()
+        public void Run(VendingMachine vm)
         {
             while (true)
             {
+                Console.WindowHeight = (int)(Console.LargestWindowHeight * 0.8);
+                Console.WindowWidth = (int)(Console.LargestWindowWidth * 0.8);
+
                 Console.Clear();
                 Console.WriteLine(this.Title);
                 Console.WriteLine(new string('=', this.Title.Length));
+                Console.WriteLine();
+
+                // Display slots
+                List<string> slotsDisplay = vm.GetSlotsDisplayNames();
+                int columnCounter = 0;
+                for (int i = 0; i < slotsDisplay.Count; i++, columnCounter++)
+                {
+                    string slot = slotsDisplay[i];
+                    Console.Write($"{slot,-30}");
+                    if (columnCounter == 3)
+                    {
+                        Console.WriteLine();
+                        columnCounter = -1;
+                    }
+                }
+
                 Console.WriteLine("\r\nPlease make a selection:");
                 foreach (KeyValuePair<string, string> menuItem in menuOptions)
                 {

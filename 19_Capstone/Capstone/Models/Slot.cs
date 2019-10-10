@@ -17,6 +17,9 @@ namespace Capstone.Models
         public bool HasStock => QuantityRemaining > 0;
 
         // TODO Set up summary
+        public string DisplayName => $"{Identifier} {Product.Name} {Price:C}";
+
+        // TODO Set up summary
         public Product Product { get; }
 
         // TODO Set up summary
