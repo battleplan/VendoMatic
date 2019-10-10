@@ -11,7 +11,7 @@ namespace Capstone.Models
         public decimal Balance;
 
         // TODO Assign this in constructor
-        private readonly string inputFilePath;
+        //private readonly string inputFilePath;
 
         // TODO Relevant methods should update this
         private decimal totalSales;
@@ -26,20 +26,17 @@ namespace Capstone.Models
         // TODO Set up summary
         public List<Slot> Slots { get; private set; }
 
-
-
-        //constructor
-        
-        public VendingMachine(string inputFilePath) 
+        // Constructor
+        public VendingMachine()
         {
-            this.inputFilePath = inputFilePath;
-            Stock();
+            Products = new List<Product>();
+            Slots = new List<Slot>();
         }
 
 
         // TODO Set up summary
         // TODO Determine return value
-        public bool Stock()
+        public bool StockFromFile(string inputFilePath)
         {
             List<string> inputLines = new List<string>();
             // TODO Read from input file
@@ -68,18 +65,62 @@ namespace Capstone.Models
                 return false;
             }
 
-            foreach(string line in inputLines)
+            return true;
+        }
+
+        public void Stock(string[] inputLines)
+        {
+            foreach (string line in inputLines)
             {
-                //TODO price Decimal error alert input file
                 string[] stockElements = line.Split("|");
                 string identifier = stockElements[0];
                 string nameProduct = stockElements[1];
                 string priceProduct = stockElements[2];
                 string productClass = stockElements[3];
 
-                if (Products.IndexOf)
+                decimal priceDecimal = 0;
+                bool priceWasParsed = decimal.TryParse(priceProduct, out priceDecimal);
+
+                if (priceWasParsed)
+                {
+                    // Find if Product already exists
+                    Product product = null;
+                    if (Products.Count > 0)
+                    {
+                        foreach (Product productExisting in Products)
+                        {
+                            if (productExisting.Name == nameProduct)
+                            {
+                                product = productExisting;
+                            }
+                        }
+                    }
+                    if (product == null)
+                    {
+                        // Create new product
+                        switch (productClass)
+                        {
+                            case "Chip":
+                                product = new Chip(nameProduct);
+                                break;
+                            case "Beverage":
+                                product = new Beverage(nameProduct);
+                                break;
+                            case "Gum":
+                                product = new Gum(nameProduct);
+                                break;
+                            case "Candy":
+                                product = new Candy(nameProduct);
+                                break;
+                        }
+                        Products.Add(product);
+                    }
+
+
+                    // Create slot and put product in it
+                    Slots.Add(new Slot(identifier, product, priceDecimal));
+                }
             }
-            return true;
         }
 
         // TODO Set up summary
