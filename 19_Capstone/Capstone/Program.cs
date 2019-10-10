@@ -11,6 +11,7 @@ namespace Capstone
             VendingMachine vm = new VendingMachine();
             //vm.Stock(new string[] { "A1|Potato Crisps|3.05|Chip", "A2|Stackers|1.45|Chip", "A3|Grain Waves|2.75|Chip", "A4|Cloud Popcorn|3.65|Chip" });\
 
+            // TODO Search for file, if not found ask user
             vm.StockFromFile("..\\..\\..\\..\\vendingmachine.csv");
 
             MainMenu mainMenu = new MainMenu();
