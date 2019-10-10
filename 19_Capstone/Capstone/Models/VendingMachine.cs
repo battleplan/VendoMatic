@@ -8,6 +8,7 @@ namespace Capstone.Models
     public class VendingMachine
     {
         // TODO Relevant methods should update this
+        // TODO Should this be rouded to 2 decimal places?
         public decimal Balance;
 
         // TODO Assign this in constructor
