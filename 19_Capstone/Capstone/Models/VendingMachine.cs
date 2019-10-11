@@ -161,14 +161,16 @@ namespace Capstone.Models
         /// Feed money into the machine.
         /// </summary>
         /// <param name="money">Integer value of dollars to feed into the machine.</param>
-        public void FeedMoney(int money)
+        public bool FeedMoney(int money)
         {
+            if (money <= 0)
+            {
+                return false;
+            }
             Balance += money;
             string logText = ($"FEED MONEY: {money:C}"); 
             TransactionLog(logText);
-            //TODO transaction log - test that this works
-            // TODO Determine return value
-            // TODO This doesn't check for a negative for $0 value
+            return true;
         }
 
         //TODO check path location for Log and Write a Catch block
