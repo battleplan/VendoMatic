@@ -96,8 +96,12 @@ namespace Capstone.Views
                     }
                 }
                 Console.WriteLine();
+                Console.WriteLine(new string('=', 120));
                 //Console.Write("\r\nPlease make a ");
-                string choice = GetString("Please make a selection:").ToUpper();
+                string choice = GetString(@"   ___ _  _  ___   ___  ___ ___ 
+  / __| || |/ _ \ / _ \/ __| __|
+ | (__| __ | (_) | (_) \__ \ _| 
+  \___|_||_|\___/ \___/|___/___| OPTION:").ToUpper();
 
                 if (menuOptions.ContainsKey(choice))
                 {
