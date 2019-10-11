@@ -57,13 +57,11 @@ namespace Capstone.Views
                     {
                         Pause("Purchase not made.");
                     }
-                    // TODO Display YumYum message
+                    // TODO Should this repeat to allow easily purchasing multiple items?
                     return true;
                 case "3":
-                    // TODO Get Change Menu
-
-                    SubMenu sm = new SubMenu(vendingMachine);
-                    sm.Run();
+                    Pause(vendingMachine.FinishTransaction());
+                    // TODO Balance on screen doesn't update till enter is pressed. Does this matter?
                     break;
             }
             return true;
