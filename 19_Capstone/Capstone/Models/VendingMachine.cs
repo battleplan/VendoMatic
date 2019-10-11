@@ -214,6 +214,12 @@ namespace Capstone.Models
             {
                 return false;
             }
+
+            if (Balance < slot.Price)
+            {
+                return false;
+            }
+
             bool slotDispensed = slot.Dispense();
             if (slotDispensed)
             {
