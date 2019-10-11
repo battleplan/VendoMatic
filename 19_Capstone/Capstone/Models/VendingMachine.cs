@@ -89,7 +89,6 @@ namespace Capstone.Models
         /// <returns>Success of completely stocking the machine.</returns>
         public bool Stock(string[] inputLines)
         {
-            // TODO This should load in the sales report history for each product
             foreach (string line in inputLines)
             {
                 string identifier = "";
@@ -177,7 +176,6 @@ namespace Capstone.Models
         /// <param name="logText">Text to write to the log.</param>
         private void  TransactionLog(string logText)
         {
-            // TODO Make sure this works
             if (fileDirectory != "" && fileDirectory != null && Directory.Exists(fileDirectory))
             {
                 string time = DateTime.Now.ToString();
@@ -283,7 +281,6 @@ namespace Capstone.Models
             string totalChange = $"Your Change is {quarters} Quarter(s), {dimes} Dime(s), and {nickels} Nickel(s)";
             return totalChange;
             // TODO Determine return value - new Money class with subclasses of Quarter, Dime, and Nickel?
-            // TODO Make sure this log works
         }
 
         public string CreateSalesReport()

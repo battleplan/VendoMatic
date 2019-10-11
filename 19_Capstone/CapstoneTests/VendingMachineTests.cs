@@ -7,9 +7,6 @@ namespace CapstoneTests
     [TestClass]
     public class VendingMachineTests
     {
-        // TODO Test for feeding negative dollar amount
-
-
         [TestMethod]
         public void StockTest()
         {

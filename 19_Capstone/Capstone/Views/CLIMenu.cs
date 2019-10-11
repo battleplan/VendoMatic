@@ -227,30 +227,6 @@ namespace Capstone.Views
         }
 
         /// <summary>
-        /// This continually prompts the user until they enter a valid string (1 or more characters).
-        /// </summary>
-        /// <param name="message">The string to prompt the user with</param>
-        /// <returns>String entered by the user</returns>
-        /// // TODO Remove this?
-        protected string GetSlotIdentifier(string message)
-        {
-            while (true)
-            {
-                Console.Write(message + " ");
-                string userInput = Console.ReadLine().Trim();
-                if (vendingMachine.Slots.ContainsKey(userInput))
-                {
-                    return userInput;
-                }
-                else
-                {
-                    Console.WriteLine("!!! Invalid input. Please enter a valid slot.");
-                }
-            }
-        }
-
-        // TODO Use this for purchase yumyum message?
-        /// <summary>
         /// Shows a message to the user and waits for the user to hit return
         /// </summary>
         /// <param name="message">Displays a message to the user and then waits for them to hit Return.</param>
