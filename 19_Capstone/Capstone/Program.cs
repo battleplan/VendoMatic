@@ -1,6 +1,7 @@
 ﻿using Capstone.Models;
 using Capstone.Views;
 using System;
+using System.IO;
 
 namespace Capstone
 {
@@ -8,14 +9,78 @@ namespace Capstone
     {
         static void Main(string[] args)
         {
-            VendingMachine vendingMachine = new VendingMachine();
-            //vm.Stock(new string[] { "A1|Potato Crisps|3.05|Chip", "A2|Stackers|1.45|Chip", "A3|Grain Waves|2.75|Chip", "A4|Cloud Popcorn|3.65|Chip" });\
+            // Find input file
+            string inputFileName = "vendingmachine2.csv";
+            string inputFileDirectory = Directory.GetCurrentDirectory();
+            string inputFilePath = "";
+            try
+            {
 
-            // TODO Search for file, if not found ask user
-            bool isStocked = vendingMachine.StockFromFile("..\\..\\..\\..\\vendingmachine.csv");
+                bool fileExists = false;
+                while (!fileExists)
+                {
+                    Directory.SetCurrentDirectory(inputFileDirectory);
+                    inputFilePath = Path.Combine(inputFileDirectory, inputFileName);
+                    fileExists = File.Exists(inputFilePath);
+                    if (!fileExists)
+                    {
+                        try
+                        {
+                            if (Directory.Exists(Directory.GetParent(Directory.GetCurrentDirectory()).ToString()))
+                            {
+                                inputFileDirectory = Directory.GetParent(inputFileDirectory).ToString();
+                            }
+                            else
+                            {
+                                Console.WriteLine("Input file not found. Please provide complete path to file:");
+                                inputFilePath = Console.ReadLine();
+                                inputFileName = Path.GetFileName(inputFilePath);
+                                inputFileDirectory = Path.GetDirectoryName(inputFilePath);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            while (!fileExists)
+                            {
+                                try
+                                {
+                                    Console.WriteLine("Input file not found. Please provide complete path to file:");
+                                    inputFilePath = Console.ReadLine();
+                                    inputFileName = Path.GetFileName(inputFilePath);
+                                    inputFileDirectory = Path.GetDirectoryName(inputFilePath);
+                                    Directory.SetCurrentDirectory(inputFileDirectory);
+                                    fileExists = File.Exists(inputFilePath);
+                                }
+                                catch (DirectoryNotFoundException)
+                                {
+
+                                }
+                                catch (ArgumentException)
+                                {
+
+                                }
+                                catch (Exception)
+                                {
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error finding input file: {ex.Message}");
+                Console.ReadKey();
+                return;
+            }
+
+            VendingMachine vendingMachine = new VendingMachine();
+
+            bool isStocked = vendingMachine.StockFromFile(inputFilePath);
             if (!isStocked)
             {
-                Console.WriteLine("Machine not stock properly.");
+                Console.WriteLine("Error: Machine not stocked properly.");
                 Console.ReadKey();
                 return;
             }

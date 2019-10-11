@@ -17,6 +17,14 @@ namespace Capstone.Models
         /// </summary>
         public decimal TotalSales { get; private set; }
 
+        private string fileDirectory;
+
+        private string inputFileName;
+
+        private string logFileName => "Log.txt";
+
+        private string salesReportFileName => "SalesReport.txt";
+
         /// <summary>
         /// Products in the machine accessible by their names.
         /// </summary>
