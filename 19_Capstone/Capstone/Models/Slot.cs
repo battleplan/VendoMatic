@@ -28,12 +28,14 @@ namespace Capstone.Models
         {
             get
             {
-                string priceDisplay = Price.ToString();
-                if (!HasStock)
+                if (HasStock)
                 {
-                    priceDisplay = "SOLD OUT";
+                    return $"{Identifier} {Product.Name} {Price:C}";
                 }
-                return $"{Identifier} {Product.Name} {priceDisplay:C}";
+                else
+                {
+                    return $"{Identifier} {Product.Name} SOLD OUT";
+                }
             }
         }
 

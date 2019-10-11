@@ -22,7 +22,7 @@ namespace Capstone.Views
         /// <summary>
         /// This is where every sub-menu puts its options for display to the user.
         /// </summary>
-        protected Dictionary<string, string> menuOptions;
+        protected Dictionary<string, MenuOption> menuOptions;
 
         /// <summary>
         /// The Title of this menu
@@ -36,7 +36,7 @@ namespace Capstone.Views
         /// </summary>
         public CLIMenu(VendingMachine vendingMachine)
         {
-            this.menuOptions = new Dictionary<string, string>();
+            this.menuOptions = new Dictionary<string, MenuOption>();
             this.vendingMachine = vendingMachine;
         }
 
@@ -87,10 +87,13 @@ namespace Capstone.Views
                 Console.WriteLine(new string('=', 120));
                 #endregion
 
-                foreach (KeyValuePair<string, string> menuItem in menuOptions)
+                foreach (KeyValuePair<string, MenuOption> menuItem in menuOptions)
                 {
-                    string menuItemDisplay = $"{menuItem.Key} - {menuItem.Value}";
+                    if (menuItem.Value.IsVisible)
+                    {
+                    string menuItemDisplay = $"{menuItem.Key} - {menuItem.Value.Name}";
                     Console.Write($"{menuItemDisplay,-25}");
+                    }
                 }
                 Console.WriteLine();
                 //Console.Write("\r\nPlease make a ");
@@ -228,6 +231,7 @@ namespace Capstone.Views
         /// </summary>
         /// <param name="message">The string to prompt the user with</param>
         /// <returns>String entered by the user</returns>
+        /// // TODO Remove this?
         protected string GetSlotIdentifier(string message)
         {
             while (true)
