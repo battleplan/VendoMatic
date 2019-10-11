@@ -130,7 +130,7 @@ namespace CapstoneTests
             Assert.AreEqual(expectedBalance, vm.Balance);
             Assert.AreEqual(expectedQuantitySold, vm.Slots["A1"].Product.QuantitySold);
             Assert.AreEqual(true, actualPurchaseMade);
-
+            Assert.AreEqual(1, vm.Slots["A1"].Product.QuantitySold);
 
 
 
@@ -155,9 +155,7 @@ namespace CapstoneTests
             Assert.AreEqual(expectedBalance, vm.Balance);
             Assert.AreEqual(expectedQuantitySold, vm.Slots["A1"].Product.QuantitySold);
             Assert.AreEqual(false, actualPurchaseMade);
-
-            // TODO Sales report totals
-            //Assert.AreEqual(, vm.Slots[0].Product.QuantitySold)
+            Assert.AreEqual(0, vm.Slots["A1"].Product.QuantitySold);
         }
     }
 }
