@@ -72,18 +72,28 @@ namespace CapstoneTests
         [TestMethod]
         public void FeedMoneyTest()
         {
+            // Feed good amount
             // Arrange
             VendingMachine vm = new VendingMachine();
             // Act
-            vm.FeedMoney((int)2.5);
+            bool actualFedResult = vm.FeedMoney((int)2.5);
             // Assert
             Assert.AreEqual(2M, vm.Balance);
+            Assert.AreEqual(true, actualFedResult);
 
-
+            // Feed negative amount
             // Act
-            vm.FeedMoney((int)-2);
+            actualFedResult = vm.FeedMoney(-2);
             // Assert
             Assert.AreEqual(2M, vm.Balance);
+            Assert.AreEqual(false, actualFedResult);
+
+            // Feed zero amount
+            // Act
+            actualFedResult = vm.FeedMoney(0);
+            // Assert
+            Assert.AreEqual(2M, vm.Balance);
+            Assert.AreEqual(false, actualFedResult);
         }
 
         [TestMethod]
