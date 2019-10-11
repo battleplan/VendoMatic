@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace CapstoneTests
 {
     [TestClass]
-    public class VendingMachineTest
+    public class VendingMachineTests
     {
         // TODO Test for feeding negative dollar amount
 
