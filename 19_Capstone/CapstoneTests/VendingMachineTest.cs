@@ -61,6 +61,7 @@ namespace CapstoneTests
             // Assert
             Assert.AreEqual(2M, vm.Balance);
 
+
             // Act
             vm.FeedMoney((int)-2);
             // Assert
@@ -94,21 +95,46 @@ namespace CapstoneTests
 
             vm.Stock(inputLines);
 
-            decimal expectedTotalSales = vm.TotalSales + vm.Slots["A1"].Price;
-            int expectedQuantitySold = vm.Slots["A1"].Product.QuantitySold + 1;
+            decimal expectedTotalSales = 3.05M;
+            int expectedQuantitySold = 1;
 
             vm.FeedMoney(4);
 
             decimal expectedBalance = 0.95M;
 
             // Act
-            vm.Purchase("A1");
+            bool actualPurchaseMade = vm.Purchase("A1");
 
             // Assert
             Assert.AreEqual(4, vm.Slots["A1"].QuantityRemaining);
             Assert.AreEqual(expectedTotalSales, vm.TotalSales);
             Assert.AreEqual(expectedBalance, vm.Balance);
             Assert.AreEqual(expectedQuantitySold, vm.Slots["A1"].Product.QuantitySold);
+            Assert.AreEqual(true, actualPurchaseMade);
+
+
+
+
+            //// Arrange
+            //vm = new VendingMachine();
+
+            //vm.Stock(inputLines);
+
+            //expectedTotalSales = vm.TotalSales + vm.Slots["A1"].Price;
+            //expectedQuantitySold = vm.Slots["A1"].Product.QuantitySold + 1;
+
+            //vm.FeedMoney(4);
+
+            //decimal expectedBalance = 0.95M;
+
+            //// Act
+            //vm.Purchase("A1");
+
+            //// Assert
+            //Assert.AreEqual(4, vm.Slots["A1"].QuantityRemaining);
+            //Assert.AreEqual(expectedTotalSales, vm.TotalSales);
+            //Assert.AreEqual(expectedBalance, vm.Balance);
+            //Assert.AreEqual(expectedQuantitySold, vm.Slots["A1"].Product.QuantitySold);
 
             // TODO Sales report totals
             //Assert.AreEqual(, vm.Slots[0].Product.QuantitySold)
