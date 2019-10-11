@@ -25,11 +25,16 @@ namespace Capstone.Views
    \  $/   | $$$$$$$$| $$ \  $$| $$$$$$$/|  $$$$$$/| $$ \/  | $$| $$  | $$   | $$    /$$$$$$|  $$$$$$/
     \_/    |________/|__/  \__/|_______/  \______/ |__/     |__/|__/  |__/   |__/   |______/ \______/ 
 ";
-            this.menuOptions.Add("1", "Feed Money");
-            this.menuOptions.Add("2", "Make Purchase");
-            this.menuOptions.Add("3", "Get Change");
-            this.menuOptions.Add("4", "Sales Report");
-            this.menuOptions.Add("Q", "Quit");
+            this.menuOptions.Add("1", new MenuOption("Feed Money", true));
+            this.menuOptions.Add("2", new MenuOption("Get Change", true));
+            this.menuOptions.Add("4", new MenuOption("Sales Report", false));
+            this.menuOptions.Add("Q", new MenuOption("Quit", true));
+
+            // Add all slots
+            foreach (string key in vendingMachine.Slots.Keys)
+            {
+                menuOptions.Add(key, new MenuOption("", false));
+            }
         }
 
         /// <summary>
@@ -40,34 +45,36 @@ namespace Capstone.Views
         /// <returns></returns>
         protected override bool ExecuteSelection(string choice)
         {
-            switch (choice)
+            choice.ToUpper();
+            if (vendingMachine.Slots.ContainsKey(choice))
             {
-                case "1":
-                    // TODO This traps them into feeding money. Should there be an escape?
-                    vendingMachine.FeedMoney(GetInteger("Enter a whole dollar amount to feed into the machine:"));
-                    return true;
-                case "2":
-                    // TODO This traps them into making a selection. Should there be an escape?
-                    string slotIdentifier = GetSlotIdentifier("Choose a slot:");
-                    bool purchaseComplete = vendingMachine.Purchase(slotIdentifier);
-                    if (purchaseComplete)
-                    {
-                        Pause(vendingMachine.Slots[slotIdentifier].Product.YumYum());
-                    }
-                    else
-                    {
-                        Pause("Purchase not made.");
-                    }
-                    // TODO Should this repeat to allow easily purchasing multiple items?
-                    return true;
-                case "3":
-                    Pause(vendingMachine.FinishTransaction());
-                    // TODO Balance on screen doesn't update till enter is pressed. Does this matter?
-                    break;
-                case "4":
-                    // TODO This should be a hidden option
-                    vendingMachine.CreateSalesReport();
-                    break;
+                bool purchaseComplete = vendingMachine.Purchase(choice);
+                if (purchaseComplete)
+                {
+                    Pause(vendingMachine.Slots[choice].Product.YumYum());
+                }
+                else
+                {
+                    Pause("Purchase not made.");
+                }
+            }
+            else
+            {
+                switch (choice)
+                {
+                    case "1":
+                        // TODO This traps them into feeding money. Should there be an escape?
+                        vendingMachine.FeedMoney(GetInteger("Enter a whole dollar amount to feed into the machine:"));
+                        return true;
+                    case "2":
+                        Pause(vendingMachine.FinishTransaction());
+                        // TODO Balance on screen doesn't update till enter is pressed. Does this matter?
+                        break;
+                    case "4":
+                        // TODO This should be a hidden option
+                        vendingMachine.CreateSalesReport();
+                        break;
+                }
             }
             return true;
         }

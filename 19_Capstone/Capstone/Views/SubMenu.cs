@@ -13,9 +13,9 @@ namespace Capstone.Views
         public SubMenu(VendingMachine vendingMachine) : base(vendingMachine)
         {
             this.Title = "*** Sub Menu ***";
-            this.menuOptions.Add("1", "Option One");
-            this.menuOptions.Add("2", "Option 2");
-            this.menuOptions.Add("Q", "Return to Main Menu");
+            //this.menuOptions.Add("1", "Option One");
+            //this.menuOptions.Add("2", "Option 2");
+            //this.menuOptions.Add("Q", "Return to Main Menu");
         }
 
         /// <summary>
