@@ -13,6 +13,7 @@ namespace CapstoneTests
         [TestMethod]
         public void StockTest()
         {
+            // Stock with good input
             // Arrange
             VendingMachine vm = new VendingMachine();
 
@@ -40,6 +41,7 @@ namespace CapstoneTests
                 new Slot("A2", stackers, 1.45M)
             };
 
+            // Stock with poorly formatted input
             // Assert
             Assert.AreEqual(expectedProducts[0].Name, vm.Products["Potato Crisps"].Name);
             Assert.AreEqual(expectedProducts[1].Name, vm.Products["Stackers"].Name);
