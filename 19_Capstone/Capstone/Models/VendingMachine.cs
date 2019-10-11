@@ -7,7 +7,6 @@ namespace Capstone.Models
 {
     public class VendingMachine
     {
-        // TODO Deal with public/private stuff
         /// <summary>
         /// Current dollar amount fed into the machine.
         /// </summary>

@@ -51,6 +51,8 @@ namespace Capstone.Views
                 bool purchaseComplete = vendingMachine.Purchase(choice);
                 if (purchaseComplete)
                 {
+                    Console.WriteLine($"You purchased {vendingMachine.Slots[choice].Product.Name} for {vendingMachine.Slots[choice].Price:C}.");
+                    Console.WriteLine($"You have {vendingMachine.Balance:C} remaining.");
                     Pause(vendingMachine.Slots[choice].Product.YumYum());
                 }
                 else
