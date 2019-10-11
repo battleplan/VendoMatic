@@ -47,7 +47,17 @@ namespace Capstone.Views
                     return true;
                 case "2":
                     // TODO This traps them into making a selection. Should there be an escape?
-                    vendingMachine.Purchase(GetSlotIdentifier("Enter your selection:"));
+                    string slotIdentifier = GetSlotIdentifier("Choose a slot:");
+                    bool purchaseComplete = vendingMachine.Purchase(slotIdentifier);
+                    if (purchaseComplete)
+                    {
+                        Pause(vendingMachine.Slots[slotIdentifier].Product.YumYum());
+                    }
+                    else
+                    {
+                        Pause("Purchase not made.");
+                    }
+                    // TODO Display YumYum message
                     return true;
                 case "3":
                     // TODO Get Change Menu

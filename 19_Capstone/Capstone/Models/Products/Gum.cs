@@ -12,10 +12,9 @@ namespace Capstone.Models
 
         }
         // TODO Set up summary
-        public override void YumYum()
+        public override string YumYum()
         {
-            // TODO Should this write directly to the console or return a value?
-            Console.WriteLine("Chew Chew, Yum!");
+            return "Chew Chew, Yum!";
         }
     }
 }

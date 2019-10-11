@@ -12,7 +12,7 @@ namespace Capstone.Models
         //TODO Summary
         public int QuantitySold;
 
-        public abstract void YumYum();
+        public abstract string YumYum();
 
         //constructor
         public Product(string name)
