@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Capstone.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,7 +13,7 @@ namespace Capstone.Views
         /// <summary>
         /// Constructor adds items to the top-level menu
         /// </summary>
-        public MainMenu() : base()
+        public MainMenu(VendingMachine vendingMachine) : base(vendingMachine)
         {
             this.Title = @" 
  /$$    /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$   /$$$$$$  /$$      /$$  /$$$$$$  /$$$$$$$$ /$$$$$$  /$$$$$$ 
@@ -55,8 +56,8 @@ namespace Capstone.Views
                 case "3":
                     // TODO Get Change Menu
 
-                    //SubMenu sm = new SubMenu();
-                    //sm.Run();
+                    SubMenu sm = new SubMenu(vendingMachine);
+                    sm.Run();
                     break;
             }
             return true;

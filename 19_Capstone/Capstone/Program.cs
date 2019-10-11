@@ -8,15 +8,15 @@ namespace Capstone
     {
         static void Main(string[] args)
         {
-            VendingMachine vm = new VendingMachine();
+            VendingMachine vendingMachine = new VendingMachine();
             //vm.Stock(new string[] { "A1|Potato Crisps|3.05|Chip", "A2|Stackers|1.45|Chip", "A3|Grain Waves|2.75|Chip", "A4|Cloud Popcorn|3.65|Chip" });\
 
             // TODO Search for file, if not found ask user
-            vm.StockFromFile("..\\..\\..\\..\\vendingmachine.csv");
+            vendingMachine.StockFromFile("..\\..\\..\\..\\vendingmachine.csv");
 
-            MainMenu mainMenu = new MainMenu();
+            MainMenu mainMenu = new MainMenu(vendingMachine);
 
-            mainMenu.Run(vm);
+            mainMenu.Run();
         }
     }
 }

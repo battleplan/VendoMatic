@@ -29,21 +29,25 @@ namespace Capstone.Views
         /// </summary>
         public string Title { get; set; }
 
+        protected VendingMachine vendingMachine;
+
         /// <summary>
         /// Constructor - pass in model data here
         /// </summary>
-        public CLIMenu()
+        public CLIMenu(VendingMachine vendingMachine)
         {
             this.menuOptions = new Dictionary<string, string>();
+            this.vendingMachine = vendingMachine;
         }
 
         /// <summary>
         /// Run starts the menu loop
         /// </summary>
-        public void Run(VendingMachine vm)
+        public void Run()
         {
             while (true)
             {
+                #region Header
                 Console.WindowHeight = (int)(Console.LargestWindowHeight * 0.8);
                 Console.WindowWidth = (int)(Console.LargestWindowWidth * 0.8);
 
@@ -53,7 +57,7 @@ namespace Capstone.Views
                 Console.WriteLine();
 
                 // Display slots
-                List<string> slotsDisplay = vm.GetSlotsDisplayNames();
+                List<string> slotsDisplay = vendingMachine.GetSlotsDisplayNames();
                 int columnCounter = 0;
                 for (int i = 0; i < slotsDisplay.Count; i++, columnCounter++)
                 {
@@ -69,16 +73,17 @@ namespace Capstone.Views
                 Console.WriteLine($@"  ___   _   _      _   _  _  ___ ___ 
  | _ ) /_\ | |    /_\ | \| |/ __| __|
  | _ \/ _ \| |__ / _ \| .` | (__| _| 
- |___/_/ \_\____/_/ \_\_|\_|\___|___|  {vm.Balance:C}");
+ |___/_/ \_\____/_/ \_\_|\_|\___|___|  {vendingMachine.Balance:C}");
                 Console.WriteLine(new string('=', 120));
-                
-                
+                #endregion
+
                 foreach (KeyValuePair<string, string> menuItem in menuOptions)
                 {
                     Console.Write($" {menuItem.Key} - {menuItem.Value} ");
                 }
-        Console.Write("\r\nPlease make a ");
-                string choice = GetString("selection:").ToUpper();
+                Console.WriteLine();
+                //Console.Write("\r\nPlease make a ");
+                string choice = GetString("Please make a selection:").ToUpper();
 
                 if (menuOptions.ContainsKey(choice))
                 {
