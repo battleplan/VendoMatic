@@ -173,6 +173,8 @@ namespace Capstone.Models
             return true;
         }
 
+        
+
         //TODO check path location for Log and Write a Catch block
         /// <summary>
         /// Add a new entry to the transaction log.
@@ -298,9 +300,11 @@ namespace Capstone.Models
                 productsKeys.Sort();
 
                 string outputFileName = salesReportFileName + " " + DateTime.Now + ".txt";
-                outputFileName = outputFileName.Replace("/", "_");
-                outputFileName = outputFileName.Replace("\\", "_");
-                outputFileName = outputFileName.Replace(":", "_");
+                char[] invalidChars = Path.GetInvalidFileNameChars();
+                foreach (char invalid in invalidChars)
+                {
+                    outputFileName = outputFileName.Replace(invalid.ToString(), "_");
+                }
 
                 string outputPath = Path.Combine(fileDirectory, outputFileName);
 
