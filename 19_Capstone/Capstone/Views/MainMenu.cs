@@ -71,8 +71,8 @@ namespace Capstone.Views
                         // TODO Balance on screen doesn't update till enter is pressed. Does this matter?
                         break;
                     case "4":
-                        // TODO This should be a hidden option
                         vendingMachine.CreateSalesReport();
+                        // TODO This should display a message with the file name generated
                         break;
                 }
             }
