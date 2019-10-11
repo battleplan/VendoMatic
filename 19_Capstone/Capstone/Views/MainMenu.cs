@@ -75,8 +75,15 @@ namespace Capstone.Views
                         // TODO Balance on screen doesn't update till enter is pressed. Does this matter?
                         break;
                     case "4":
-                        vendingMachine.CreateSalesReport();
-                        // TODO This should display a message with the file name generated
+                        string reportName = vendingMachine.CreateSalesReport();
+                        if (reportName != "")
+                        {
+                            Pause($"Sales report generated: {reportName}");
+                        }
+                        else
+                        {
+                            Pause("Sales report could not be generated.");
+                        }
                         break;
                 }
             }

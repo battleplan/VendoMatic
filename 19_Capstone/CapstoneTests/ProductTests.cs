@@ -15,11 +15,22 @@ namespace CapstoneTests
             // Arrange
             Product product = new Chip("");
 
+            // Sell one product
             // Act
-
+            product.SellProduct();
 
             // Assert
+            Assert.AreEqual(1, product.QuantitySold);
 
+            // Sell one hundred thousand more
+            // Act
+            for (int i = 1; i <= 100000; i++)
+            {
+                product.SellProduct();
+            }
+
+            // Assert
+            Assert.AreEqual(100001, product.QuantitySold);
         }
     }
 }

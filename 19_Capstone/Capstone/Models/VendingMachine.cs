@@ -286,20 +286,21 @@ namespace Capstone.Models
 
             TransactionLog($"GIVE CHANGE: {changeGiven:C}");
 
-            string totalChange = $"Your Change is {quarters} Quarters, {dimes} Dimes, and {nickels} Nickels";
+            string totalChange = $"Your Change is {quarters} Quarter(s), {dimes} Dime(s), and {nickels} Nickel(s)";
             return totalChange;
             // TODO Determine return value - new Money class with subclasses of Quarter, Dime, and Nickel?
             // TODO Make sure this log works
         }
 
-        public bool CreateSalesReport()
+        public string CreateSalesReport()
         {
+            string outputFileName;
             try
             {
                 List<string> productsKeys = new List<string>(Products.Keys);
                 productsKeys.Sort();
 
-                string outputFileName = salesReportFileName + " " + DateTime.Now + ".txt";
+                outputFileName = salesReportFileName + " " + DateTime.Now + ".txt";
                 char[] invalidChars = Path.GetInvalidFileNameChars();
                 foreach (char invalid in invalidChars)
                 {
@@ -323,10 +324,10 @@ namespace Capstone.Models
             }
             catch (Exception ex)
             {
-                return false;
+                return "";
             }
 
-            return true;
+            return outputFileName;
         }
     }
 }
