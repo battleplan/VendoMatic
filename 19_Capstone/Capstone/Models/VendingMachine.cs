@@ -56,8 +56,6 @@ namespace Capstone.Models
         public bool StockFromFile(string inputFilePath)
         {
             List<string> inputLines = new List<string>();
-            // TODO Read from input file - check this!!
-            //TODO bool?
             try
             {
                 fileDirectory = Path.GetDirectoryName(inputFilePath);
@@ -74,7 +72,6 @@ namespace Capstone.Models
             }
             catch (FileNotFoundException)
             {
-                //TODO dont forget about this
                  return false;
             }
             catch (Exception)
@@ -174,8 +171,6 @@ namespace Capstone.Models
         }
 
         
-
-        //TODO check path location for Log and Write a Catch block
         /// <summary>
         /// Add a new entry to the transaction log.
         /// </summary>
@@ -186,12 +181,11 @@ namespace Capstone.Models
             if (fileDirectory != "" && fileDirectory != null && Directory.Exists(fileDirectory))
             {
                 string time = DateTime.Now.ToString();
-                string balance = Balance.ToString();
                 try
                 {
                     using (StreamWriter log = new StreamWriter(Path.Combine(fileDirectory, logFileName), true))
                     {
-                        log.WriteLine($"{time} {logText} {balance}");
+                        log.WriteLine($"{time} {logText} {Balance:C}");
                     }
                 }
                 catch (Exception ex)
