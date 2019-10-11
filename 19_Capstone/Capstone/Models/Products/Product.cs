@@ -6,21 +6,35 @@ namespace Capstone.Models
 {
     public abstract class Product
     {
-        // TODO Set up summary
+        /// <summary>
+        /// Name of the product
+        /// </summary>
         public string Name { get; }
 
-        //TODO Summary
+        /// <summary>
+        /// Running total of quantity sold.
+        /// </summary>
         public int QuantitySold;
 
+        /// <summary>
+        /// Message to display to user upon purchase.
+        /// </summary>
+        /// <returns>String of message for each product type.</returns>
         public abstract string YumYum();
 
-        //constructor
+        // Constructor
+        /// <summary>
+        /// Create a new product.
+        /// </summary>
+        /// <param name="name">Name of the product.</param>
         public Product(string name)
         {
             Name = name;
         }
 
-        // TODO Add Summary
+        /// <summary>
+        /// Record that the product has been sold.
+        /// </summary>
         public void SellProduct()
         {
             QuantitySold++;

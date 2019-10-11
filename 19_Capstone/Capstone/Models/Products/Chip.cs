@@ -7,12 +7,20 @@ namespace Capstone.Models
     public class Chip : Product
     {
 
-        //constructor
+        // Constructor
+        /// <summary>
+        /// Create new chip.
+        /// </summary>
+        /// <param name="name">Name of chip.</param>
         public Chip(string name) : base(name)
         {
 
         }
-        // TODO Set up summary
+
+        /// <summary>
+        /// Message to display to operator upon purchase.
+        /// </summary>
+        /// <returns>String of message.</returns>
         public override string YumYum()
         {
             return "Crunch Crunch, Yum!";

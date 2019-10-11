@@ -6,26 +6,43 @@ namespace Capstone.Models
 {
     public class Slot
     {
-        // TODO Set up summary
+        /// <summary>
+        /// Unique identifier for the slot.
+        /// </summary>
         public string Identifier { get; }
 
-        // TODO Set up summary
-        // TODO Determine what methods affect this (Stock(), Purchase())
+        /// <summary>
+        /// Number of purchasable products left in the slot.
+        /// </summary>
         public int QuantityRemaining { get; private set; }
 
-        // TODO Set up summary
+        /// <summary>
+        /// Can the slot dispense any more product.
+        /// </summary>
         public bool HasStock => QuantityRemaining > 0;
 
-        // TODO Set up summary
+        /// <summary>
+        /// Display name of the slot and the product it contains.
+        /// </summary>
         public string DisplayName => $"{Identifier} {Product.Name} {Price:C}";
 
-        // TODO Set up summary
+        /// <summary>
+        /// The product loaded into the slot.
+        /// </summary>
         public Product Product { get; }
 
-        // TODO Set up summary
+        /// <summary>
+        /// The price to purchase a product from the slot.
+        /// </summary>
         public decimal Price { get; }
 
         // Constructor
+        /// <summary>
+        /// Create a new slot.
+        /// </summary>
+        /// <param name="identifier">The unique identifier of the slot.</param>
+        /// <param name="product">The product loaded into the slot.</param>
+        /// <param name="price">The price to purchase a product from the slot.</param>
         public Slot(string identifier, Product product, decimal price)
         {
             Identifier = identifier;
@@ -34,9 +51,13 @@ namespace Capstone.Models
             QuantityRemaining = 5;
         }
 
+        /// <summary>
+        /// Dispense a product from the slot.
+        /// </summary>
+        /// <returns>Success of dispensing the product.</returns>
         public bool Dispense()
         {
-            if (QuantityRemaining > 0)
+            if (HasStock)
             {
                 QuantityRemaining--;
                 return true;

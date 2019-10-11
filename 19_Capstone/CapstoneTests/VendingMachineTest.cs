@@ -62,17 +62,18 @@ namespace CapstoneTests
             Assert.AreEqual(2M, vm.Balance);
         }
 
-        //TODO write another test for Transactions non whole dollar amounts
+        //TODO write another test for Transactions non whole dollar amounts?
         [TestMethod]
         public void FinishTransactionTest()
         {
             //Arrange
-            VendingMachine bob = new VendingMachine();
-            bob.FeedMoney(1);
+            VendingMachine bobsAMachine = new VendingMachine();
+            bobsAMachine.FeedMoney(1);
             //Act
-            string bobsEx = bob.FinishTransaction();
+            string actualResult = bobsAMachine.FinishTransaction();
             //Assert
-            Assert.AreEqual($"Your Change is 4 Quarters, 0 Dimes, and 0 Nickels", bobsEx);
+            Assert.AreEqual($"Your Change is 4 Quarters, 0 Dimes, and 0 Nickels", actualResult);
+            Assert.AreEqual(0, bobsAMachine.Balance);
         }
 
         [TestMethod]

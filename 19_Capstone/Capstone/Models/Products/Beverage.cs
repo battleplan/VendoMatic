@@ -6,15 +6,20 @@ namespace Capstone.Models
 {
     public class Beverage : Product
     {
-        //constructor
+        // Constructor
+        /// <summary>
+        /// Create a new beverage.
+        /// </summary>
+        /// <param name="name">Name of the beverage.</param>
         public Beverage(string name) : base(name)
         {
             
         }
-
-
-
-        // TODO Set up summary
+        
+        /// <summary>
+        /// Message to display to operator upon purchase.
+        /// </summary>
+        /// <returns>String of message.</returns>
         public override string YumYum()
         {
            return "Glug Glug, Yum!";

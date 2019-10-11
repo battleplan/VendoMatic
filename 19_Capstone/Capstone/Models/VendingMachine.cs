@@ -7,21 +7,31 @@ namespace Capstone.Models
 {
     public class VendingMachine
     {
+        /// <summary>
+        /// Current dollar amount fed into the machine.
+        /// </summary>
         public decimal Balance;
 
-        // TODO Assign this in constructor
-        //private readonly string inputFilePath;
-
+        /// <summary>
+        /// Total lifetime sales of the machine.
+        /// </summary>
         public decimal TotalSales { get; private set; }
 
-        // TODO Set up summary
+        /// <summary>
+        /// Products in the machine accessible by their names.
+        /// </summary>
         public Dictionary<string, Product> Products { get; private set; }
 
 
-        // TODO Set up summary
+        /// <summary>
+        /// Slots in the machine accessible by their identifier.
+        /// </summary>
         public Dictionary<string, Slot> Slots { get; private set; }
 
         // Constructor
+        /// <summary>
+        /// Create a new vending machine.
+        /// </summary>
         public VendingMachine()
         {
             Products = new Dictionary<string, Product>();
@@ -29,8 +39,11 @@ namespace Capstone.Models
         }
 
 
-        // TODO Set up summary
-        // TODO Determine return value
+        /// <summary>
+        /// Use a pipe-delimited input file to stock the vending machine.
+        /// </summary>
+        /// <param name="inputFilePath">Path to the pipe-delimited input file.</param>
+        /// <returns>Success of stocking the machine completely.</returns>
         public bool StockFromFile(string inputFilePath)
         {
             List<string> inputLines = new List<string>();
@@ -61,8 +74,14 @@ namespace Capstone.Models
             return Stock(inputLines.ToArray());
         }
 
+        /// <summary>
+        /// Stock machine from a string array.
+        /// </summary>
+        /// <param name="inputLines">Pipe-delimited string array.</param>
+        /// <returns>Success of completely stocking the machine.</returns>
         public bool Stock(string[] inputLines)
         {
+            // TODO This should load in the sales report history for each product
             foreach (string line in inputLines)
             {
                 string identifier = "";
@@ -79,7 +98,6 @@ namespace Capstone.Models
                 }
                 catch (Exception ex)
                 {
-                    // TODO What happens if it was unable to read the elements?
                     Console.WriteLine($"An error occurred stocking the machine: {ex.Message}");
                     Console.ReadKey();
                     return false;
@@ -128,18 +146,25 @@ namespace Capstone.Models
             return true;
         }
 
-        // TODO Set up summary
+        /// <summary>
+        /// Feed money into the machine.
+        /// </summary>
+        /// <param name="money">Integer value of dollars to feed into the machine.</param>
         public void FeedMoney(int money)
         {
-
             Balance += money;
             string logText = ($"FEED MONEY: {money:C}"); 
             TransactionLog(logText);
             //TODO transaction log - test that this works
             // TODO Determine return value
+            // TODO This doesn't check for a negative for $0 value
         }
 
         //TODO check path location for Log and Write a Catch block
+        /// <summary>
+        /// Add a new entry to the transaction log.
+        /// </summary>
+        /// <param name="logText">Text to write to the log.</param>
         private void  TransactionLog(string logText)
         {
             // TODO Make sure this works
@@ -159,7 +184,11 @@ namespace Capstone.Models
             }
         }
 
-        // TODO Set up summary
+        /// <summary>
+        /// Make a purchase from a given slot in the machine.
+        /// </summary>
+        /// <param name="slotIdentifier">The identifier for the slot.</param>
+        /// <returns>Success of making the purchase.</returns>
         public bool Purchase(string slotIdentifier)
         {
             Slot slot;
@@ -185,9 +214,12 @@ namespace Capstone.Models
             {
                 return false;
             }
-            // TODO Determine return value
         }
 
+        /// <summary>
+        /// Get display names of the information in all slots loading into the machine.
+        /// </summary>
+        /// <returns>List of each slot's display name.</returns>
         public List<string> GetSlotsDisplayNames()
         {
             List<string> slots = new List<string>();
@@ -200,7 +232,10 @@ namespace Capstone.Models
             return slots;
         }
 
-        // TODO Set up summary
+        /// <summary>
+        /// Give change back to the machine operator.
+        /// </summary>
+        /// <returns></returns>
         public string FinishTransaction()
         {
             decimal changeGiven = Balance;
@@ -225,7 +260,6 @@ namespace Capstone.Models
                     nickels++;
                 }
             }
-            //Balance = 0;
 
             TransactionLog($"GIVE CHANGE: {changeGiven:C}");
 
