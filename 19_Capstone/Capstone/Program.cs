@@ -10,7 +10,7 @@ namespace Capstone
         static void Main(string[] args)
         {
             // Find input file
-            string inputFileName = "vendingmachine2.csv";
+            string inputFileName = "vendingmachine.csv";
             string inputFileDirectory = Directory.GetCurrentDirectory();
             string inputFilePath = "";
             try

@@ -44,6 +44,7 @@ namespace Capstone.Models
         {
             Products = new Dictionary<string, Product>();
             Slots = new Dictionary<string, Slot>();
+            fileDirectory = Directory.GetCurrentDirectory();
         }
 
 
@@ -59,6 +60,8 @@ namespace Capstone.Models
             //TODO bool?
             try
             {
+                fileDirectory = Path.GetDirectoryName(inputFilePath);
+                inputFileName = Path.GetFileName(inputFilePath);
                 
                 using (StreamReader sr = new StreamReader(inputFilePath))
                 {
@@ -176,19 +179,22 @@ namespace Capstone.Models
         private void  TransactionLog(string logText)
         {
             // TODO Make sure this works
-            string time = DateTime.Now.ToString();
-            string balance = Balance.ToString();
-            try
+            if (fileDirectory != "" && fileDirectory != null && Directory.Exists(fileDirectory))
             {
-                using (StreamWriter log = new StreamWriter(@"..\..\..\..\Log.Txt", true))
+                string time = DateTime.Now.ToString();
+                string balance = Balance.ToString();
+                try
                 {
-                    log.WriteLine($"{time} {logText} {balance}");
+                    using (StreamWriter log = new StreamWriter(Path.Combine(fileDirectory, logFileName), true))
+                    {
+                        log.WriteLine($"{time} {logText} {balance}");
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred writing the transaction log: {ex.Message}");
-                Console.ReadKey();
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred writing the transaction log: {ex.Message}");
+                    Console.ReadKey();
+                }
             }
         }
 
