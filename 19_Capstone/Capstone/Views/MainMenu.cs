@@ -15,7 +15,7 @@ namespace Capstone.Views
         /// </summary>
         public MainMenu(VendingMachine vendingMachine) : base(vendingMachine)
         {
-            this.Title = @" 
+            Title = @" 
  /$$    /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$   /$$$$$$  /$$      /$$  /$$$$$$  /$$$$$$$$ /$$$$$$  /$$$$$$ 
 | $$   | $$| $$_____/| $$$ | $$| $$__  $$ /$$__  $$| $$$    /$$$ /$$__  $$|__  $$__/|_  $$_/ /$$__  $$
 | $$   | $$| $$      | $$$$| $$| $$  \ $$| $$  \ $$| $$$$  /$$$$| $$  \ $$   | $$     | $$  | $$  \__/
@@ -25,10 +25,10 @@ namespace Capstone.Views
    \  $/   | $$$$$$$$| $$ \  $$| $$$$$$$/|  $$$$$$/| $$ \/  | $$| $$  | $$   | $$    /$$$$$$|  $$$$$$/
     \_/    |________/|__/  \__/|_______/  \______/ |__/     |__/|__/  |__/   |__/   |______/ \______/ 
 ";
-            this.menuOptions.Add("1", new MenuOption("Feed Money", true));
-            this.menuOptions.Add("2", new MenuOption("Get Change", true));
-            this.menuOptions.Add("4", new MenuOption("Sales Report", false));
-            this.menuOptions.Add("Q", new MenuOption("Quit", true));
+            menuOptions.Add("1", new MenuOption("Feed Money", true));
+            menuOptions.Add("2", new MenuOption("Get Change", true));
+            menuOptions.Add("4", new MenuOption("Sales Report", false));
+            menuOptions.Add("Q", new MenuOption("Quit", true));
 
             // Add all slots
             foreach (string key in vendingMachine.Slots.Keys)

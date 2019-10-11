@@ -30,11 +30,11 @@ namespace Capstone.Models
             {
                 if (HasStock)
                 {
-                    return $"{Identifier} {Product.Name} {Price:C}";
+                    return $"[{Identifier}] {Price:C} |{QuantityRemaining}| {Product.Name}";
                 }
                 else
                 {
-                    return $"{Identifier} {Product.Name} SOLD OUT";
+                    return $"[{Identifier}] {Product.Name} SOLD OUT";
                 }
             }
         }

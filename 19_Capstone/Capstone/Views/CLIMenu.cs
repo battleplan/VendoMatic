@@ -36,7 +36,7 @@ namespace Capstone.Views
         /// </summary>
         public CLIMenu(VendingMachine vendingMachine)
         {
-            this.menuOptions = new Dictionary<string, MenuOption>();
+            menuOptions = new Dictionary<string, MenuOption>();
             this.vendingMachine = vendingMachine;
         }
 
@@ -71,8 +71,18 @@ namespace Capstone.Views
                 int columnCounter = 0;
                 for (int i = 0; i < slotsDisplay.Count; i++, columnCounter++)
                 {
+                    //int maxLength = 0;
+                    //int j = i;
+
+                    //for (int j = i; j < slotsDisplay.Count; j+=4)
+                    //{
+                    //    if (slotsDisplay[j].Length > maxLength)
+                    //    {
+                    //        maxLength = slotsDisplay[j].Length;
+                    //    }
+                    //}
                     string slot = slotsDisplay[i];
-                    Console.Write($"{slot,-30}");
+                    Console.Write($"{slot,-34}");
                     if (columnCounter == 3)
                     {
                         Console.WriteLine();

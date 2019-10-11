@@ -38,7 +38,7 @@ namespace Capstone
                                 inputFileDirectory = Path.GetDirectoryName(inputFilePath);
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             while (!fileExists)
                             {
