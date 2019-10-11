@@ -49,6 +49,22 @@ namespace CapstoneTests
             Assert.AreEqual(expectedSlots[1].Identifier, vm.Slots["A2"].Identifier);
             Assert.AreEqual(expectedSlots[1].Price, vm.Slots["A2"].Price);
             Assert.AreEqual(expectedSlots[1].Product.Name, vm.Slots["A2"].Product.Name);
+
+
+            // Arrange
+            vm = new VendingMachine();
+
+            // Act
+            inputLines = new string[]
+            {
+                "A1|Product|Chip|3.05"
+            };
+
+            vm.Stock(inputLines);
+
+            // Assert
+            Assert.AreEqual(0, vm.Products.Count);
+            Assert.AreEqual(0, vm.Slots.Count);
         }
 
         [TestMethod]
