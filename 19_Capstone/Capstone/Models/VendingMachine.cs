@@ -58,21 +58,32 @@ namespace Capstone.Models
                 return false;
             }
 
-            Stock(inputLines.ToArray());
-
-            return true;
+            return Stock(inputLines.ToArray());
         }
 
-        public void Stock(string[] inputLines)
+        public bool Stock(string[] inputLines)
         {
             foreach (string line in inputLines)
             {
-                // TODO Try Catch for reading these elements
-                string[] stockElements = line.Split("|");
-                string identifier = stockElements[0];
-                string nameProduct = stockElements[1];
-                string priceProduct = stockElements[2];
-                string productClass = stockElements[3];
+                string identifier = "";
+                string nameProduct = "";
+                string priceProduct = "";
+                string productClass = "";
+                try
+                {
+                    string[] stockElements = line.Split("|");
+                    identifier = stockElements[0];
+                    nameProduct = stockElements[1];
+                    priceProduct = stockElements[2];
+                    productClass = stockElements[3];
+                }
+                catch (Exception ex)
+                {
+                    // TODO What happens if it was unable to read the elements?
+                    Console.WriteLine($"An error occurred stocking the machine: {ex.Message}");
+                    Console.ReadKey();
+                    return false;
+                }
 
                 decimal priceDecimal = 0;
                 bool priceWasParsed = decimal.TryParse(priceProduct, out priceDecimal);
@@ -105,12 +116,16 @@ namespace Capstone.Models
                         }
                         Products[nameProduct] = product;
                     }
-
-
+                    
                     // Create slot and put product in it
                     Slots[identifier] = (new Slot(identifier, product, priceDecimal));
                 }
+                else
+                {
+                    return false;
+                }
             }
+            return true;
         }
 
         // TODO Set up summary
@@ -118,9 +133,8 @@ namespace Capstone.Models
         {
 
             Balance += money;
-            string logText = ($"FEED MONEY: ${money}.00"); 
+            string logText = ($"FEED MONEY: {money:C}"); 
             TransactionLog(logText);
-            // TODO Use C to make money into currency?
             //TODO transaction log - test that this works
             // TODO Determine return value
         }
@@ -131,9 +145,17 @@ namespace Capstone.Models
             // TODO Make sure this works
             string time = DateTime.Now.ToString();
             string balance = Balance.ToString();
-            using (StreamWriter log = new StreamWriter(@"..\..\..\..\Log.Txt", true))
+            try
             {
-                log.WriteLine($"{time} {logText} {balance}");
+                using (StreamWriter log = new StreamWriter(@"..\..\..\..\Log.Txt", true))
+                {
+                    log.WriteLine($"{time} {logText} {balance}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred writing the transaction log: {ex.Message}");
+                Console.ReadKey();
             }
         }
 
