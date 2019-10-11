@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace CapstoneTests
 {
     [TestClass]
-    public class VendingMachineTest
+    public class VendingMachineTests
     {
         // TODO Test for feeding negative dollar amount
 
@@ -13,6 +13,7 @@ namespace CapstoneTests
         [TestMethod]
         public void StockTest()
         {
+            // Stock with good input
             // Arrange
             VendingMachine vm = new VendingMachine();
 
@@ -40,6 +41,7 @@ namespace CapstoneTests
                 new Slot("A2", stackers, 1.45M)
             };
 
+            // Stock with poorly formatted input
             // Assert
             Assert.AreEqual(expectedProducts[0].Name, vm.Products["Potato Crisps"].Name);
             Assert.AreEqual(expectedProducts[1].Name, vm.Products["Stackers"].Name);
@@ -49,37 +51,82 @@ namespace CapstoneTests
             Assert.AreEqual(expectedSlots[1].Identifier, vm.Slots["A2"].Identifier);
             Assert.AreEqual(expectedSlots[1].Price, vm.Slots["A2"].Price);
             Assert.AreEqual(expectedSlots[1].Product.Name, vm.Slots["A2"].Product.Name);
+
+
+            // Arrange
+            vm = new VendingMachine();
+
+            // Act
+            inputLines = new string[]
+            {
+                "A1|Product|Chip|3.05"
+            };
+
+            vm.Stock(inputLines);
+
+            // Assert
+            Assert.AreEqual(0, vm.Products.Count);
+            Assert.AreEqual(0, vm.Slots.Count);
         }
 
         [TestMethod]
         public void FeedMoneyTest()
         {
+            // Feed good amount
             // Arrange
             VendingMachine vm = new VendingMachine();
             // Act
-            vm.FeedMoney((int)2.5);
+            bool actualFedResult = vm.FeedMoney((int)2.5);
             // Assert
             Assert.AreEqual(2M, vm.Balance);
+            Assert.AreEqual(true, actualFedResult);
 
-
+            // Feed negative amount
             // Act
-            vm.FeedMoney((int)-2);
+            actualFedResult = vm.FeedMoney(-2);
             // Assert
             Assert.AreEqual(2M, vm.Balance);
+            Assert.AreEqual(false, actualFedResult);
+
+            // Feed zero amount
+            // Act
+            actualFedResult = vm.FeedMoney(0);
+            // Assert
+            Assert.AreEqual(2M, vm.Balance);
+            Assert.AreEqual(false, actualFedResult);
         }
 
-        //TODO write another test for Transactions non whole dollar amounts?
         [TestMethod]
         public void FinishTransactionTest()
         {
-            //Arrange
+            // Change for one dollar
+            // Arrange
             VendingMachine bobsAMachine = new VendingMachine();
             bobsAMachine.FeedMoney(1);
-            //Act
+
+            // Act
             string actualResult = bobsAMachine.FinishTransaction();
-            //Assert
-            Assert.AreEqual($"Your Change is 4 Quarters, 0 Dimes, and 0 Nickels", actualResult);
+
+            // Assert
+            Assert.AreEqual($"Your Change is 4 Quarter(s), 0 Dime(s), and 0 Nickel(s)", actualResult);
             Assert.AreEqual(0, bobsAMachine.Balance);
+
+            // Change for 90 cents
+            // Arrange
+            bobsAMachine.FeedMoney(1);
+            bobsAMachine.Stock(new string[] { "A1|Product|0.10|Chip" });
+            bobsAMachine.Purchase("A1");
+            actualResult = bobsAMachine.FinishTransaction();
+
+            // Assert
+            Assert.AreEqual($"Your Change is 3 Quarter(s), 1 Dime(s), and 1 Nickel(s)", actualResult);
+
+            // Change for 0 cents
+            // Arrange
+            actualResult = bobsAMachine.FinishTransaction();
+
+            // Assert
+            Assert.AreEqual($"Your Change is 0 Quarter(s), 0 Dime(s), and 0 Nickel(s)", actualResult);
         }
 
         [TestMethod]
@@ -111,7 +158,7 @@ namespace CapstoneTests
             Assert.AreEqual(expectedBalance, vm.Balance);
             Assert.AreEqual(expectedQuantitySold, vm.Slots["A1"].Product.QuantitySold);
             Assert.AreEqual(true, actualPurchaseMade);
-
+            Assert.AreEqual(1, vm.Slots["A1"].Product.QuantitySold);
 
 
 
@@ -136,9 +183,7 @@ namespace CapstoneTests
             Assert.AreEqual(expectedBalance, vm.Balance);
             Assert.AreEqual(expectedQuantitySold, vm.Slots["A1"].Product.QuantitySold);
             Assert.AreEqual(false, actualPurchaseMade);
-
-            // TODO Sales report totals
-            //Assert.AreEqual(, vm.Slots[0].Product.QuantitySold)
+            Assert.AreEqual(0, vm.Slots["A1"].Product.QuantitySold);
         }
     }
 }

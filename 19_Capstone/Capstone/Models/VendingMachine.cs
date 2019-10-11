@@ -161,15 +161,19 @@ namespace Capstone.Models
         /// Feed money into the machine.
         /// </summary>
         /// <param name="money">Integer value of dollars to feed into the machine.</param>
-        public void FeedMoney(int money)
+        public bool FeedMoney(int money)
         {
+            if (money <= 0)
+            {
+                return false;
+            }
             Balance += money;
             string logText = ($"FEED MONEY: {money:C}"); 
             TransactionLog(logText);
-            //TODO transaction log - test that this works
-            // TODO Determine return value
-            // TODO This doesn't check for a negative for $0 value
+            return true;
         }
+
+        
 
         //TODO check path location for Log and Write a Catch block
         /// <summary>
@@ -282,23 +286,26 @@ namespace Capstone.Models
 
             TransactionLog($"GIVE CHANGE: {changeGiven:C}");
 
-            string totalChange = $"Your Change is {quarters} Quarters, {dimes} Dimes, and {nickels} Nickels";
+            string totalChange = $"Your Change is {quarters} Quarter(s), {dimes} Dime(s), and {nickels} Nickel(s)";
             return totalChange;
             // TODO Determine return value - new Money class with subclasses of Quarter, Dime, and Nickel?
             // TODO Make sure this log works
         }
 
-        public bool CreateSalesReport()
+        public string CreateSalesReport()
         {
+            string outputFileName;
             try
             {
                 List<string> productsKeys = new List<string>(Products.Keys);
                 productsKeys.Sort();
 
-                string outputFileName = salesReportFileName + " " + DateTime.Now + ".txt";
-                outputFileName = outputFileName.Replace("/", "_");
-                outputFileName = outputFileName.Replace("\\", "_");
-                outputFileName = outputFileName.Replace(":", "_");
+                outputFileName = salesReportFileName + " " + DateTime.Now + ".txt";
+                char[] invalidChars = Path.GetInvalidFileNameChars();
+                foreach (char invalid in invalidChars)
+                {
+                    outputFileName = outputFileName.Replace(invalid.ToString(), "_");
+                }
 
                 string outputPath = Path.Combine(fileDirectory, outputFileName);
 
@@ -317,10 +324,10 @@ namespace Capstone.Models
             }
             catch (Exception ex)
             {
-                return false;
+                return "";
             }
 
-            return true;
+            return outputFileName;
         }
     }
 }

@@ -64,15 +64,26 @@ namespace Capstone.Views
                 {
                     case "1":
                         // TODO This traps them into feeding money. Should there be an escape?
-                        vendingMachine.FeedMoney(GetInteger("Enter a whole dollar amount to feed into the machine:"));
+                        bool success = vendingMachine.FeedMoney(GetInteger("Enter a whole dollar amount to feed into the machine:"));
+                        if (!success)
+                        {
+                            Pause("Unable to feed money. Please enter a whole number greater than zero.");
+                        }
                         return true;
                     case "2":
                         Pause(vendingMachine.FinishTransaction());
                         // TODO Balance on screen doesn't update till enter is pressed. Does this matter?
                         break;
                     case "4":
-                        vendingMachine.CreateSalesReport();
-                        // TODO This should display a message with the file name generated
+                        string reportName = vendingMachine.CreateSalesReport();
+                        if (reportName != "")
+                        {
+                            Pause($"Sales report generated: {reportName}");
+                        }
+                        else
+                        {
+                            Pause("Sales report could not be generated.");
+                        }
                         break;
                 }
             }
