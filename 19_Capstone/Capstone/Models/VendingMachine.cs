@@ -23,7 +23,7 @@ namespace Capstone.Models
 
         private string logFileName => "Log.txt";
 
-        private string salesReportFileName => "SalesReport.txt";
+        private string salesReportFileName => "SalesReport";
 
         /// <summary>
         /// Products in the machine accessible by their names.
@@ -214,6 +214,12 @@ namespace Capstone.Models
             {
                 return false;
             }
+
+            if (Balance < slot.Price)
+            {
+                return false;
+            }
+
             bool slotDispensed = slot.Dispense();
             if (slotDispensed)
             {
@@ -222,7 +228,6 @@ namespace Capstone.Models
                 Balance -= slot.Price;
                 TransactionLog($"{slot.Product.Name} {slot.Identifier} {slot.Price:C}");
                 return true;
-                // TODO Make sure transaction log works
             }
             else
             {
@@ -283,6 +288,39 @@ namespace Capstone.Models
             // TODO Make sure this log works
         }
 
-        // TODO Sales report
+        public bool CreateSalesReport()
+        {
+            try
+            {
+                List<string> productsKeys = new List<string>(Products.Keys);
+                productsKeys.Sort();
+
+                string outputFileName = salesReportFileName + " " + DateTime.Now + ".txt";
+                outputFileName = outputFileName.Replace("/", "_");
+                outputFileName = outputFileName.Replace("\\", "_");
+                outputFileName = outputFileName.Replace(":", "_");
+
+                string outputPath = Path.Combine(fileDirectory, outputFileName);
+
+
+
+                using (StreamWriter sw = new StreamWriter(outputPath))
+                {
+                    foreach (string key in productsKeys)
+                    {
+                        sw.WriteLine($"{Products[key].Name}|{Products[key].QuantitySold}");
+                    }
+
+                    sw.WriteLine();
+                    sw.WriteLine($"Total Sales: {TotalSales:C}");
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

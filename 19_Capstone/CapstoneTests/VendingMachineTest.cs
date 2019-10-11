@@ -60,6 +60,12 @@ namespace CapstoneTests
             vm.FeedMoney((int)2.5);
             // Assert
             Assert.AreEqual(2M, vm.Balance);
+
+
+            // Act
+            vm.FeedMoney((int)-2);
+            // Assert
+            Assert.AreEqual(2M, vm.Balance);
         }
 
         //TODO write another test for Transactions non whole dollar amounts?
@@ -89,21 +95,47 @@ namespace CapstoneTests
 
             vm.Stock(inputLines);
 
-            decimal expectedTotalSales = vm.TotalSales + vm.Slots["A1"].Price;
-            int expectedQuantitySold = vm.Slots["A1"].Product.QuantitySold + 1;
+            decimal expectedTotalSales = 3.05M;
+            int expectedQuantitySold = 1;
 
             vm.FeedMoney(4);
 
             decimal expectedBalance = 0.95M;
 
             // Act
-            vm.Purchase("A1");
+            bool actualPurchaseMade = vm.Purchase("A1");
 
             // Assert
             Assert.AreEqual(4, vm.Slots["A1"].QuantityRemaining);
             Assert.AreEqual(expectedTotalSales, vm.TotalSales);
             Assert.AreEqual(expectedBalance, vm.Balance);
             Assert.AreEqual(expectedQuantitySold, vm.Slots["A1"].Product.QuantitySold);
+            Assert.AreEqual(true, actualPurchaseMade);
+
+
+
+
+            // Arrange
+            vm = new VendingMachine();
+
+            vm.Stock(inputLines);
+
+            expectedTotalSales = 0M;
+            expectedQuantitySold = 0;
+
+            vm.FeedMoney(2);
+
+            expectedBalance = 2M;
+
+            // Act
+            actualPurchaseMade = vm.Purchase("A1");
+
+            // Assert
+            Assert.AreEqual(5, vm.Slots["A1"].QuantityRemaining);
+            Assert.AreEqual(expectedTotalSales, vm.TotalSales);
+            Assert.AreEqual(expectedBalance, vm.Balance);
+            Assert.AreEqual(expectedQuantitySold, vm.Slots["A1"].Product.QuantitySold);
+            Assert.AreEqual(false, actualPurchaseMade);
 
             // TODO Sales report totals
             //Assert.AreEqual(, vm.Slots[0].Product.QuantitySold)

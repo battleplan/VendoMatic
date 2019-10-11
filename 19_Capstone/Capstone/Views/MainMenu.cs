@@ -28,6 +28,7 @@ namespace Capstone.Views
             this.menuOptions.Add("1", "Feed Money");
             this.menuOptions.Add("2", "Make Purchase");
             this.menuOptions.Add("3", "Get Change");
+            this.menuOptions.Add("4", "Sales Report");
             this.menuOptions.Add("Q", "Quit");
         }
 
@@ -62,6 +63,10 @@ namespace Capstone.Views
                 case "3":
                     Pause(vendingMachine.FinishTransaction());
                     // TODO Balance on screen doesn't update till enter is pressed. Does this matter?
+                    break;
+                case "4":
+                    // TODO This should be a hidden option
+                    vendingMachine.CreateSalesReport();
                     break;
             }
             return true;

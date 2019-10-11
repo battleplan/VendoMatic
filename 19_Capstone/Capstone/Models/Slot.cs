@@ -24,7 +24,18 @@ namespace Capstone.Models
         /// <summary>
         /// Display name of the slot and the product it contains.
         /// </summary>
-        public string DisplayName => $"{Identifier} {Product.Name} {Price:C}";
+        public string DisplayName
+        {
+            get
+            {
+                string priceDisplay = Price.ToString();
+                if (!HasStock)
+                {
+                    priceDisplay = "SOLD OUT";
+                }
+                return $"{Identifier} {Product.Name} {priceDisplay:C}";
+            }
+        }
 
         /// <summary>
         /// The product loaded into the slot.
