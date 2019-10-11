@@ -60,6 +60,11 @@ namespace CapstoneTests
             vm.FeedMoney((int)2.5);
             // Assert
             Assert.AreEqual(2M, vm.Balance);
+
+            // Act
+            vm.FeedMoney((int)-2);
+            // Assert
+            Assert.AreEqual(2M, vm.Balance);
         }
 
         //TODO write another test for Transactions non whole dollar amounts?
