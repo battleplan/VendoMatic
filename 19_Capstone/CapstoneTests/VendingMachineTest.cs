@@ -96,7 +96,7 @@ namespace CapstoneTests
             decimal expectedBalance = 0.95M;
 
             // Act
-            vm.Purchase(vm.Slots["A1"]);
+            vm.Purchase("A1");
 
             // Assert
             Assert.AreEqual(4, vm.Slots["A1"].QuantityRemaining);

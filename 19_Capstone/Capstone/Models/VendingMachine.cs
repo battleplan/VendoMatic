@@ -138,8 +138,17 @@ namespace Capstone.Models
         }
 
         // TODO Set up summary
-        public void Purchase(Slot slot)
+        public bool Purchase(string slotIdentifier)
         {
+            Slot slot;
+            if (Slots.ContainsKey(slotIdentifier))
+            {
+                slot = Slots[slotIdentifier];
+            }
+            else
+            {
+                return false;
+            }
             bool slotDispensed = slot.Dispense();
             if (slotDispensed)
             {
@@ -147,7 +156,12 @@ namespace Capstone.Models
                 TotalSales += slot.Price;
                 Balance -= slot.Price;
                 TransactionLog($"{slot.Product.Name} {slot.Identifier} {slot.Price:C}");
+                return true;
                 // TODO Make sure transaction log works
+            }
+            else
+            {
+                return false;
             }
             // TODO Determine return value
         }

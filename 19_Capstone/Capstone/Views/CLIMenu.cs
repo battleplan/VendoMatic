@@ -52,7 +52,17 @@ namespace Capstone.Views
                 Console.WindowWidth = (int)(Console.LargestWindowWidth * 0.8);
 
                 Console.Clear();
-                Console.WriteLine(this.Title);
+                //Console.WriteLine(this.Title);
+                Console.WriteLine(@" 
+ /$$    /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$   /$$$$$$  /$$      /$$  /$$$$$$  /$$$$$$$$ /$$$$$$  /$$$$$$ 
+| $$   | $$| $$_____/| $$$ | $$| $$__  $$ /$$__  $$| $$$    /$$$ /$$__  $$|__  $$__/|_  $$_/ /$$__  $$
+| $$   | $$| $$      | $$$$| $$| $$  \ $$| $$  \ $$| $$$$  /$$$$| $$  \ $$   | $$     | $$  | $$  \__/
+|  $$ / $$/| $$$$$   | $$ $$ $$| $$  | $$| $$  | $$| $$ $$/$$ $$| $$$$$$$$   | $$     | $$  | $$      
+ \  $$ $$/ | $$__/   | $$  $$$$| $$  | $$| $$  | $$| $$  $$$| $$| $$__  $$   | $$     | $$  | $$      
+  \  $$$/  | $$      | $$\  $$$| $$  | $$| $$  | $$| $$\  $ | $$| $$  | $$   | $$     | $$  | $$    $$
+   \  $/   | $$$$$$$$| $$ \  $$| $$$$$$$/|  $$$$$$/| $$ \/  | $$| $$  | $$   | $$    /$$$$$$|  $$$$$$/
+    \_/    |________/|__/  \__/|_______/  \______/ |__/     |__/|__/  |__/   |__/   |______/ \______/ 
+");
                 Console.WriteLine(new string('=', 120));
                 Console.WriteLine();
 
@@ -79,7 +89,8 @@ namespace Capstone.Views
 
                 foreach (KeyValuePair<string, string> menuItem in menuOptions)
                 {
-                    Console.Write($" {menuItem.Key} - {menuItem.Value} ");
+                    string menuItemDisplay = $"{menuItem.Key} - {menuItem.Value}";
+                    Console.Write($"{menuItemDisplay,-25}");
                 }
                 Console.WriteLine();
                 //Console.Write("\r\nPlease make a ");
@@ -212,6 +223,29 @@ namespace Capstone.Views
             }
         }
 
+        /// <summary>
+        /// This continually prompts the user until they enter a valid string (1 or more characters).
+        /// </summary>
+        /// <param name="message">The string to prompt the user with</param>
+        /// <returns>String entered by the user</returns>
+        protected string GetSlotIdentifier(string message)
+        {
+            while (true)
+            {
+                Console.Write(message + " ");
+                string userInput = Console.ReadLine().Trim();
+                if (vendingMachine.Slots.ContainsKey(userInput))
+                {
+                    return userInput;
+                }
+                else
+                {
+                    Console.WriteLine("!!! Invalid input. Please enter a valid slot.");
+                }
+            }
+        }
+
+        // TODO Use this for purchase yumyum message?
         /// <summary>
         /// Shows a message to the user and waits for the user to hit return
         /// </summary>

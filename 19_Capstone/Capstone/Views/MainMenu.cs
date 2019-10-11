@@ -42,16 +42,12 @@ namespace Capstone.Views
             switch (choice)
             {
                 case "1":
-                    // TODO Feed Money Menu
+                    // TODO This traps them into feeding money. Should there be an escape?
+                    vendingMachine.FeedMoney(GetInteger("Enter a whole dollar amount to feed into the machine:"));
                     return true;
                 case "2":
-                    // TODO Make Purchase Menu
-
-                    // Get some input form the user, and then do something
-                    //int someNumber = GetInteger("Please enter a whole number:");
-                    //int anotherNumber = GetInteger("Please enter another whole number:");
-                    //Console.WriteLine($"{someNumber} + {anotherNumber} = {someNumber + anotherNumber}.");
-                    //Pause("");
+                    // TODO This traps them into making a selection. Should there be an escape?
+                    vendingMachine.Purchase(GetSlotIdentifier("Enter your selection:"));
                     return true;
                 case "3":
                     // TODO Get Change Menu
