@@ -1,4 +1,5 @@
 ﻿using Capstone.Models;
+using Capstone.Models.Monies;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -60,9 +61,19 @@ namespace Capstone.Views
                         new FeedMoneyMenu(vendingMachine).Run();
                         return true;
                     case "2":
-                        string message = vendingMachine.FinishTransaction();
+                        List<Money> monies = vendingMachine.FinishTransaction();
+                        string changeDisplay = MoneyDisplay(monies);
+                        if (changeDisplay == "")
+                        {
+                            changeDisplay = "There is no change to give.";
+                        }
+                        else
+                        {
+                            changeDisplay = "Your change is " + changeDisplay + ".";
+                        }
+                        
                         DrawHeader();
-                        Pause(message);
+                        Pause(changeDisplay);
                         break;
                     case "4":
                         string salesReport = vendingMachine.CreateSalesReport();

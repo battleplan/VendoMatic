@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Capstone.Models.Monies;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -272,36 +273,65 @@ namespace Capstone.Models
         /// Give change back to the machine operator.
         /// </summary>
         /// <returns></returns>
-        public string FinishTransaction()
+        public List<Money> FinishTransaction()
         {
             decimal changeGiven = Balance;
-            int quarters = 0;
-            int dimes = 0;
-            int nickels = 0;
-            while (Balance > 0)
+            List<Money> monies = new List<Money>();
+
+            Quarter quarters = new Quarter(Balance);
+            if (quarters.Count > 0)
             {
-                if (Balance >= (decimal).25)
-                {
-                    Balance -= (decimal).25;
-                    quarters++;
-                }
-                else if (Balance >= (decimal).10)
-                {
-                    Balance -= (decimal).10;
-                    dimes++;
-                }
-                else if (Balance >= (decimal).05)
-                {
-                    Balance -= (decimal).05;
-                    nickels++;
-                }
+                Balance -= quarters.Value * quarters.Count;
+                monies.Add(quarters);
+            }
+
+            Dime dimes = new Dime(Balance);
+            if (dimes.Count > 0)
+            {
+                Balance -= dimes.Value * dimes.Count;
+                monies.Add(dimes);
+            }
+            
+            Nickel nickels = new Nickel(Balance);
+            if (nickels.Count > 0)
+            {
+                Balance -= nickels.Value * nickels.Count;
+                monies.Add(nickels);
             }
 
             TransactionLog($"GIVE CHANGE: {changeGiven:C}");
 
-            string totalChange = $"Your Change is {quarters} Quarter(s), {dimes} Dime(s), and {nickels} Nickel(s)";
-            return totalChange;
-            // TODO Determine return value - new Money class with subclasses of Quarter, Dime, and Nickel?
+            return monies;
+           
+            // Old version before Money class
+
+            //decimal changeGiven = Balance;
+            //int quarters = 0;
+            //int dimes = 0;
+            //int nickels = 0;
+            //while (Balance > 0)
+            //{
+            //    if (Balance >= (decimal).25)
+            //    {
+            //        Balance -= (decimal).25;
+            //        quarters++;
+            //    }
+            //    else if (Balance >= (decimal).10)
+            //    {
+            //        Balance -= (decimal).10;
+            //        dimes++;
+            //    }
+            //    else if (Balance >= (decimal).05)
+            //    {
+            //        Balance -= (decimal).05;
+            //        nickels++;
+            //    }
+            //}
+
+            //TransactionLog($"GIVE CHANGE: {changeGiven:C}");
+
+            //string totalChange = $"Your Change is {quarters} Quarter(s), {dimes} Dime(s), and {nickels} Nickel(s)";
+            //return totalChange;
         }
 
         public string CreateSalesReport()

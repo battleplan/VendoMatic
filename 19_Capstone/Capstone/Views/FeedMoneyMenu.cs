@@ -17,7 +17,10 @@ namespace Capstone.Views
             menuOptions.Add("2", new MenuOption("Feed $2", true));
             menuOptions.Add("5", new MenuOption("Feed $5", true));
             menuOptions.Add("10", new MenuOption("Feed $10", true));
-            menuOptions.Add("Q", new MenuOption("Return to Main Menu", true));
+            //menuOptions.Add("20", new MenuOption("Feed $20", true));
+            //menuOptions.Add("50", new MenuOption("Feed $50", true));
+            //menuOptions.Add("100", new MenuOption("Feed $100", true));
+            menuOptions.Add("Q", new MenuOption("Main Menu", true));
         }
 
         protected override void DisplaySlots(List<string> slotsDisplay)

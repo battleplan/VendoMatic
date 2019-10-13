@@ -1,4 +1,5 @@
 ﻿using Capstone.Models;
+using Capstone.Models.Monies;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -52,30 +53,6 @@ namespace Capstone.Views
                 Console.WindowHeight = (int)(Console.LargestWindowHeight * 0.8);
                 Console.WindowWidth = (int)(Console.LargestWindowWidth * 0.8);
 
-                DrawHeader();
-
-                // Find number of visible menuOptions
-                int optionCount = 0;
-                foreach (KeyValuePair<string, MenuOption> menuItem in menuOptions)
-                {
-                    if (menuItem.Value.IsVisible)
-                    {
-                        optionCount++;
-                    }
-                }
-                int optionWidth = charWidth / optionCount;
-
-                foreach (KeyValuePair<string, MenuOption> menuItem in menuOptions)
-                {
-                    if (menuItem.Value.IsVisible)
-                    {
-                        string menuItemDisplay = $" {menuItem.Key} - {menuItem.Value.Name}";
-                        Console.Write($"{PadWidth(menuItemDisplay,optionWidth)}");
-                    }
-                }
-                Console.WriteLine();
-                Console.WriteLine(new string('=', charWidth));
-
                 string choice = GetString(@"   ___ _  _  ___   ___  ___ ___ 
   / __| || |/ _ \ / _ \/ __| __|
  | (__| __ | (_) | (_) \__ \ _| 
@@ -124,6 +101,31 @@ namespace Capstone.Views
  | _ ) /_\ | |    /_\ | \| |/ __| __|
  | _ \/ _ \| |__ / _ \| .` | (__| _| 
  |___/_/ \_\____/_/ \_\_|\_|\___|___|  {vendingMachine.Balance:C}");
+            Console.WriteLine(new string('=', charWidth));
+        }
+
+        protected void DrawMenuOptions()
+        {
+            // Find number of visible menuOptions
+            int optionCount = 0;
+            foreach (KeyValuePair<string, MenuOption> menuItem in menuOptions)
+            {
+                if (menuItem.Value.IsVisible)
+                {
+                    optionCount++;
+                }
+            }
+            int optionWidth = charWidth / optionCount;
+
+            foreach (KeyValuePair<string, MenuOption> menuItem in menuOptions)
+            {
+                if (menuItem.Value.IsVisible)
+                {
+                    string menuItemDisplay = $" [{menuItem.Key}] {menuItem.Value.Name}";
+                    Console.Write($"{PadWidth(menuItemDisplay, optionWidth)}");
+                }
+            }
+            Console.WriteLine();
             Console.WriteLine(new string('=', charWidth));
         }
 
@@ -177,6 +179,40 @@ namespace Capstone.Views
             return str;
         }
 
+        public string MoneyDisplay(List<Money> monies)
+        {
+            string moneyDisplay = "";
+            if (monies.Count > 0)
+            {
+                moneyDisplay = "";
+                for (int i = 0; i < monies.Count; i++)
+                {
+                    string currency = monies[i].Count + " " + monies[i].Name;
+                    if (i == monies.Count - 1)
+                    {
+                        if (i == 0)
+                        {
+                            moneyDisplay += $"{currency}";
+                        }
+                        else
+                        {
+                            moneyDisplay += $"and {currency}";
+                        }
+                    }
+                    else if (monies.Count > 2)
+                    {
+                        moneyDisplay += $"{currency}, ";
+                    }
+                    else
+                    {
+                        moneyDisplay += $"{currency} ";
+                    }
+                }
+            }
+
+            return moneyDisplay;
+        }
+
         #region User Input Helper Methods
         /// <summary>
         /// This continually prompts the user until they enter a valid integer.
@@ -196,6 +232,7 @@ namespace Capstone.Views
                 }
                 else
                 {
+                    DrawHeader();
                     Console.WriteLine("!!! Invalid input. Please enter a valid whole number.");
                 }
             }
@@ -220,6 +257,7 @@ namespace Capstone.Views
                 }
                 else
                 {
+                    DrawHeader();
                     Console.WriteLine("!!! Invalid input. Please enter a valid decimal number.");
                 }
             }
@@ -254,6 +292,7 @@ namespace Capstone.Views
                 }
                 else
                 {
+                    DrawHeader();
                     Console.WriteLine("!!! Invalid input. Please enter [True, False, Y or N].");
                 }
             }
@@ -269,6 +308,8 @@ namespace Capstone.Views
         {
             while (true)
             {
+                DrawHeader();
+                DrawMenuOptions();
                 Console.Write(message + " ");
                 string userInput = Console.ReadLine().Trim();
                 if (!String.IsNullOrEmpty(userInput))
@@ -277,7 +318,10 @@ namespace Capstone.Views
                 }
                 else
                 {
-                    Console.WriteLine("!!! Invalid input. Please enter a valid decimal number.");
+                    DrawHeader();
+                    Pause("!!! Invalid input. Please enter a valid menu option.");
+
+                    // TODO Why does pressing enter take away all menu options?
                 }
             }
         }
