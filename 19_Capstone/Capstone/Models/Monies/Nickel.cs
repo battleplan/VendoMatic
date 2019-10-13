@@ -9,8 +9,15 @@ namespace Capstone.Models.Monies
         /// <summary>
         /// Creates a new nickel.
         /// </summary>
-        /// <param name="balance">The amount of dollars to convert into nickels.</param>
-        public Nickel(decimal balance) : base(balance)
+        public Nickel() : base()
+        {
+        }
+
+        /// <summary>
+        /// Creates a new nickel.
+        /// </summary>
+        /// <param name="balance">The amount of nickels to create.</param>
+        public Nickel(int currencyQuantity) : base(currencyQuantity)
         {
         }
 

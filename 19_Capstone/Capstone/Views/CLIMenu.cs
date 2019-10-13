@@ -52,7 +52,7 @@ namespace Capstone.Views
         {
             while (true)
             {
-                Console.WindowHeight = 29;
+                Console.WindowHeight = 31;
                 Console.WindowWidth = charWidth + 1;
 
                 string choice = GetString(@"   ___ _  _  ___   ___  ___ ___ 
@@ -107,7 +107,13 @@ namespace Capstone.Views
  | _ \/ _ \| |__ / _ \| .` | (__| _| 
  |___/_/ \_\____/_/ \_\_|\_|\___|___|  {vendingMachine.Balance:C}");
             Console.WriteLine(new string('=', charWidth));
+
+            if (Title != "" && Title != null)
+            {
+                Console.WriteLine(Title);
+            }
         }
+        
 
         /// <summary>
         /// Draws the defined menu options on screen.
@@ -404,8 +410,8 @@ namespace Capstone.Views
         /// <param name="message">Displays a message to the user and then waits for them to hit Return.</param>
         protected void Pause(string message)
         {
-            Console.WriteLine(message);
-            Console.Write("Press any key to continue.");
+            Console.WriteLine(" " + message);
+            Console.Write(" Press any key to continue.");
             Console.ReadKey();
         }
         #endregion

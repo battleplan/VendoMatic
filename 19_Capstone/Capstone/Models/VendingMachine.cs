@@ -62,6 +62,49 @@ namespace Capstone.Models
             }
         }
 
+        /// <summary>
+        /// Currency in machine that can be used for change.
+        /// </summary>
+        private Dictionary<decimal, Money> changeCurrencyAvailable { get; set; }
+        public List<Money> ChangeCurrencyAvailable
+        {
+            get
+            {
+                List<Money> output = new List<Money>();
+                foreach (KeyValuePair<decimal, Money> currency in changeCurrencyAvailable)
+                {
+                    output.Add(currency.Value);
+                }
+                return output;
+            }
+        }
+
+        /// <summary>
+        /// Total value of all change currency in the machine.
+        /// </summary>
+        private decimal TotalChangeAvailable
+        {
+            get
+            {
+                decimal output = 0;
+                foreach (KeyValuePair<decimal, Money> currency in changeCurrencyAvailable)
+                {
+                    output += currency.Value.TotalValue;
+                }
+                return output;
+            }
+        }
+
+        /// <summary>
+        /// Returns if amount is okay to desposit given current amount of change available.
+        /// </summary>
+        /// <param name="depositAmount">The amount wished to desposit.</param>
+        /// <returns>Whether or not the deposit can be made.</returns>
+        public bool CanDespositAmountGivenCurrentChange(int depositAmount)
+        {
+            return depositAmount + Balance <= TotalChangeAvailable;
+        }
+
         // Constructor
         /// <summary>
         /// Create a new vending machine.
@@ -71,6 +114,8 @@ namespace Capstone.Models
             products = new Dictionary<string, Product>();
             slots = new Dictionary<string, Slot>();
             fileDirectory = Directory.GetCurrentDirectory();
+            changeCurrencyAvailable = new Dictionary<decimal, Money>();
+            ReplenishChange();
         }
 
 
@@ -179,12 +224,60 @@ namespace Capstone.Models
         }
 
         /// <summary>
+        /// Replenishes all change up to maximum amount.
+        /// </summary>
+        public void ReplenishChange()
+        {
+            int replenishQuantity = 200;
+            Money money;
+
+            // Quarters
+            decimal threshold = 0.25M;
+            if (changeCurrencyAvailable.ContainsKey(threshold))
+            {
+                money = changeCurrencyAvailable[threshold];
+                money.ReplenishQuantity(replenishQuantity);
+            }
+            else
+            {
+                money = new Quarter(replenishQuantity);
+                changeCurrencyAvailable.Add(threshold, money);
+            }
+
+            // Dimes
+            threshold = 0.10M;
+            if (changeCurrencyAvailable.ContainsKey(threshold))
+            {
+                money = changeCurrencyAvailable[threshold];
+                money.ReplenishQuantity(replenishQuantity);
+            }
+            else
+            {
+                money = new Dime(replenishQuantity);
+                changeCurrencyAvailable.Add(threshold, money);
+            }
+
+            // Nickels
+            threshold = 0.05M;
+            if (changeCurrencyAvailable.ContainsKey(threshold))
+            {
+                money = changeCurrencyAvailable[threshold];
+                money.ReplenishQuantity(replenishQuantity);
+            }
+            else
+            {
+                money = new Nickel(replenishQuantity);
+                changeCurrencyAvailable.Add(threshold, money);
+            }
+        }
+
+        /// <summary>
         /// Feed money into the machine.
         /// </summary>
         /// <param name="money">Integer value of dollars to feed into the machine.</param>
         public bool FeedMoney(int money)
         {
-            if (money <= 0)
+            if (money <= 0 || money + Balance > TotalChangeAvailable)
             {
                 return false;
             }
@@ -263,33 +356,49 @@ namespace Capstone.Models
         /// <returns></returns>
         public List<Money> FinishTransaction()
         {
-            decimal changeGiven = Balance;
-            List<Money> monies = new List<Money>();
+            List<Money> changeCurrency = new List<Money>();
 
-            Quarter quarters = new Quarter(Balance);
-            if (quarters.Count > 0)
+            if (TotalChangeAvailable > 0 && Balance > 0)
             {
-                Balance -= quarters.TotalValue;
-                monies.Add(quarters);
+                decimal currencyThreshold = 0.25M;
+                if (changeCurrencyAvailable[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
+                {
+                    Money quarters = new Quarter();
+                    quarters.MakeChange(changeCurrencyAvailable[currencyThreshold], Balance);
+                    changeCurrency.Add(quarters);
+                    Balance -= quarters.TotalValue;
+                }
+
+                currencyThreshold = 0.10M;
+                if (changeCurrencyAvailable[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
+                {
+
+                    Money dimes = new Dime();
+                    dimes.MakeChange(changeCurrencyAvailable[currencyThreshold], Balance);
+                    changeCurrency.Add(dimes);
+                    Balance -= dimes.TotalValue;
+                }
+
+                currencyThreshold = 0.05M;
+                if (changeCurrencyAvailable[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
+                {
+
+                    Money nickels = new Nickel();
+                    nickels.MakeChange(changeCurrencyAvailable[currencyThreshold], Balance);
+                    changeCurrency.Add(nickels);
+                    Balance -= nickels.TotalValue;
+                }
+
+                decimal changeGiven = 0;
+                foreach (Money currency in changeCurrency)
+                {
+                    changeGiven += currency.TotalValue;
+                }
+
+                TransactionLog($"GIVE CHANGE: {changeGiven:C}");
             }
 
-            Dime dimes = new Dime(Balance);
-            if (dimes.Count > 0)
-            {
-                Balance -= dimes.TotalValue;
-                monies.Add(dimes);
-            }
-            
-            Nickel nickels = new Nickel(Balance);
-            if (nickels.Count > 0)
-            {
-                Balance -= nickels.TotalValue;
-                monies.Add(nickels);
-            }
-
-            TransactionLog($"GIVE CHANGE: {changeGiven:C}");
-
-            return monies;
+            return changeCurrency;
            
             // Old version before Money class
 

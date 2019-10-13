@@ -16,11 +16,14 @@ namespace Capstone.Views
         /// </summary>
         public MainMenu(VendingMachine vendingMachine) : base(vendingMachine)
         {
-            Title = @"Main Menu";
+            //Title = @"Main Menu";
             menuOptions.Add("1", new MenuOption("Feed Money", true));
             menuOptions.Add("2", new MenuOption("Get Change", true));
+            menuOptions.Add("3", new MenuOption("Service Menu", false));
             menuOptions.Add("4", new MenuOption("Sales Report", false));
             menuOptions.Add("Q", new MenuOption("Quit", true));
+
+            // TODO Add service menu to display currency change available
 
             // Add all slots
             foreach (string key in vendingMachine.Slots.Keys)
@@ -51,8 +54,8 @@ namespace Capstone.Views
                     DrawHeader(false);
                     if (purchaseComplete)
                     {
-                        Console.WriteLine(vendingMachine.Slots[choice].Product.YumYum());
-                        Console.WriteLine($"You purchased {vendingMachine.Slots[choice].Product.Name} for {vendingMachine.Slots[choice].Price:C}.");
+                        Console.WriteLine(" " + vendingMachine.Slots[choice].Product.YumYum());
+                        Console.WriteLine($" You purchased {vendingMachine.Slots[choice].Product.Name} for {vendingMachine.Slots[choice].Price:C}.");
                         Pause($"You have {vendingMachine.Balance:C} remaining.");
                     }
                     else
@@ -83,16 +86,19 @@ namespace Capstone.Views
                         DrawHeader(false);
                         Pause(changeDisplay);
                         break;
+                    case "3":
+                        new ServiceMenu(vendingMachine).Run();
+                        break;
                     case "4":
                         string salesReport = vendingMachine.CreateSalesReport();
                         DrawHeader(false);
                         if (salesReport != "")
                         {
-                            Pause($"Sales report generated: {salesReport}");
+                            Pause($" Sales report generated: {salesReport}");
                         }
                         else
                         {
-                            Pause("Sales report could not be generated.");
+                            Pause(" Sales report could not be generated.");
                         }
                         break;
                 }

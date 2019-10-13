@@ -9,8 +9,15 @@ namespace Capstone.Models.Monies
         /// <summary>
         /// Creates a new quarter.
         /// </summary>
-        /// <param name="balance">The amount of dollars to convert into quarters.</param>
-        public Quarter(decimal balance) : base(balance)
+        public Quarter() : base()
+        {
+        }
+
+        /// <summary>
+        /// Creates a new quarter.
+        /// </summary>
+        /// <param name="balance">The amount of quarters to create.</param>
+        public Quarter(int currencyQuantity) : base(currencyQuantity)
         {
         }
 

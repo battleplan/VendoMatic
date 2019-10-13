@@ -9,8 +9,15 @@ namespace Capstone.Models.Monies
         /// <summary>
         /// Creates a new dime.
         /// </summary>
-        /// <param name="balance">The amount of dollars to convert into dimes.</param>
-        public Dime(decimal balance) : base(balance)
+        public Dime() : base()
+        {
+        }
+
+        /// <summary>
+        /// Creates a new dime.
+        /// </summary>
+        /// <param name="balance">The amount of dimes to create.</param>
+        public Dime(int currencyQuantity) : base(currencyQuantity)
         {
         }
 

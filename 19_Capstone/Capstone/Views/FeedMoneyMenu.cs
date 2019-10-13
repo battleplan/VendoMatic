@@ -12,7 +12,7 @@ namespace Capstone.Views
         /// </summary>
         public FeedMoneyMenu(VendingMachine vendingMachine) : base(vendingMachine)
         {
-            Title = "*** Sub Menu ***";
+            //Title = "Feed Money";
             menuOptions.Add("1", new MenuOption("Feed $1", true));
             menuOptions.Add("2", new MenuOption("Feed $2", true));
             menuOptions.Add("5", new MenuOption("Feed $5", true));
@@ -38,12 +38,21 @@ namespace Capstone.Views
         {
             if (menuOptions.ContainsKey(choice))
             {
+                int depositAmount = int.Parse(choice);
                 DrawHeader(false);
-                bool success = vendingMachine.FeedMoney(int.Parse(choice));
-                if (!success)
+                if (vendingMachine.CanDespositAmountGivenCurrentChange(depositAmount))
                 {
-                    Pause("Unable to feed money. Please enter a whole number greater than zero.");
+                    bool success = vendingMachine.FeedMoney(depositAmount);
+                    if (!success)
+                    {
+                            Pause("Unable to feed money. Please enter a whole number greater than zero.");
+                    }
                 }
+                else
+                {
+                    Pause("Not enough change available to deposite that amount.");
+                }
+
             }
             else
             {
