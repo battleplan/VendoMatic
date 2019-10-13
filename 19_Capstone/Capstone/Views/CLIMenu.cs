@@ -110,7 +110,7 @@ namespace Capstone.Views
 
             if (Title != "" && Title != null)
             {
-                Console.WriteLine(Title);
+                Console.WriteLine(" " + Title);
             }
         }
         

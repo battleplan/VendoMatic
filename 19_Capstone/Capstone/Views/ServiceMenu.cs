@@ -38,7 +38,7 @@ namespace Capstone.Views
                 }
             }
             return $@"Service Menu
-Change Available: {changeAvailable}";
+ Change Available: {changeAvailable}";
         }
 
         /// <summary>
