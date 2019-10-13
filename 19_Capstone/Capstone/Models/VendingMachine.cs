@@ -201,7 +201,7 @@ namespace Capstone.Models
                 try
                 {
                     string[] stockElements = line.Split("|");
-                    identifier = stockElements[0];
+                    identifier = stockElements[0].ToUpper();
                     nameProduct = stockElements[1];
                     priceProduct = stockElements[2];
                     productClass = stockElements[3];
