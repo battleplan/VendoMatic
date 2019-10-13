@@ -23,10 +23,9 @@ namespace Capstone.Views
             menuOptions.Add("Q", new MenuOption("Main Menu", true));
         }
 
-        protected override void DisplaySlots(List<string> slotsDisplay)
+        protected override void DrawSlots(bool displayIdentifier)
         {
-            slotsDisplay = vendingMachine.GetSlotsDisplayNames(false);
-            base.DisplaySlots(slotsDisplay);
+            base.DrawSlots(false);
         }
 
         /// <summary>

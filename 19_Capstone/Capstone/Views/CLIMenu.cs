@@ -95,7 +95,7 @@ namespace Capstone.Views
             Console.WriteLine(new string('=', charWidth));
             Console.WriteLine();
 
-            DisplaySlots(null);
+            DrawSlots(true);
             Console.WriteLine(new string('=', charWidth));
             Console.WriteLine($@"  ___   _   _      _   _  _  ___ ___ 
  | _ ) /_\ | |    /_\ | \| |/ __| __|
@@ -121,20 +121,37 @@ namespace Capstone.Views
             {
                 if (menuItem.Value.IsVisible)
                 {
-                    string menuItemDisplay = $" [{menuItem.Key}] {menuItem.Value.Name}";
-                    Console.Write($"{PadWidth(menuItemDisplay, optionWidth)}");
+                    string key = $" [{menuItem.Key}] ";
+                    int keyLength = key.Length;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(key);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write($"{PadWidth(menuItem.Value.Name, optionWidth - keyLength)}");
                 }
             }
             Console.WriteLine();
             Console.WriteLine(new string('=', charWidth));
         }
 
-        protected virtual void DisplaySlots(List<string> slotsDisplay)
+        protected virtual void DrawSlots(bool displayIdentifier)
         {
-            // Display slots
-            if (slotsDisplay == null || slotsDisplay.Count == 0)
+            // Get all slots in the vending machine
+            List<string> slotIdentifiers = new List<string>(vendingMachine.Slots.Keys);
+            List<string> slotsDisplay = new List<string>();
+            List<Slot> slots = new List<Slot>();
+
+            // Determine how wide each column should be
+            foreach (string id in slotIdentifiers)
             {
-                slotsDisplay = vendingMachine.GetSlotsDisplayNames();
+                Slot slot = vendingMachine.Slots[id];
+                slots.Add(slot);
+                string slotDisplay = " ";
+                if (displayIdentifier)
+                {
+                    slotDisplay += $"[{slot.Identifier}] ";
+                }
+                slotDisplay += $"{SlotInfo(slot)}  ";
+                slotsDisplay.Add(slotDisplay);
             }
 
             const int columnCount = 4;
@@ -150,16 +167,40 @@ namespace Capstone.Views
                 }
             }
 
+            // Draw the slots
             int columnCounter = 0;
-            for (int i = 0; i < slotsDisplay.Count; i++, columnCounter++)
+            for (int i = 0; i < slots.Count; i++, columnCounter++)
             {
-                string slot = slotsDisplay[i];
-                Console.Write($"{PadWidth(" " + slot, slotsColumnWidth[i % columnCount] + 2)}");
+                Slot slot = slots[i];
+                int slotIdLength = 0;
+                if (displayIdentifier)
+                {
+                    string slotId = $" [{slot.Identifier}]";
+                    slotIdLength = slotId.Length;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(slotId);
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                int displayWidth = slotsColumnWidth[i % columnCount] + 2 - slotIdLength;
+                string displayInfo = PadWidth($" {SlotInfo(slot)}  ", displayWidth);
+                Console.Write($"{displayInfo}");
                 if (columnCounter == columnCount - 1)
                 {
                     Console.WriteLine();
                     columnCounter = -1;
                 }
+            }
+        }
+
+        protected string SlotInfo(Slot slot)
+        {
+            if (slot.HasStock)
+            {
+                return $"{slot.Price:C} |{slot.QuantityRemaining}| {slot.Product.Name}";
+            }
+            else
+            {
+                return $"{slot.Product.Name} SOLD OUT";
             }
         }
 

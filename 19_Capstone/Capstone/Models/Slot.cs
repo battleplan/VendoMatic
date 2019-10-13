@@ -63,36 +63,39 @@ namespace Capstone.Models
             }
         }
 
-        /// <summary>
-        /// Display name of the slot and the product it contains.
-        /// </summary>
-        /// <param name="includeIdentifier">Display the identifier for the slot.</param>
-        /// <returns>Complete string including identifier (if requested), quantity, price, and product name</returns>
-        public string DisplayName(bool includeIdentifier)
-        {
-            string output = "";
-            if (includeIdentifier)
-            {
-                output += $"[{Identifier}] ";
-            }
-            if (HasStock)
-            {
-                output += $"{Price:C} |{QuantityRemaining}| {Product.Name}";
-            }
-            else
-            {
-                output+= $"{Product.Name} SOLD OUT";
-            }
-            return output;
-        }
 
-        /// <summary>
-        /// Display name of the slot and the product it contains.
-        /// </summary>
-        /// <returns>Complete string including identifier, quantity, price, and product name</returns>
-        public string DisplayName()
-        {
-            return DisplayName(true);
-        }
+        // TODO Remove this
+        ///// <summary>
+        ///// Display name of the slot and the product it contains.
+        ///// </summary>
+        ///// <param name="includeIdentifier">Display the identifier for the slot.</param>
+        ///// <returns>Complete string including identifier (if requested), quantity, price, and product name</returns>
+        //public string DisplayName(bool includeIdentifier)
+        //{
+        //    string output = "";
+        //    if (includeIdentifier)
+        //    {
+        //        output += $"[{Identifier}] ";
+        //    }
+        //    if (HasStock)
+        //    {
+        //        output += $"{Price:C} |{QuantityRemaining}| {Product.Name}";
+        //    }
+        //    else
+        //    {
+        //        output+= $"{Product.Name} SOLD OUT";
+        //    }
+        //    return output;
+        //}
+
+        // TODO Remove this
+        ///// <summary>
+        ///// Display name of the slot and the product it contains.
+        ///// </summary>
+        ///// <returns>Complete string including identifier, quantity, price, and product name</returns>
+        //public string DisplayName()
+        //{
+        //    return DisplayName(true);
+        //}
     }
 }
