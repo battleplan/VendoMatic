@@ -22,10 +22,10 @@ namespace Capstone.Views
             //menuOptions.Add("100", new MenuOption("Feed $100", true));
             menuOptions.Add("Q", new MenuOption("Main Menu", true));
         }
-
-        protected override void DrawSlots(bool displayIdentifier)
+        
+        protected override void DrawSlots(bool displayIdentifier, bool highlightIdentifier)
         {
-            base.DrawSlots(false);
+            base.DrawSlots(false, false);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Capstone.Views
         {
             if (menuOptions.ContainsKey(choice))
             {
-                DrawHeader();
+                DrawHeader(false);
                 bool success = vendingMachine.FeedMoney(int.Parse(choice));
                 if (!success)
                 {

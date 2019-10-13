@@ -71,14 +71,14 @@ namespace Capstone.Views
                 }
                 else
                 {
-                    DrawHeader();
+                    DrawHeader(false);
                     Pause("Invalid selection.");
                 }
 
             }
         }
 
-        protected void DrawHeader()
+        protected void DrawHeader(bool highlightIdentifier)
         {
             Console.Clear();
             //Console.WriteLine(this.Title);
@@ -95,7 +95,7 @@ namespace Capstone.Views
             Console.WriteLine(new string('=', charWidth));
             Console.WriteLine();
 
-            DrawSlots(true);
+            DrawSlots(true, highlightIdentifier);
             Console.WriteLine(new string('=', charWidth));
             Console.WriteLine($@"  ___   _   _      _   _  _  ___ ___ 
  | _ ) /_\ | |    /_\ | \| |/ __| __|
@@ -133,7 +133,7 @@ namespace Capstone.Views
             Console.WriteLine(new string('=', charWidth));
         }
 
-        protected virtual void DrawSlots(bool displayIdentifier)
+        protected virtual void DrawSlots(bool displayIdentifier, bool highlightIdentifier)
         {
             // Get all slots in the vending machine
             List<string> slotIdentifiers = new List<string>(vendingMachine.Slots.Keys);
@@ -178,7 +178,7 @@ namespace Capstone.Views
                 {
                     string slotId = $" [{slot.Identifier}]";
                     slotIdLength = slotId.Length;
-                    if (slot.HasStock)
+                    if (highlightIdentifier && slot.HasStock)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                     }
@@ -277,7 +277,7 @@ namespace Capstone.Views
                 }
                 else
                 {
-                    DrawHeader();
+                    DrawHeader(false);
                     Console.WriteLine("!!! Invalid input. Please enter a valid whole number.");
                 }
             }
@@ -302,7 +302,7 @@ namespace Capstone.Views
                 }
                 else
                 {
-                    DrawHeader();
+                    DrawHeader(false);
                     Console.WriteLine("!!! Invalid input. Please enter a valid decimal number.");
                 }
             }
@@ -337,7 +337,7 @@ namespace Capstone.Views
                 }
                 else
                 {
-                    DrawHeader();
+                    DrawHeader(false);
                     Console.WriteLine("!!! Invalid input. Please enter [True, False, Y or N].");
                 }
             }
@@ -353,7 +353,7 @@ namespace Capstone.Views
         {
             while (true)
             {
-                DrawHeader();
+                DrawHeader(true);
                 DrawMenuOptions();
                 Console.Write(message + " ");
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -365,7 +365,7 @@ namespace Capstone.Views
                 }
                 else
                 {
-                    DrawHeader();
+                    DrawHeader(false);
                     Pause("!!! Invalid input. Please enter a valid menu option.");
                 }
             }

@@ -41,7 +41,7 @@ namespace Capstone.Views
             if (vendingMachine.Slots.ContainsKey(choice))
             {
                 bool purchaseComplete = vendingMachine.Purchase(choice);
-                DrawHeader();
+                DrawHeader(false);
                 if (purchaseComplete)
                 {
                     Console.WriteLine(vendingMachine.Slots[choice].Product.YumYum());
@@ -72,12 +72,12 @@ namespace Capstone.Views
                             changeDisplay = "Your change is " + changeDisplay + ".";
                         }
                         
-                        DrawHeader();
+                        DrawHeader(false);
                         Pause(changeDisplay);
                         break;
                     case "4":
                         string salesReport = vendingMachine.CreateSalesReport();
-                        DrawHeader();
+                        DrawHeader(false);
                         if (salesReport != "")
                         {
                             Pause($"Sales report generated: {salesReport}");
