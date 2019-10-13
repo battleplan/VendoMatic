@@ -11,19 +11,29 @@ namespace Capstone.Models.Monies
         /// </summary>
         public abstract string Name { get; }
         /// <summary>
-        /// Value of the currency in dollars.
+        /// Value of one unit of the currency in dollars.
         /// </summary>
-        public abstract decimal Value { get; }
+        public abstract decimal UnitValue { get; }
         /// <summary>
         /// Amount of the currency held.
         /// </summary>
         public int Count { get; }
+        /// <summary>
+        /// Total value of the currency in dollars.
+        /// </summary>
+        public decimal TotalValue
+        {
+            get
+            {
+                return UnitValue * Count;
+            }
+        }
 
         /// <summary>
         /// Creates a new money.
         /// </summary>
         /// <param name="balance">The amount of dollars to convert into this type of money.</param>
-        public Money(decimal balance) => Count = (int)(balance / Value);
+        public Money(decimal balance) => Count = (int)(balance / UnitValue);
 
         /// <summary>
         /// Displays money in a string.

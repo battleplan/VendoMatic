@@ -22,6 +22,6 @@ namespace Capstone.Models.Monies
         /// <summary>
         /// The dollar value of one dime.
         /// </summary>
-        public override decimal Value => 0.10M;
+        public override decimal UnitValue => 0.10M;
     }
 }

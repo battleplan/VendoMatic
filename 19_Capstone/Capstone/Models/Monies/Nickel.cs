@@ -22,6 +22,6 @@ namespace Capstone.Models.Monies
         /// <summary>
         /// The dollar value of one nickel.
         /// </summary>
-        public override decimal Value => 0.05M;
+        public override decimal UnitValue => 0.05M;
     }
 }

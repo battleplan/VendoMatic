@@ -269,21 +269,21 @@ namespace Capstone.Models
             Quarter quarters = new Quarter(Balance);
             if (quarters.Count > 0)
             {
-                Balance -= quarters.Value * quarters.Count;
+                Balance -= quarters.TotalValue;
                 monies.Add(quarters);
             }
 
             Dime dimes = new Dime(Balance);
             if (dimes.Count > 0)
             {
-                Balance -= dimes.Value * dimes.Count;
+                Balance -= dimes.TotalValue;
                 monies.Add(dimes);
             }
             
             Nickel nickels = new Nickel(Balance);
             if (nickels.Count > 0)
             {
-                Balance -= nickels.Value * nickels.Count;
+                Balance -= nickels.TotalValue;
                 monies.Add(nickels);
             }
 
