@@ -26,9 +26,21 @@ namespace Capstone.Views
         private string CreateTitle()
         {
             string presentCurrency = "";
+            int lineLength = 0;
             for (int i = 0; i < vendingMachine.ChangeCurrencyAvailable.Count; i++)
             {
-                presentCurrency += vendingMachine.ChangeCurrencyAvailable[i].ToString();
+                string thisCurrency = vendingMachine.ChangeCurrencyAvailable[i].ToString();
+                int currencyLength = thisCurrency.Length;
+                if (lineLength + currencyLength > charWidth - 40)
+                {
+                    lineLength = 0;
+                    presentCurrency += "\n ";
+                }
+                else
+                {
+                    lineLength += currencyLength;
+                }
+                presentCurrency += thisCurrency;
                 if (i < vendingMachine.ChangeCurrencyAvailable.Count - 1)
                 {
                     presentCurrency += ", ";
