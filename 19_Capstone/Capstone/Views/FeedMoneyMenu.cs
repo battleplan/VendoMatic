@@ -13,13 +13,11 @@ namespace Capstone.Views
         public FeedMoneyMenu(VendingMachine vendingMachine) : base(vendingMachine)
         {
             //Title = "Feed Money";
-            menuOptions.Add("1", new MenuOption("Feed $1", true));
-            menuOptions.Add("2", new MenuOption("Feed $2", true));
-            menuOptions.Add("5", new MenuOption("Feed $5", true));
-            menuOptions.Add("10", new MenuOption("Feed $10", true));
-            //menuOptions.Add("20", new MenuOption("Feed $20", true));
-            //menuOptions.Add("50", new MenuOption("Feed $50", true));
-            //menuOptions.Add("100", new MenuOption("Feed $100", true));
+            foreach (decimal denomination in vendingMachine.ValidFeedDenominations)
+            {
+                menuOptions.Add(denomination.ToString(), new MenuOption($"Feed {denomination:C}", true));
+            }
+
             menuOptions.Add("Q", new MenuOption("Main Menu", true));
         }
         

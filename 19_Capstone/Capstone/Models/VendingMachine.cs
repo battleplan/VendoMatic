@@ -110,6 +110,26 @@ namespace Capstone.Models
         }
 
         /// <summary>
+        /// What currency the machine can be fed.
+        /// </summary>
+        private List<decimal> validFeedDenominations
+        {
+            get
+            {
+                List<decimal> output = new List<decimal>() { 1M, 2M, 5M, 10M };
+                output.Sort();
+                return output;
+            }
+        }
+        public List<decimal> ValidFeedDenominations
+        {
+            get
+            {
+                return new List<decimal>(validFeedDenominations);
+            }
+        }
+
+        /// <summary>
         /// Returns if amount is okay to desposit given current amount of change available.
         /// </summary>
         /// <param name="depositAmount">The amount wished to desposit.</param>
