@@ -298,6 +298,7 @@ namespace Capstone.Models
         public string CreateSalesReport()
         {
             string outputFileName;
+            string result;
             try
             {
                 List<string> productsKeys = new List<string>(products.Keys);
@@ -311,18 +312,22 @@ namespace Capstone.Models
                 }
 
                 string outputPath = Path.Combine(fileDirectory, outputFileName);
-
-
+                result = outputFileName;
 
                 using (StreamWriter sw = new StreamWriter(outputPath))
                 {
                     foreach (string key in productsKeys)
                     {
-                        sw.WriteLine($"{products[key].Name}|{products[key].QuantitySold}");
+                        string line = $"{products[key].Name}|{products[key].QuantitySold}";
+                        result += "\n" + line;
+                        sw.WriteLine(line);
                     }
 
+                    string totalSales = $"Total Sales: {TotalSales:C}";
+                    result += "\n\n" + totalSales;
+
                     sw.WriteLine();
-                    sw.WriteLine($"Total Sales: {TotalSales:C}");
+                    sw.WriteLine(totalSales);
                 }
             }
             catch (Exception)
@@ -330,7 +335,7 @@ namespace Capstone.Models
                 return "";
             }
 
-            return outputFileName;
+            return result;
         }
     }
 }

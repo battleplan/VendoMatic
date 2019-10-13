@@ -65,12 +65,11 @@ namespace Capstone.Views
                         Pause(message);
                         break;
                     case "4":
-                        // TODO Show report on screen
-                        string reportName = vendingMachine.CreateSalesReport();
+                        string salesReport = vendingMachine.CreateSalesReport();
                         DrawHeader();
-                        if (reportName != "")
+                        if (salesReport != "")
                         {
-                            Pause($"Sales report generated: {reportName}");
+                            Pause($"Sales report generated: {salesReport}");
                         }
                         else
                         {

@@ -40,6 +40,8 @@ namespace Capstone.Views
             this.vendingMachine = vendingMachine;
         }
 
+        protected const int charWidth = 120;
+
         /// <summary>
         /// Run starts the menu loop
         /// </summary>
@@ -52,6 +54,7 @@ namespace Capstone.Views
 
                 DrawHeader();
 
+                // TODO Dynamic width
                 foreach (KeyValuePair<string, MenuOption> menuItem in menuOptions)
                 {
                     if (menuItem.Value.IsVisible)
@@ -61,7 +64,7 @@ namespace Capstone.Views
                     }
                 }
                 Console.WriteLine();
-                Console.WriteLine(new string('=', 120));
+                Console.WriteLine(new string('=', charWidth));
 
                 string choice = GetString(@"   ___ _  _  ___   ___  ___ ___ 
   / __| || |/ _ \ / _ \/ __| __|
@@ -102,7 +105,7 @@ namespace Capstone.Views
    \  $/   | $$$$$$$$| $$ \  $$| $$$$$$$/|  $$$$$$/| $$ \/  | $$| $$  | $$   | $$    /$$$$$$|  $$$$$$/
     \_/    |________/|__/  \__/|_______/  \______/ |__/     |__/|__/  |__/   |__/   |______/ \______/ 
 ");
-            Console.WriteLine(new string('=', 120));
+            Console.WriteLine(new string('=', charWidth));
             Console.WriteLine();
 
             // Display slots
@@ -110,6 +113,10 @@ namespace Capstone.Views
             int columnCounter = 0;
             for (int i = 0; i < slotsDisplay.Count; i++, columnCounter++)
             {
+                // TODO Only display the selection numbers when available (not on feed money menu)
+
+                // TODO Dynamic column width
+
                 //int maxLength = 0;
                 //int j = i;
 
@@ -128,12 +135,12 @@ namespace Capstone.Views
                     columnCounter = -1;
                 }
             }
-            Console.WriteLine(new string('=', 120));
+            Console.WriteLine(new string('=', charWidth));
             Console.WriteLine($@"  ___   _   _      _   _  _  ___ ___ 
  | _ ) /_\ | |    /_\ | \| |/ __| __|
  | _ \/ _ \| |__ / _ \| .` | (__| _| 
  |___/_/ \_\____/_/ \_\_|\_|\___|___|  {vendingMachine.Balance:C}");
-            Console.WriteLine(new string('=', 120));
+            Console.WriteLine(new string('=', charWidth));
         }
 
         /// <summary>
