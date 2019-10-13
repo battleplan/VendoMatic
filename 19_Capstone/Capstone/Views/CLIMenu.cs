@@ -55,12 +55,24 @@ namespace Capstone.Views
                 DrawHeader();
 
                 // TODO Dynamic width
+
+                // Find number of visible menuOptions
+                int optionCount = 0;
+                foreach (KeyValuePair<string, MenuOption> menuItem in menuOptions)
+                {
+                    if (menuItem.Value.IsVisible)
+                    {
+                        optionCount++;
+                    }
+                }
+                int optionWidth = charWidth / optionCount;
+
                 foreach (KeyValuePair<string, MenuOption> menuItem in menuOptions)
                 {
                     if (menuItem.Value.IsVisible)
                     {
                         string menuItemDisplay = $"{menuItem.Key} - {menuItem.Value.Name}";
-                        Console.Write($"{menuItemDisplay,-25}");
+                        Console.Write($"{PadWidth(menuItemDisplay,optionWidth)}");
                     }
                 }
                 Console.WriteLine();
@@ -149,6 +161,15 @@ namespace Capstone.Views
         /// <param name="choice">The menu option (key) selected by the user</param>
         /// <returns>True to keep executing the menu (loop), False to exit this menu (break)</returns>
         abstract protected bool ExecuteSelection(string choice);
+
+        protected string PadWidth(string str, int finalWidth)
+        {
+            while (str.Length < finalWidth)
+            {
+                str += " ";
+            }
+            return str;
+        }
 
         #region User Input Helper Methods
         /// <summary>
