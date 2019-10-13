@@ -65,13 +65,13 @@ namespace Capstone.Models
         /// <summary>
         /// Currency in machine that can be used for change.
         /// </summary>
-        private Dictionary<decimal, Money> changeCurrencyAvailable { get; set; }
+        private Dictionary<decimal, Money> currencyDenominations { get; set; }
         public List<Money> ChangeCurrencyAvailable
         {
             get
             {
                 List<Money> output = new List<Money>();
-                foreach (KeyValuePair<decimal, Money> currency in changeCurrencyAvailable)
+                foreach (KeyValuePair<decimal, Money> currency in currencyDenominations)
                 {
                     output.Add(currency.Value);
                 }
@@ -87,7 +87,7 @@ namespace Capstone.Models
             get
             {
                 decimal output = 0;
-                foreach (KeyValuePair<decimal, Money> currency in changeCurrencyAvailable)
+                foreach (KeyValuePair<decimal, Money> currency in currencyDenominations)
                 {
                     output += currency.Value.TotalValue;
                 }
@@ -145,7 +145,7 @@ namespace Capstone.Models
             products = new Dictionary<string, Product>();
             slots = new Dictionary<string, Slot>();
             fileDirectory = Directory.GetCurrentDirectory();
-            changeCurrencyAvailable = new Dictionary<decimal, Money>();
+            currencyDenominations = new Dictionary<decimal, Money>();
             ReplenishChange();
         }
 
@@ -254,22 +254,48 @@ namespace Capstone.Models
             return true;
         }
 
+        public void RemoveBills()
+        {
+            //int replenishQuantity = 0;
+            //Money money;
+
+            //List<decimal> denominations = new List<decimal>(validFeedDenominations);
+            //denominations.Sort();
+            //denominations.Reverse();
+            //foreach (decimal denomination in denominations)
+            //{
+            //    if (currencyDenominations.ContainsKey(denomination))
+            //    {
+            //        money = currencyDenominations[denomination];
+            //        money.ReplenishQuantity(replenishQuantity);
+            //    }
+            //    else
+            //    {
+            //        switch (denomination)
+            //        {
+            //            case 100M:
+
+            //        }
+            //    }
+            //}
+        }
+
         /// <summary>
         /// Replenishes all change up to maximum amount.
         /// </summary>
         public void ReplenishChange()
         {
             int replenishQuantity = 200;
-            Money money;
+            Money money = null;
 
             List<decimal> denominations = new List<decimal>(validChangeDenominations);
             denominations.Sort();
             denominations.Reverse();
-            foreach (decimal denomination in validChangeDenominations)
+            foreach (decimal denomination in denominations)
             {
-                if (changeCurrencyAvailable.ContainsKey(denomination))
+                if (currencyDenominations.ContainsKey(denomination))
                 {
-                    money = changeCurrencyAvailable[denomination];
+                    money = currencyDenominations[denomination];
                     money.ReplenishQuantity(replenishQuantity);
                 }
                 else
@@ -282,11 +308,16 @@ namespace Capstone.Models
                         case 0.10M:
                             money = new Dime(true, replenishQuantity);
                             break;
-                        default:
+                        case 0.05M:
                             money = new Nickel(true, replenishQuantity);
                             break;
+                        default:
+                            break;
                     }
-                    changeCurrencyAvailable.Add(denomination, money);
+                    if (money != null)
+                    {
+                        currencyDenominations.Add(denomination, money);
+                    }
                 }
             }
         }
@@ -381,30 +412,30 @@ namespace Capstone.Models
             if (TotalChangeAvailable > 0 && Balance > 0)
             {
                 decimal currencyThreshold = 0.25M;
-                if (changeCurrencyAvailable[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
+                if (currencyDenominations[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
                 {
                     Money quarters = new Quarter(true);
-                    quarters.MakeChange(changeCurrencyAvailable[currencyThreshold], Balance);
+                    quarters.MakeChange(currencyDenominations[currencyThreshold], Balance);
                     changeCurrency.Add(quarters);
                     Balance -= quarters.TotalValue;
                 }
 
                 currencyThreshold = 0.10M;
-                if (changeCurrencyAvailable[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
+                if (currencyDenominations[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
                 {
 
                     Money dimes = new Dime(true);
-                    dimes.MakeChange(changeCurrencyAvailable[currencyThreshold], Balance);
+                    dimes.MakeChange(currencyDenominations[currencyThreshold], Balance);
                     changeCurrency.Add(dimes);
                     Balance -= dimes.TotalValue;
                 }
 
                 currencyThreshold = 0.05M;
-                if (changeCurrencyAvailable[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
+                if (currencyDenominations[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
                 {
 
                     Money nickels = new Nickel(true);
-                    nickels.MakeChange(changeCurrencyAvailable[currencyThreshold], Balance);
+                    nickels.MakeChange(currencyDenominations[currencyThreshold], Balance);
                     changeCurrency.Add(nickels);
                     Balance -= nickels.TotalValue;
                 }

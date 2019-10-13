@@ -17,7 +17,7 @@ namespace Capstone.Views
             denominations.Sort();
             foreach (decimal denomination in denominations)
             {
-                menuOptions.Add(denomination.ToString(), new MenuOption($"Feed {denomination:C}", true));
+                menuOptions.Add(denomination.ToString(), new MenuOption($"Feed {denomination:C0}", true));
             }
 
             menuOptions.Add("Q", new MenuOption("Main Menu", true));
