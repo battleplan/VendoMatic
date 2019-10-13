@@ -146,6 +146,7 @@ namespace Capstone.Models
             slots = new Dictionary<string, Slot>();
             fileDirectory = Directory.GetCurrentDirectory();
             currencyDenominations = new Dictionary<decimal, Money>();
+            RemoveBills();
             ReplenishChange();
         }
 
@@ -256,28 +257,51 @@ namespace Capstone.Models
 
         public void RemoveBills()
         {
-            //int replenishQuantity = 0;
-            //Money money;
+            int replenishQuantity = 0;
+            Money money = null;
 
-            //List<decimal> denominations = new List<decimal>(validFeedDenominations);
-            //denominations.Sort();
-            //denominations.Reverse();
-            //foreach (decimal denomination in denominations)
-            //{
-            //    if (currencyDenominations.ContainsKey(denomination))
-            //    {
-            //        money = currencyDenominations[denomination];
-            //        money.ReplenishQuantity(replenishQuantity);
-            //    }
-            //    else
-            //    {
-            //        switch (denomination)
-            //        {
-            //            case 100M:
-
-            //        }
-            //    }
-            //}
+            List<decimal> denominations = new List<decimal>(validFeedDenominations);
+            denominations.Sort();
+            denominations.Reverse();
+            foreach (decimal denomination in denominations)
+            {
+                if (currencyDenominations.ContainsKey(denomination))
+                {
+                    money = currencyDenominations[denomination];
+                    money.SetQuantity(replenishQuantity);
+                }
+                else
+                {
+                    switch (denomination)
+                    {
+                        case 100M:
+                            money = new HundredDollar(false, replenishQuantity);
+                            break;
+                        case 50M:
+                            money = new FiftyDollar(false, replenishQuantity);
+                            break;
+                        case 20M:
+                            money = new TwentyDollar(false, replenishQuantity);
+                            break;
+                        case 10M:
+                            money = new TenDollar(false, replenishQuantity);
+                            break;
+                        case 5M:
+                            money = new FiveDollar(false, replenishQuantity);
+                            break;
+                        case 2M:
+                            money = new TwoDollar(false, replenishQuantity);
+                            break;
+                        case 1M:
+                            money = new OneDollar(false, replenishQuantity);
+                            break;
+                    }
+                    if (money != null)
+                    {
+                        currencyDenominations.Add(denomination, money);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -296,7 +320,7 @@ namespace Capstone.Models
                 if (currencyDenominations.ContainsKey(denomination))
                 {
                     money = currencyDenominations[denomination];
-                    money.ReplenishQuantity(replenishQuantity);
+                    money.SetQuantity(replenishQuantity);
                 }
                 else
                 {
@@ -310,8 +334,6 @@ namespace Capstone.Models
                             break;
                         case 0.05M:
                             money = new Nickel(true, replenishQuantity);
-                            break;
-                        default:
                             break;
                     }
                     if (money != null)
@@ -332,6 +354,7 @@ namespace Capstone.Models
             {
                 return false;
             }
+            currencyDenominations[money].AddQuantity(1);
             Balance += money;
             string logText = $"FEED MONEY: {money:C}";
             TransactionLog(logText);

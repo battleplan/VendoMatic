@@ -14,6 +14,7 @@ namespace Capstone.Views
         {
             Title = CreateTitle();
             menuOptions.Add("1", new MenuOption("Restock Change", true));
+            menuOptions.Add("2", new MenuOption("Remove Bills", true));
             menuOptions.Add("Q", new MenuOption("Main Menu", true));
         }
 
@@ -24,21 +25,21 @@ namespace Capstone.Views
 
         private string CreateTitle()
         {
-            string changeAvailable = "";
+            string presentCurrency = "";
             for (int i = 0; i < vendingMachine.ChangeCurrencyAvailable.Count; i++)
             {
-                changeAvailable += vendingMachine.ChangeCurrencyAvailable[i].ToString();
+                presentCurrency += vendingMachine.ChangeCurrencyAvailable[i].ToString();
                 if (i < vendingMachine.ChangeCurrencyAvailable.Count - 1)
                 {
-                    changeAvailable += ", ";
+                    presentCurrency += ", ";
                     if (i + 1 == vendingMachine.ChangeCurrencyAvailable.Count - 1)
                     {
-                        changeAvailable += "and ";
+                        presentCurrency += "and ";
                     }
                 }
             }
             return $@"Service Menu
- Change Available: {changeAvailable}";
+ Currency In Machine: {presentCurrency}";
         }
 
         /// <summary>
@@ -53,11 +54,14 @@ namespace Capstone.Views
             {
                 case "1":
                     vendingMachine.ReplenishChange();
-                    Title = CreateTitle();
-                    DrawHeader(false);
-                    DrawMenuOptions();
-                    return true;
+                    break;
+                case "2":
+                    vendingMachine.RemoveBills();
+                    break;
             }
+            Title = CreateTitle();
+            DrawHeader(false);
+            DrawMenuOptions();
             return true;
         }
     }

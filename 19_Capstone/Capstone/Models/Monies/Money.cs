@@ -76,12 +76,36 @@ namespace Capstone.Models.Monies
         }
 
         /// <summary>
-        /// Replenishes stock of currency to new quantity.
+        /// Replenishes stock of currency up to new quantity.
         /// </summary>
         /// <param name="newQuantity">The new amount of the currency.</param>
-        public void ReplenishQuantity(int newQuantity)
+        public void SetQuantity(int newQuantity)
         {
             Count = newQuantity;
+        }
+
+        /// <summary>
+        /// Removes stock of currency by subtract quantity.
+        /// </summary>
+        /// <param name="subtractQuantity">The amount of the currency to subtract.</param>
+        public void SubtractQuantity(int subtractQuantity)
+        {
+            if (subtractQuantity >= 0)
+            {
+                Count -= subtractQuantity;
+            }
+        }
+
+        /// <summary>
+        /// Adds stock of currency by add quantity.
+        /// </summary>
+        /// <param name="subtractQuantity">The amount of the currency to add.</param>
+        public void AddQuantity(int addQuantity)
+        {
+            if (addQuantity >= 0)
+            {
+                Count += addQuantity;
+            }
         }
 
         /// <summary>

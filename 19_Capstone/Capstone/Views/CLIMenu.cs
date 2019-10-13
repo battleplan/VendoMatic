@@ -52,7 +52,7 @@ namespace Capstone.Views
         {
             while (true)
             {
-                Console.WindowHeight = 31;
+                Console.WindowHeight = 36;
                 Console.WindowWidth = charWidth + 1;
 
                 string choice = GetString(@"   ___ _  _  ___   ___  ___ ___ 

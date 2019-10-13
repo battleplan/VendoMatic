@@ -149,9 +149,9 @@ namespace CapstoneTests
             decimal expectedTotalSales = 3.05M;
             int expectedQuantitySold = 1;
 
-            vm.FeedMoney(4);
+            vm.FeedMoney(5);
 
-            decimal expectedBalance = 0.95M;
+            decimal expectedBalance = 1.95M;
 
             // Act
             bool actualPurchaseMade = vm.Purchase("A1");
