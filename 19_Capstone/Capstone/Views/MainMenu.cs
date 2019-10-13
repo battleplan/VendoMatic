@@ -15,16 +15,7 @@ namespace Capstone.Views
         /// </summary>
         public MainMenu(VendingMachine vendingMachine) : base(vendingMachine)
         {
-            Title = @" 
- /$$    /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$   /$$$$$$  /$$      /$$  /$$$$$$  /$$$$$$$$ /$$$$$$  /$$$$$$ 
-| $$   | $$| $$_____/| $$$ | $$| $$__  $$ /$$__  $$| $$$    /$$$ /$$__  $$|__  $$__/|_  $$_/ /$$__  $$
-| $$   | $$| $$      | $$$$| $$| $$  \ $$| $$  \ $$| $$$$  /$$$$| $$  \ $$   | $$     | $$  | $$  \__/
-|  $$ / $$/| $$$$$   | $$ $$ $$| $$  | $$| $$  | $$| $$ $$/$$ $$| $$$$$$$$   | $$     | $$  | $$      
- \  $$ $$/ | $$__/   | $$  $$$$| $$  | $$| $$  | $$| $$  $$$| $$| $$__  $$   | $$     | $$  | $$      
-  \  $$$/  | $$      | $$\  $$$| $$  | $$| $$  | $$| $$\  $ | $$| $$  | $$   | $$     | $$  | $$    $$
-   \  $/   | $$$$$$$$| $$ \  $$| $$$$$$$/|  $$$$$$/| $$ \/  | $$| $$  | $$   | $$    /$$$$$$|  $$$$$$/
-    \_/    |________/|__/  \__/|_______/  \______/ |__/     |__/|__/  |__/   |__/   |______/ \______/ 
-";
+            Title = @"Main Menu";
             menuOptions.Add("1", new MenuOption("Feed Money", true));
             menuOptions.Add("2", new MenuOption("Get Change", true));
             menuOptions.Add("4", new MenuOption("Sales Report", false));
@@ -66,13 +57,7 @@ namespace Capstone.Views
                 switch (choice)
                 {
                     case "1":
-                        // TODO This traps them into feeding money. Should there be an escape?
-                        DrawHeader();
-                        bool success = vendingMachine.FeedMoney(GetInteger("Enter a whole dollar amount to feed into the machine:"));
-                        if (!success)
-                        {
-                            Pause("Unable to feed money. Please enter a whole number greater than zero.");
-                        }
+                        new FeedMoneyMenu(vendingMachine).Run();
                         return true;
                     case "2":
                         string message = vendingMachine.FinishTransaction();
