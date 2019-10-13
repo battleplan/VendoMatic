@@ -47,67 +47,11 @@ namespace Capstone.Views
         {
             while (true)
             {
-                #region Header
                 Console.WindowHeight = (int)(Console.LargestWindowHeight * 0.8);
                 Console.WindowWidth = (int)(Console.LargestWindowWidth * 0.8);
 
-                Console.Clear();
-                //Console.WriteLine(this.Title);
-                Console.WriteLine(@" 
- /$$    /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$   /$$$$$$  /$$      /$$  /$$$$$$  /$$$$$$$$ /$$$$$$  /$$$$$$ 
-| $$   | $$| $$_____/| $$$ | $$| $$__  $$ /$$__  $$| $$$    /$$$ /$$__  $$|__  $$__/|_  $$_/ /$$__  $$
-| $$   | $$| $$      | $$$$| $$| $$  \ $$| $$  \ $$| $$$$  /$$$$| $$  \ $$   | $$     | $$  | $$  \__/
-|  $$ / $$/| $$$$$   | $$ $$ $$| $$  | $$| $$  | $$| $$ $$/$$ $$| $$$$$$$$   | $$     | $$  | $$      
- \  $$ $$/ | $$__/   | $$  $$$$| $$  | $$| $$  | $$| $$  $$$| $$| $$__  $$   | $$     | $$  | $$      
-  \  $$$/  | $$      | $$\  $$$| $$  | $$| $$  | $$| $$\  $ | $$| $$  | $$   | $$     | $$  | $$    $$
-   \  $/   | $$$$$$$$| $$ \  $$| $$$$$$$/|  $$$$$$/| $$ \/  | $$| $$  | $$   | $$    /$$$$$$|  $$$$$$/
-    \_/    |________/|__/  \__/|_______/  \______/ |__/     |__/|__/  |__/   |__/   |______/ \______/ 
-");
-                Console.WriteLine(new string('=', 120));
-                Console.WriteLine();
+                DrawHeader();
 
-                // Display slots
-                List<string> slotsDisplay = vendingMachine.GetSlotsDisplayNames();
-                int columnCounter = 0;
-                for (int i = 0; i < slotsDisplay.Count; i++, columnCounter++)
-                {
-                    //int maxLength = 0;
-                    //int j = i;
-
-                    //for (int j = i; j < slotsDisplay.Count; j+=4)
-                    //{
-                    //    if (slotsDisplay[j].Length > maxLength)
-                    //    {
-                    //        maxLength = slotsDisplay[j].Length;
-                    //    }
-                    //}
-                    string slot = slotsDisplay[i];
-                    Console.Write($"{slot,-34}");
-                    if (columnCounter == 3)
-                    {
-                        Console.WriteLine();
-                        columnCounter = -1;
-                    }
-                }
-                Console.WriteLine(new string('=', 120));
-                Console.WriteLine($@"  ___   _   _      _   _  _  ___ ___ 
- | _ ) /_\ | |    /_\ | \| |/ __| __|
- | _ \/ _ \| |__ / _ \| .` | (__| _| 
- |___/_/ \_\____/_/ \_\_|\_|\___|___|  {vendingMachine.Balance:C}");
-                Console.WriteLine(new string('=', 120));
-                #endregion
-
-                foreach (KeyValuePair<string, MenuOption> menuItem in menuOptions)
-                {
-                    if (menuItem.Value.IsVisible)
-                    {
-                    string menuItemDisplay = $"{menuItem.Key} - {menuItem.Value.Name}";
-                    Console.Write($"{menuItemDisplay,-25}");
-                    }
-                }
-                Console.WriteLine();
-                Console.WriteLine(new string('=', 120));
-                //Console.Write("\r\nPlease make a ");
                 string choice = GetString(@"   ___ _  _  ___   ___  ___ ___ 
   / __| || |/ _ \ / _ \/ __| __|
  | (__| __ | (_) | (_) \__ \ _| 
@@ -124,8 +68,72 @@ namespace Capstone.Views
                         break;
                     }
                 }
+                else
+                {
+                    DrawHeader();
+                    Pause("Invalid selection.");
+                }
 
             }
+        }
+
+        protected void DrawHeader()
+        {
+            Console.Clear();
+            //Console.WriteLine(this.Title);
+            Console.WriteLine(@" 
+ /$$    /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$   /$$$$$$  /$$      /$$  /$$$$$$  /$$$$$$$$ /$$$$$$  /$$$$$$ 
+| $$   | $$| $$_____/| $$$ | $$| $$__  $$ /$$__  $$| $$$    /$$$ /$$__  $$|__  $$__/|_  $$_/ /$$__  $$
+| $$   | $$| $$      | $$$$| $$| $$  \ $$| $$  \ $$| $$$$  /$$$$| $$  \ $$   | $$     | $$  | $$  \__/
+|  $$ / $$/| $$$$$   | $$ $$ $$| $$  | $$| $$  | $$| $$ $$/$$ $$| $$$$$$$$   | $$     | $$  | $$      
+ \  $$ $$/ | $$__/   | $$  $$$$| $$  | $$| $$  | $$| $$  $$$| $$| $$__  $$   | $$     | $$  | $$      
+  \  $$$/  | $$      | $$\  $$$| $$  | $$| $$  | $$| $$\  $ | $$| $$  | $$   | $$     | $$  | $$    $$
+   \  $/   | $$$$$$$$| $$ \  $$| $$$$$$$/|  $$$$$$/| $$ \/  | $$| $$  | $$   | $$    /$$$$$$|  $$$$$$/
+    \_/    |________/|__/  \__/|_______/  \______/ |__/     |__/|__/  |__/   |__/   |______/ \______/ 
+");
+            Console.WriteLine(new string('=', 120));
+            Console.WriteLine();
+
+            // Display slots
+            List<string> slotsDisplay = vendingMachine.GetSlotsDisplayNames();
+            int columnCounter = 0;
+            for (int i = 0; i < slotsDisplay.Count; i++, columnCounter++)
+            {
+                //int maxLength = 0;
+                //int j = i;
+
+                //for (int j = i; j < slotsDisplay.Count; j+=4)
+                //{
+                //    if (slotsDisplay[j].Length > maxLength)
+                //    {
+                //        maxLength = slotsDisplay[j].Length;
+                //    }
+                //}
+                string slot = slotsDisplay[i];
+                Console.Write($"{slot,-34}");
+                if (columnCounter == 3)
+                {
+                    Console.WriteLine();
+                    columnCounter = -1;
+                }
+            }
+            Console.WriteLine(new string('=', 120));
+            Console.WriteLine($@"  ___   _   _      _   _  _  ___ ___ 
+ | _ ) /_\ | |    /_\ | \| |/ __| __|
+ | _ \/ _ \| |__ / _ \| .` | (__| _| 
+ |___/_/ \_\____/_/ \_\_|\_|\___|___|  {vendingMachine.Balance:C}");
+            Console.WriteLine(new string('=', 120));
+
+            foreach (KeyValuePair<string, MenuOption> menuItem in menuOptions)
+            {
+                if (menuItem.Value.IsVisible)
+                {
+                    string menuItemDisplay = $"{menuItem.Key} - {menuItem.Value.Name}";
+                    Console.Write($"{menuItemDisplay,-25}");
+                }
+            }
+            Console.WriteLine();
+            Console.WriteLine(new string('=', 120));
         }
 
         /// <summary>
@@ -246,7 +254,8 @@ namespace Capstone.Views
         /// <param name="message">Displays a message to the user and then waits for them to hit Return.</param>
         protected void Pause(string message)
         {
-            Console.Write(message + " Press Enter to continue.");
+            Console.WriteLine(message);
+            Console.Write("Press Enter to continue.");
             Console.ReadLine();
         }
         #endregion

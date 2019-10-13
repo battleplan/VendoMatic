@@ -49,11 +49,12 @@ namespace Capstone.Views
             if (vendingMachine.Slots.ContainsKey(choice))
             {
                 bool purchaseComplete = vendingMachine.Purchase(choice);
+                DrawHeader();
                 if (purchaseComplete)
                 {
+                    Console.WriteLine(vendingMachine.Slots[choice].Product.YumYum());
                     Console.WriteLine($"You purchased {vendingMachine.Slots[choice].Product.Name} for {vendingMachine.Slots[choice].Price:C}.");
-                    Console.WriteLine($"You have {vendingMachine.Balance:C} remaining.");
-                    Pause(vendingMachine.Slots[choice].Product.YumYum());
+                    Pause($"You have {vendingMachine.Balance:C} remaining.");
                 }
                 else
                 {
@@ -66,6 +67,7 @@ namespace Capstone.Views
                 {
                     case "1":
                         // TODO This traps them into feeding money. Should there be an escape?
+                        DrawHeader();
                         bool success = vendingMachine.FeedMoney(GetInteger("Enter a whole dollar amount to feed into the machine:"));
                         if (!success)
                         {
@@ -73,11 +75,14 @@ namespace Capstone.Views
                         }
                         return true;
                     case "2":
-                        Pause(vendingMachine.FinishTransaction());
-                        // TODO Balance on screen doesn't update till enter is pressed. Does this matter?
+                        string message = vendingMachine.FinishTransaction();
+                        DrawHeader();
+                        Pause(message);
                         break;
                     case "4":
+                        // TODO Show report on screen
                         string reportName = vendingMachine.CreateSalesReport();
+                        DrawHeader();
                         if (reportName != "")
                         {
                             Pause($"Sales report generated: {reportName}");
