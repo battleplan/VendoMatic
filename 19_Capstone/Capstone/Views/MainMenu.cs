@@ -46,6 +46,11 @@ namespace Capstone.Views
                     DrawHeader(false);
                     Pause($"{vendingMachine.Slots[choice].Product.Name} is sold out.");
                 }
+                else if (vendingMachine.Slots[choice].Price > vendingMachine.Balance)
+                {
+                    DrawHeader(false);
+                    Pause("Insufficient funds. Please feed more money.");
+                }
                 else
                 {
                     bool purchaseComplete = vendingMachine.Purchase(choice);
