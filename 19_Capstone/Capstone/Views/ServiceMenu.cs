@@ -12,6 +12,18 @@ namespace Capstone.Views
         /// </summary>
         public ServiceMenu(VendingMachine vendingMachine) : base(vendingMachine)
         {
+            Title = CreateTitle();
+            menuOptions.Add("1", new MenuOption("Restock Change", true));
+            menuOptions.Add("Q", new MenuOption("Main Menu", true));
+        }
+
+        protected override void DrawSlots(bool highlightIdentifier)
+        {
+            base.DrawSlots(false);
+        }
+
+        private string CreateTitle()
+        {
             string changeAvailable = "";
             for (int i = 0; i < vendingMachine.ChangeCurrencyAvailable.Count; i++)
             {
@@ -25,15 +37,8 @@ namespace Capstone.Views
                     }
                 }
             }
-            Title = $@"Service Menu
+            return $@"Service Menu
 Change Available: {changeAvailable}";
-            menuOptions.Add("1", new MenuOption("Restock Change", true));
-            menuOptions.Add("Q", new MenuOption("Main Menu", true));
-        }
-
-        protected override void DrawSlots(bool highlightIdentifier)
-        {
-            base.DrawSlots(false);
         }
 
         /// <summary>
@@ -48,7 +53,10 @@ Change Available: {changeAvailable}";
             {
                 case "1":
                     vendingMachine.ReplenishChange();
-                    return false;
+                    Title = CreateTitle();
+                    DrawHeader(false);
+                    DrawMenuOptions();
+                    return true;
             }
             return true;
         }
