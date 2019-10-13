@@ -145,12 +145,12 @@ namespace Capstone.Views
             {
                 Slot slot = vendingMachine.Slots[id];
                 slots.Add(slot);
-                string slotDisplay = " ";
+                string slotDisplay = "";
                 if (displayIdentifier)
                 {
                     slotDisplay += $"[{slot.Identifier}] ";
                 }
-                slotDisplay += $"{SlotInfo(slot)}  ";
+                slotDisplay += $"{SlotInfo(slot)}";
                 slotsDisplay.Add(slotDisplay);
             }
 
@@ -167,6 +167,7 @@ namespace Capstone.Views
                 }
             }
 
+            // TODO Why is the column width 2 too wide?
             // Draw the slots
             int columnCounter = 0;
             for (int i = 0; i < slots.Count; i++, columnCounter++)
@@ -177,12 +178,15 @@ namespace Capstone.Views
                 {
                     string slotId = $" [{slot.Identifier}]";
                     slotIdLength = slotId.Length;
-                    Console.ForegroundColor = ConsoleColor.Green;
+                    if (slot.HasStock)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    }
                     Console.Write(slotId);
                     Console.ForegroundColor = ConsoleColor.White;
                 }
                 int displayWidth = slotsColumnWidth[i % columnCount] + 2 - slotIdLength;
-                string displayInfo = PadWidth($" {SlotInfo(slot)}  ", displayWidth);
+                string displayInfo = PadWidth($" {SlotInfo(slot)}", displayWidth);
                 Console.Write($"{displayInfo}");
                 if (columnCounter == columnCount - 1)
                 {
@@ -200,7 +204,7 @@ namespace Capstone.Views
             }
             else
             {
-                return $"{slot.Product.Name} SOLD OUT";
+                return $"SOLD OUT {slot.Product.Name}";
             }
         }
 
@@ -352,7 +356,9 @@ namespace Capstone.Views
                 DrawHeader();
                 DrawMenuOptions();
                 Console.Write(message + " ");
+                Console.ForegroundColor = ConsoleColor.Green;
                 string userInput = Console.ReadLine().Trim();
+                Console.ForegroundColor = ConsoleColor.White;
                 if (!String.IsNullOrEmpty(userInput))
                 {
                     return userInput;
@@ -361,8 +367,6 @@ namespace Capstone.Views
                 {
                     DrawHeader();
                     Pause("!!! Invalid input. Please enter a valid menu option.");
-
-                    // TODO Why does pressing enter take away all menu options?
                 }
             }
         }
@@ -374,8 +378,8 @@ namespace Capstone.Views
         protected void Pause(string message)
         {
             Console.WriteLine(message);
-            Console.Write("Press Enter to continue.");
-            Console.ReadLine();
+            Console.Write("Press any key to continue.");
+            Console.ReadKey();
         }
         #endregion
 
