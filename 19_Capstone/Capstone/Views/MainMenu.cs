@@ -40,17 +40,25 @@ namespace Capstone.Views
             choice.ToUpper();
             if (vendingMachine.Slots.ContainsKey(choice))
             {
-                bool purchaseComplete = vendingMachine.Purchase(choice);
-                DrawHeader(false);
-                if (purchaseComplete)
+                if (!vendingMachine.Slots[choice].HasStock)
                 {
-                    Console.WriteLine(vendingMachine.Slots[choice].Product.YumYum());
-                    Console.WriteLine($"You purchased {vendingMachine.Slots[choice].Product.Name} for {vendingMachine.Slots[choice].Price:C}.");
-                    Pause($"You have {vendingMachine.Balance:C} remaining.");
+                    DrawHeader(false);
+                    Pause($"{vendingMachine.Slots[choice].Product.Name} is sold out.");
                 }
                 else
                 {
-                    Pause("Purchase not made.");
+                    bool purchaseComplete = vendingMachine.Purchase(choice);
+                    DrawHeader(false);
+                    if (purchaseComplete)
+                    {
+                        Console.WriteLine(vendingMachine.Slots[choice].Product.YumYum());
+                        Console.WriteLine($"You purchased {vendingMachine.Slots[choice].Product.Name} for {vendingMachine.Slots[choice].Price:C}.");
+                        Pause($"You have {vendingMachine.Balance:C} remaining.");
+                    }
+                    else
+                    {
+                        Pause("Purchase not made.");
+                    }
                 }
             }
             else
