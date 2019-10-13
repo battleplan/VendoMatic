@@ -228,7 +228,7 @@ namespace Capstone.Views
         {
             if (slot.HasStock)
             {
-                return $"{slot.Price:C} |{slot.QuantityRemaining}| {slot.Product.Name}";
+                return $"{slot.Price:C} ({slot.QuantityRemaining}) {slot.Product.Name}";
             }
             else
             {
