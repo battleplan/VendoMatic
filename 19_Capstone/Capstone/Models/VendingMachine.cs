@@ -226,6 +226,7 @@ namespace Capstone.Models
         /// <returns>Success of making the purchase.</returns>
         public bool Purchase(string slotIdentifier)
         {
+            decimal startingBalance = Balance;
             Slot slot;
             if (slots.ContainsKey(slotIdentifier))
             {
@@ -247,7 +248,7 @@ namespace Capstone.Models
                 slot.Product.SellProduct();
                 TotalSales += slot.Price;
                 Balance -= slot.Price;
-                TransactionLog($"{slot.Product.Name} {slot.Identifier} {slot.Price:C}");
+                TransactionLog($"{slot.Product.Name} {slot.Identifier} {startingBalance:C}");
                 return true;
             }
             else
