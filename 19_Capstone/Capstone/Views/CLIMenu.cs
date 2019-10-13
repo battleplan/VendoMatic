@@ -52,6 +52,17 @@ namespace Capstone.Views
 
                 DrawHeader();
 
+                foreach (KeyValuePair<string, MenuOption> menuItem in menuOptions)
+                {
+                    if (menuItem.Value.IsVisible)
+                    {
+                        string menuItemDisplay = $"{menuItem.Key} - {menuItem.Value.Name}";
+                        Console.Write($"{menuItemDisplay,-25}");
+                    }
+                }
+                Console.WriteLine();
+                Console.WriteLine(new string('=', 120));
+
                 string choice = GetString(@"   ___ _  _  ___   ___  ___ ___ 
   / __| || |/ _ \ / _ \/ __| __|
  | (__| __ | (_) | (_) \__ \ _| 
@@ -122,17 +133,6 @@ namespace Capstone.Views
  | _ ) /_\ | |    /_\ | \| |/ __| __|
  | _ \/ _ \| |__ / _ \| .` | (__| _| 
  |___/_/ \_\____/_/ \_\_|\_|\___|___|  {vendingMachine.Balance:C}");
-            Console.WriteLine(new string('=', 120));
-
-            foreach (KeyValuePair<string, MenuOption> menuItem in menuOptions)
-            {
-                if (menuItem.Value.IsVisible)
-                {
-                    string menuItemDisplay = $"{menuItem.Key} - {menuItem.Value.Name}";
-                    Console.Write($"{menuItemDisplay,-25}");
-                }
-            }
-            Console.WriteLine();
             Console.WriteLine(new string('=', 120));
         }
 
