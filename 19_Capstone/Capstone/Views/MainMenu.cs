@@ -23,8 +23,6 @@ namespace Capstone.Views
             menuOptions.Add("4", new MenuOption("Sales Report", false));
             menuOptions.Add("Q", new MenuOption("Quit", true));
 
-            // TODO Add service menu to display currency change available
-
             // Add all slots
             foreach (string key in vendingMachine.Slots.Keys)
             {
