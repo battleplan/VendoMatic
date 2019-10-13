@@ -103,8 +103,6 @@ namespace Capstone.Models
             get
             {
                 List<decimal> output = new List<decimal>() { 0.25M, 0.10M, 0.05M };
-                output.Sort();
-                output.Reverse();
                 return output;
             }
         }
@@ -117,7 +115,6 @@ namespace Capstone.Models
             get
             {
                 List<decimal> output = new List<decimal>() { 1M, 2M, 5M, 10M };
-                output.Sort();
                 return output;
             }
         }
@@ -265,6 +262,9 @@ namespace Capstone.Models
             int replenishQuantity = 200;
             Money money;
 
+            List<decimal> denominations = new List<decimal>(validChangeDenominations);
+            denominations.Sort();
+            denominations.Reverse();
             foreach (decimal denomination in validChangeDenominations)
             {
                 if (changeCurrencyAvailable.ContainsKey(denomination))

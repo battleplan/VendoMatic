@@ -13,7 +13,9 @@ namespace Capstone.Views
         public FeedMoneyMenu(VendingMachine vendingMachine) : base(vendingMachine)
         {
             //Title = "Feed Money";
-            foreach (decimal denomination in vendingMachine.ValidFeedDenominations)
+            List<decimal> denominations = new List<decimal>(vendingMachine.ValidFeedDenominations);
+            denominations.Sort();
+            foreach (decimal denomination in denominations)
             {
                 menuOptions.Add(denomination.ToString(), new MenuOption($"Feed {denomination:C}", true));
             }
