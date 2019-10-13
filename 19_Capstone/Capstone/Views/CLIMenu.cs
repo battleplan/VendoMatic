@@ -118,8 +118,22 @@ namespace Capstone.Views
             Console.WriteLine(new string('=', charWidth));
             Console.WriteLine();
 
+            DisplaySlots(null);
+            Console.WriteLine(new string('=', charWidth));
+            Console.WriteLine($@"  ___   _   _      _   _  _  ___ ___ 
+ | _ ) /_\ | |    /_\ | \| |/ __| __|
+ | _ \/ _ \| |__ / _ \| .` | (__| _| 
+ |___/_/ \_\____/_/ \_\_|\_|\___|___|  {vendingMachine.Balance:C}");
+            Console.WriteLine(new string('=', charWidth));
+        }
+
+        protected virtual void DisplaySlots(List<string> slotsDisplay)
+        {
             // Display slots
-            List<string> slotsDisplay = vendingMachine.GetSlotsDisplayNames();
+            if (slotsDisplay == null || slotsDisplay.Count == 0)
+            {
+                slotsDisplay = vendingMachine.GetSlotsDisplayNames();
+            }
 
             const int columnCount = 4;
             Dictionary<int, int> slotsColumnWidth = new Dictionary<int, int>();
@@ -137,8 +151,6 @@ namespace Capstone.Views
             int columnCounter = 0;
             for (int i = 0; i < slotsDisplay.Count; i++, columnCounter++)
             {
-                // TODO Only display the selection numbers when available (not on feed money menu)
-
                 string slot = slotsDisplay[i];
                 Console.Write($"{PadWidth(" " + slot, slotsColumnWidth[i % columnCount] + 2)}");
                 if (columnCounter == columnCount - 1)
@@ -147,12 +159,6 @@ namespace Capstone.Views
                     columnCounter = -1;
                 }
             }
-            Console.WriteLine(new string('=', charWidth));
-            Console.WriteLine($@"  ___   _   _      _   _  _  ___ ___ 
- | _ ) /_\ | |    /_\ | \| |/ __| __|
- | _ \/ _ \| |__ / _ \| .` | (__| _| 
- |___/_/ \_\____/_/ \_\_|\_|\___|___|  {vendingMachine.Balance:C}");
-            Console.WriteLine(new string('=', charWidth));
         }
 
         /// <summary>

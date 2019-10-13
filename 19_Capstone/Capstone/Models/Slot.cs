@@ -22,24 +22,6 @@ namespace Capstone.Models
         public bool HasStock => QuantityRemaining > 0;
 
         /// <summary>
-        /// Display name of the slot and the product it contains.
-        /// </summary>
-        public string DisplayName
-        {
-            get
-            {
-                if (HasStock)
-                {
-                    return $"[{Identifier}] {Price:C} |{QuantityRemaining}| {Product.Name}";
-                }
-                else
-                {
-                    return $"[{Identifier}] {Product.Name} SOLD OUT";
-                }
-            }
-        }
-
-        /// <summary>
         /// The product loaded into the slot.
         /// </summary>
         public Product Product { get; }
@@ -79,7 +61,38 @@ namespace Capstone.Models
             {
                 return false;
             }
+        }
 
+        /// <summary>
+        /// Display name of the slot and the product it contains.
+        /// </summary>
+        /// <param name="includeIdentifier">Display the identifier for the slot.</param>
+        /// <returns>Complete string including identifier (if requested), quantity, price, and product name</returns>
+        public string DisplayName(bool includeIdentifier)
+        {
+            string output = "";
+            if (includeIdentifier)
+            {
+                output += $"[{Identifier}] ";
+            }
+            if (HasStock)
+            {
+                output += $"{Price:C} |{QuantityRemaining}| {Product.Name}";
+            }
+            else
+            {
+                output+= $"{Product.Name} SOLD OUT";
+            }
+            return output;
+        }
+
+        /// <summary>
+        /// Display name of the slot and the product it contains.
+        /// </summary>
+        /// <returns>Complete string including identifier, quantity, price, and product name</returns>
+        public string DisplayName()
+        {
+            return DisplayName(true);
         }
     }
 }

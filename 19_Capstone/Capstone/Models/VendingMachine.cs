@@ -247,16 +247,25 @@ namespace Capstone.Models
         /// Get display names of the information in all slots loading into the machine.
         /// </summary>
         /// <returns>List of each slot's display name.</returns>
-        public List<string> GetSlotsDisplayNames()
+        public List<string> GetSlotsDisplayNames(bool includeIdentifier)
         {
             List<string> slots = new List<string>();
             List<string> slotIdentifiers = new List<string>(this.slots.Keys);
             foreach (string key in slotIdentifiers)
             {
-                slots.Add(this.slots[key].DisplayName);
+                slots.Add(this.slots[key].DisplayName(includeIdentifier));
             }
 
             return slots;
+        }
+
+        /// <summary>
+        /// Get display names of the information in all slots loading into the machine.
+        /// </summary>
+        /// <returns>List of each slot's display name.</returns>
+        public List<string> GetSlotsDisplayNames()
+        {
+            return GetSlotsDisplayNames(true);
         }
 
         /// <summary>

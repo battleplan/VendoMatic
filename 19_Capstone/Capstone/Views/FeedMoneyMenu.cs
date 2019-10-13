@@ -20,6 +20,12 @@ namespace Capstone.Views
             menuOptions.Add("Q", new MenuOption("Return to Main Menu", true));
         }
 
+        protected override void DisplaySlots(List<string> slotsDisplay)
+        {
+            slotsDisplay = vendingMachine.GetSlotsDisplayNames(false);
+            base.DisplaySlots(slotsDisplay);
+        }
+
         /// <summary>
         /// The override of ExecuteSelection handles whatever selection was made by the user.
         /// This is where any business logic is executed.
