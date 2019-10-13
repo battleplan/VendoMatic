@@ -28,17 +28,23 @@ namespace Capstone.Models.Monies
                 return UnitValue * Count;
             }
         }
+        public bool CanMakeChange { get; }
 
         /// <summary>
         /// Creates new currency.
         /// </summary>
-        public Money() => Count = 0;
+        /// <param name="canMakeChange">Can this currency be returned as change?</param>
+        public Money(bool canMakeChange)
+        {
+            Count = 0;
+            CanMakeChange = canMakeChange;
+        }
 
         /// <summary>
         /// Creates new currency with a specified quantity.
         /// </summary>
         /// <param name="currencyQuantity">Quantity of the currency to create. Must be greater than or equal to zero.</param>
-        public Money(int currencyQuantity)
+        public Money(bool canMakeChange, int currencyQuantity)
         {
             if (currencyQuantity >= 0)
             {
@@ -48,6 +54,7 @@ namespace Capstone.Models.Monies
             {
                 Count = 0;
             }
+            CanMakeChange = canMakeChange;
         }
 
         /// <summary>
@@ -58,11 +65,14 @@ namespace Capstone.Models.Monies
         /// <returns></returns>
         public void MakeChange(Money currencyAvailable, decimal balance)
         {
-            int currencyQuantityAvailable = currencyAvailable.Count;
-            int changeCount = (int)(balance / UnitValue);
-            changeCount = Math.Min(currencyQuantityAvailable, changeCount);
-            currencyAvailable.Count -= changeCount;
-            Count = changeCount;
+            if (CanMakeChange)
+            {
+                int currencyQuantityAvailable = currencyAvailable.Count;
+                int changeCount = (int)(balance / UnitValue);
+                changeCount = Math.Min(currencyQuantityAvailable, changeCount);
+                currencyAvailable.Count -= changeCount;
+                Count = changeCount;
+            }
         }
 
         /// <summary>

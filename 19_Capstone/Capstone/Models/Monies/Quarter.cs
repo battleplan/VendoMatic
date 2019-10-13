@@ -9,15 +9,17 @@ namespace Capstone.Models.Monies
         /// <summary>
         /// Creates a new quarter.
         /// </summary>
-        public Quarter() : base()
+        /// <param name="canMakeChange">Can this currency be returned as change?</param>
+        public Quarter(bool canMakeChange) : base(canMakeChange)
         {
         }
 
         /// <summary>
         /// Creates a new quarter.
         /// </summary>
+        /// <param name="canMakeChange">Can this currency be returned as change?</param>
         /// <param name="balance">The amount of quarters to create.</param>
-        public Quarter(int currencyQuantity) : base(currencyQuantity)
+        public Quarter(bool canMakeChange, int currencyQuantity) : base(canMakeChange, currencyQuantity)
         {
         }
 

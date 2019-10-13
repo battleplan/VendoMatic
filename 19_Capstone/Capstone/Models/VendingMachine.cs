@@ -96,6 +96,20 @@ namespace Capstone.Models
         }
 
         /// <summary>
+        /// What currency the machine can output in change.
+        /// </summary>
+        private List<decimal> validChangeDenominations
+        {
+            get
+            {
+                List<decimal> output = new List<decimal>() { 0.25M, 0.10M, 0.05M };
+                output.Sort();
+                output.Reverse();
+                return output;
+            }
+        }
+
+        /// <summary>
         /// Returns if amount is okay to desposit given current amount of change available.
         /// </summary>
         /// <param name="depositAmount">The amount wished to desposit.</param>
@@ -231,43 +245,29 @@ namespace Capstone.Models
             int replenishQuantity = 200;
             Money money;
 
-            // Quarters
-            decimal threshold = 0.25M;
-            if (changeCurrencyAvailable.ContainsKey(threshold))
+            foreach (decimal denomination in validChangeDenominations)
             {
-                money = changeCurrencyAvailable[threshold];
-                money.ReplenishQuantity(replenishQuantity);
-            }
-            else
-            {
-                money = new Quarter(replenishQuantity);
-                changeCurrencyAvailable.Add(threshold, money);
-            }
-
-            // Dimes
-            threshold = 0.10M;
-            if (changeCurrencyAvailable.ContainsKey(threshold))
-            {
-                money = changeCurrencyAvailable[threshold];
-                money.ReplenishQuantity(replenishQuantity);
-            }
-            else
-            {
-                money = new Dime(replenishQuantity);
-                changeCurrencyAvailable.Add(threshold, money);
-            }
-
-            // Nickels
-            threshold = 0.05M;
-            if (changeCurrencyAvailable.ContainsKey(threshold))
-            {
-                money = changeCurrencyAvailable[threshold];
-                money.ReplenishQuantity(replenishQuantity);
-            }
-            else
-            {
-                money = new Nickel(replenishQuantity);
-                changeCurrencyAvailable.Add(threshold, money);
+                if (changeCurrencyAvailable.ContainsKey(denomination))
+                {
+                    money = changeCurrencyAvailable[denomination];
+                    money.ReplenishQuantity(replenishQuantity);
+                }
+                else
+                {
+                    switch (denomination)
+                    {
+                        case 0.25M:
+                            money = new Quarter(true, replenishQuantity);
+                            break;
+                        case 0.10M:
+                            money = new Dime(true, replenishQuantity);
+                            break;
+                        default:
+                            money = new Nickel(true, replenishQuantity);
+                            break;
+                    }
+                    changeCurrencyAvailable.Add(denomination, money);
+                }
             }
         }
 
@@ -363,7 +363,7 @@ namespace Capstone.Models
                 decimal currencyThreshold = 0.25M;
                 if (changeCurrencyAvailable[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
                 {
-                    Money quarters = new Quarter();
+                    Money quarters = new Quarter(true);
                     quarters.MakeChange(changeCurrencyAvailable[currencyThreshold], Balance);
                     changeCurrency.Add(quarters);
                     Balance -= quarters.TotalValue;
@@ -373,7 +373,7 @@ namespace Capstone.Models
                 if (changeCurrencyAvailable[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
                 {
 
-                    Money dimes = new Dime();
+                    Money dimes = new Dime(true);
                     dimes.MakeChange(changeCurrencyAvailable[currencyThreshold], Balance);
                     changeCurrency.Add(dimes);
                     Balance -= dimes.TotalValue;
@@ -383,7 +383,7 @@ namespace Capstone.Models
                 if (changeCurrencyAvailable[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
                 {
 
-                    Money nickels = new Nickel();
+                    Money nickels = new Nickel(true);
                     nickels.MakeChange(changeCurrencyAvailable[currencyThreshold], Balance);
                     changeCurrency.Add(nickels);
                     Balance -= nickels.TotalValue;

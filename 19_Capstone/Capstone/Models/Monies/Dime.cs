@@ -9,15 +9,17 @@ namespace Capstone.Models.Monies
         /// <summary>
         /// Creates a new dime.
         /// </summary>
-        public Dime() : base()
+        /// <param name="canMakeChange">Can this currency be returned as change?</param>
+        public Dime(bool canMakeChange) : base(canMakeChange)
         {
         }
 
         /// <summary>
         /// Creates a new dime.
         /// </summary>
+        /// <param name="canMakeChange">Can this currency be returned as change?</param>
         /// <param name="balance">The amount of dimes to create.</param>
-        public Dime(int currencyQuantity) : base(currencyQuantity)
+        public Dime(bool canMakeChange, int currencyQuantity) : base(canMakeChange, currencyQuantity)
         {
         }
 
