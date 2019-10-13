@@ -23,9 +23,9 @@ namespace Capstone.Views
             menuOptions.Add("Q", new MenuOption("Main Menu", true));
         }
         
-        protected override void DrawSlots(bool displayIdentifier, bool highlightIdentifier)
+        protected override void DrawSlots(bool highlightIdentifier)
         {
-            base.DrawSlots(false, false);
+            base.DrawSlots(false);
         }
 
         /// <summary>

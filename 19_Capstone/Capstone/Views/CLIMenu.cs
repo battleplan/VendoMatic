@@ -95,7 +95,7 @@ namespace Capstone.Views
             Console.WriteLine(new string('=', charWidth));
             Console.WriteLine();
 
-            DrawSlots(true, highlightIdentifier);
+            DrawSlots(highlightIdentifier);
             Console.WriteLine(new string('=', charWidth));
             Console.WriteLine($@"  ___   _   _      _   _  _  ___ ___ 
  | _ ) /_\ | |    /_\ | \| |/ __| __|
@@ -133,7 +133,7 @@ namespace Capstone.Views
             Console.WriteLine(new string('=', charWidth));
         }
 
-        protected virtual void DrawSlots(bool displayIdentifier, bool highlightIdentifier)
+        protected virtual void DrawSlots(bool highlightIdentifier)
         {
             // Get all slots in the vending machine
             List<string> slotIdentifiers = new List<string>(vendingMachine.Slots.Keys);
@@ -145,12 +145,7 @@ namespace Capstone.Views
             {
                 Slot slot = vendingMachine.Slots[id];
                 slots.Add(slot);
-                string slotDisplay = "";
-                if (displayIdentifier)
-                {
-                    slotDisplay += $"[{slot.Identifier}] ";
-                }
-                slotDisplay += $"{SlotInfo(slot)}";
+                string slotDisplay = $"[{slot.Identifier}] {SlotInfo(slot)}";
                 slotsDisplay.Add(slotDisplay);
             }
 
@@ -166,25 +161,21 @@ namespace Capstone.Views
                     slotsColumnWidth[slotColumn] = slotWidth;
                 }
             }
-
-            // TODO Why is the column width 2 too wide?
+            
             // Draw the slots
             int columnCounter = 0;
             for (int i = 0; i < slots.Count; i++, columnCounter++)
             {
                 Slot slot = slots[i];
                 int slotIdLength = 0;
-                if (displayIdentifier)
+                string slotId = $" [{slot.Identifier}]";
+                slotIdLength = slotId.Length;
+                if (highlightIdentifier && slot.HasStock)
                 {
-                    string slotId = $" [{slot.Identifier}]";
-                    slotIdLength = slotId.Length;
-                    if (highlightIdentifier && slot.HasStock)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                    }
-                    Console.Write(slotId);
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Green;
                 }
+                Console.Write(slotId);
+                Console.ForegroundColor = ConsoleColor.White;
                 int displayWidth = slotsColumnWidth[i % columnCount] + 2 - slotIdLength;
                 string displayInfo = PadWidth($" {SlotInfo(slot)}", displayWidth);
                 Console.Write($"{displayInfo}");
