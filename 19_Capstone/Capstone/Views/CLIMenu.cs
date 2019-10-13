@@ -40,7 +40,7 @@ namespace Capstone.Views
             this.vendingMachine = vendingMachine;
         }
 
-        protected const int charWidth = 120;
+        protected const int charWidth = 126;
 
         /// <summary>
         /// Run starts the menu loop
@@ -53,8 +53,6 @@ namespace Capstone.Views
                 Console.WindowWidth = (int)(Console.LargestWindowWidth * 0.8);
 
                 DrawHeader();
-
-                // TODO Dynamic width
 
                 // Find number of visible menuOptions
                 int optionCount = 0;
@@ -71,7 +69,7 @@ namespace Capstone.Views
                 {
                     if (menuItem.Value.IsVisible)
                     {
-                        string menuItemDisplay = $"{menuItem.Key} - {menuItem.Value.Name}";
+                        string menuItemDisplay = $" {menuItem.Key} - {menuItem.Value.Name}";
                         Console.Write($"{PadWidth(menuItemDisplay,optionWidth)}");
                     }
                 }
@@ -122,26 +120,28 @@ namespace Capstone.Views
 
             // Display slots
             List<string> slotsDisplay = vendingMachine.GetSlotsDisplayNames();
+
+            const int columnCount = 4;
+            Dictionary<int, int> slotsColumnWidth = new Dictionary<int, int>();
+            for (int i = 0; i < slotsDisplay.Count; i++)
+            {
+                string slotDisplay = slotsDisplay[i];
+                int slotWidth = slotDisplay.Length;
+                int slotColumn = i % columnCount;
+                if (!slotsColumnWidth.ContainsKey(slotColumn) || slotsColumnWidth[slotColumn] < slotWidth)
+                {
+                    slotsColumnWidth[slotColumn] = slotWidth;
+                }
+            }
+
             int columnCounter = 0;
             for (int i = 0; i < slotsDisplay.Count; i++, columnCounter++)
             {
                 // TODO Only display the selection numbers when available (not on feed money menu)
 
-                // TODO Dynamic column width
-
-                //int maxLength = 0;
-                //int j = i;
-
-                //for (int j = i; j < slotsDisplay.Count; j+=4)
-                //{
-                //    if (slotsDisplay[j].Length > maxLength)
-                //    {
-                //        maxLength = slotsDisplay[j].Length;
-                //    }
-                //}
                 string slot = slotsDisplay[i];
-                Console.Write($"{slot,-34}");
-                if (columnCounter == 3)
+                Console.Write($"{PadWidth(" " + slot, slotsColumnWidth[i % columnCount] + 2)}");
+                if (columnCounter == columnCount - 1)
                 {
                     Console.WriteLine();
                     columnCounter = -1;
