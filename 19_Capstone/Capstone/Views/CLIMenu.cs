@@ -41,7 +41,7 @@ namespace Capstone.Views
             this.vendingMachine = vendingMachine;
         }
 
-        protected const int charWidth = 128;
+        protected const int charWidth = 124;
         protected const ConsoleColor defaultColor = ConsoleColor.White;
         protected const ConsoleColor menuOptionColor = ConsoleColor.Green;
 
@@ -147,8 +147,22 @@ namespace Capstone.Views
         /// <param name="highlightIdentifier">Whether to highlight the slot identifier as a menu option or not</param>
         protected virtual void DrawSlots(bool highlightIdentifier)
         {
+            const int columnCount = 4;
+
             // Get all slots in the vending machine
             List<string> slotIdentifiers = new List<string>(vendingMachine.Slots.Keys);
+
+            // Readjust order of slots so As are in one column, etc.
+            List<string> tempSlotIds = new List<string>();
+            for (int i = 0; i < slotIdentifiers.Count && i < columnCount; i++)
+            {
+                for (int j = i; j < slotIdentifiers.Count; j += columnCount)
+                {
+                    tempSlotIds.Add(slotIdentifiers[j]);
+                }
+            }
+            slotIdentifiers = tempSlotIds;
+
             List<string> slotsDisplay = new List<string>();
             List<Slot> slots = new List<Slot>();
 
@@ -161,7 +175,6 @@ namespace Capstone.Views
                 slotsDisplay.Add(slotDisplay);
             }
 
-            const int columnCount = 4;
             Dictionary<int, int> slotsColumnWidth = new Dictionary<int, int>();
             for (int i = 0; i < slotsDisplay.Count; i++)
             {
