@@ -41,7 +41,7 @@ namespace Capstone.Views
             this.vendingMachine = vendingMachine;
         }
 
-        protected const int charWidth = 126;
+        protected const int charWidth = 128;
 
         /// <summary>
         /// Run starts the menu loop
@@ -50,8 +50,8 @@ namespace Capstone.Views
         {
             while (true)
             {
-                Console.WindowHeight = (int)(Console.LargestWindowHeight * 0.8);
-                Console.WindowWidth = (int)(Console.LargestWindowWidth * 0.8);
+                Console.WindowHeight = 29;
+                Console.WindowWidth = charWidth + 1;
 
                 string choice = GetString(@"   ___ _  _  ___   ___  ___ ___ 
   / __| || |/ _ \ / _ \/ __| __|
