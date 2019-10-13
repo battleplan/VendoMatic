@@ -22,12 +22,6 @@ namespace Capstone.Models.Monies
         /// <summary>
         /// The dollar value of one quarter.
         /// </summary>
-        public override decimal Value
-        {
-            get
-            {
-                return 0.25M;
-            }
-        }
+        public override decimal Value => 0.25M;
     }
 }

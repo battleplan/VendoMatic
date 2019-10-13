@@ -18,12 +18,24 @@ namespace Capstone.Models
         /// </summary>
         public decimal TotalSales { get; private set; }
 
+        /// <summary>
+        /// The directory the input file was found in.
+        /// </summary>
         private string fileDirectory;
 
+        /// <summary>
+        /// The name of the input file.
+        /// </summary>
         private string inputFileName;
 
+        /// <summary>
+        /// The name of the file to log transactions to.
+        /// </summary>
         private string logFileName => "Log.txt";
 
+        /// <summary>
+        /// The name of the file to write the sales report to, minus the extension.
+        /// </summary>
         private string salesReportFileName => "SalesReport";
 
         /// <summary>
@@ -244,33 +256,6 @@ namespace Capstone.Models
             }
         }
 
-        // TODO Remove this
-        ///// <summary>
-        ///// Get display names of the information in all slots loading into the machine.
-        ///// </summary>
-        ///// <returns>List of each slot's display name.</returns>
-        //public List<string> GetSlotsDisplayNames(bool includeIdentifier)
-        //{
-        //    List<string> slots = new List<string>();
-        //    List<string> slotIdentifiers = new List<string>(this.slots.Keys);
-        //    foreach (string key in slotIdentifiers)
-        //    {
-        //        slots.Add(this.slots[key].DisplayName(includeIdentifier));
-        //    }
-
-        //    return slots;
-        //}
-
-        // TODO Remove this
-        ///// <summary>
-        ///// Get display names of the information in all slots loading into the machine.
-        ///// </summary>
-        ///// <returns>List of each slot's display name.</returns>
-        //public List<string> GetSlotsDisplayNames()
-        //{
-        //    return GetSlotsDisplayNames(true);
-        //}
-
         /// <summary>
         /// Give change back to the machine operator.
         /// </summary>
@@ -336,6 +321,10 @@ namespace Capstone.Models
             //return totalChange;
         }
 
+        /// <summary>
+        /// Creates a file with the sales of the machine since it was lasted started.
+        /// </summary>
+        /// <returns>Sales report file name and data.</returns>
         public string CreateSalesReport()
         {
             string outputFileName;

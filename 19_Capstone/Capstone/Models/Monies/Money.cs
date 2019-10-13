@@ -23,9 +23,12 @@ namespace Capstone.Models.Monies
         /// Creates a new money.
         /// </summary>
         /// <param name="balance">The amount of dollars to convert into this type of money.</param>
-        public Money (decimal balance)
-        {
-            Count = (int)(balance / Value);
-        }
+        public Money(decimal balance) => Count = (int)(balance / Value);
+
+        /// <summary>
+        /// Displays money in a string.
+        /// </summary>
+        /// <returns>Formatted string (e.g. "2 quarters")</returns>
+        public override string ToString() => $"{Count} {Name}";
     }
 }

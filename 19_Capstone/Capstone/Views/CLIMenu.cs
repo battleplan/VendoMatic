@@ -42,6 +42,8 @@ namespace Capstone.Views
         }
 
         protected const int charWidth = 128;
+        protected const ConsoleColor defaultColor = ConsoleColor.White;
+        protected const ConsoleColor menuOptionColor = ConsoleColor.Green;
 
         /// <summary>
         /// Run starts the menu loop
@@ -77,20 +79,23 @@ namespace Capstone.Views
 
             }
         }
-
+        
+        /// <summary>
+        /// Draws logo, slots, and balance on screen.
+        /// </summary>
+        /// <param name="highlightIdentifier">Whether to highlight the slot identifier as a menu option or not</param>
         protected void DrawHeader(bool highlightIdentifier)
         {
             Console.Clear();
-            //Console.WriteLine(this.Title);
             Console.WriteLine(@" 
- /$$    /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$   /$$$$$$  /$$      /$$  /$$$$$$  /$$$$$$$$ /$$$$$$  /$$$$$$ 
-| $$   | $$| $$_____/| $$$ | $$| $$__  $$ /$$__  $$| $$$    /$$$ /$$__  $$|__  $$__/|_  $$_/ /$$__  $$
-| $$   | $$| $$      | $$$$| $$| $$  \ $$| $$  \ $$| $$$$  /$$$$| $$  \ $$   | $$     | $$  | $$  \__/
-|  $$ / $$/| $$$$$   | $$ $$ $$| $$  | $$| $$  | $$| $$ $$/$$ $$| $$$$$$$$   | $$     | $$  | $$      
- \  $$ $$/ | $$__/   | $$  $$$$| $$  | $$| $$  | $$| $$  $$$| $$| $$__  $$   | $$     | $$  | $$      
-  \  $$$/  | $$      | $$\  $$$| $$  | $$| $$  | $$| $$\  $ | $$| $$  | $$   | $$     | $$  | $$    $$
-   \  $/   | $$$$$$$$| $$ \  $$| $$$$$$$/|  $$$$$$/| $$ \/  | $$| $$  | $$   | $$    /$$$$$$|  $$$$$$/
-    \_/    |________/|__/  \__/|_______/  \______/ |__/     |__/|__/  |__/   |__/   |______/ \______/ 
+  /$$    /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$   /$$$$$$  /$$      /$$  /$$$$$$  /$$$$$$$$ /$$$$$$  /$$$$$$ 
+ | $$   | $$| $$_____/| $$$ | $$| $$__  $$ /$$__  $$| $$$    /$$$ /$$__  $$|__  $$__/|_  $$_/ /$$__  $$
+ | $$   | $$| $$      | $$$$| $$| $$  \ $$| $$  \ $$| $$$$  /$$$$| $$  \ $$   | $$     | $$  | $$  \__/
+ |  $$ / $$/| $$$$$   | $$ $$ $$| $$  | $$| $$  | $$| $$ $$/$$ $$| $$$$$$$$   | $$     | $$  | $$      
+  \  $$ $$/ | $$__/   | $$  $$$$| $$  | $$| $$  | $$| $$  $$$| $$| $$__  $$   | $$     | $$  | $$      
+   \  $$$/  | $$      | $$\  $$$| $$  | $$| $$  | $$| $$\  $ | $$| $$  | $$   | $$     | $$  | $$    $$
+    \  $/   | $$$$$$$$| $$ \  $$| $$$$$$$/|  $$$$$$/| $$ \/  | $$| $$  | $$   | $$    /$$$$$$|  $$$$$$/
+     \_/    |________/|__/  \__/|_______/  \______/ |__/     |__/|__/  |__/   |__/   |______/ \______/ 
 ");
             Console.WriteLine(new string('=', charWidth));
             Console.WriteLine();
@@ -104,6 +109,9 @@ namespace Capstone.Views
             Console.WriteLine(new string('=', charWidth));
         }
 
+        /// <summary>
+        /// Draws the defined menu options on screen.
+        /// </summary>
         protected void DrawMenuOptions()
         {
             // Find number of visible menuOptions
@@ -123,9 +131,9 @@ namespace Capstone.Views
                 {
                     string key = $" [{menuItem.Key}] ";
                     int keyLength = key.Length;
-                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = menuOptionColor;
                     Console.Write(key);
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = defaultColor;
                     Console.Write($"{PadWidth(menuItem.Value.Name, optionWidth - keyLength)}");
                 }
             }
@@ -133,6 +141,10 @@ namespace Capstone.Views
             Console.WriteLine(new string('=', charWidth));
         }
 
+        /// <summary>
+        /// Draws the slots and their products on screen.
+        /// </summary>
+        /// <param name="highlightIdentifier">Whether to highlight the slot identifier as a menu option or not</param>
         protected virtual void DrawSlots(bool highlightIdentifier)
         {
             // Get all slots in the vending machine
@@ -172,11 +184,12 @@ namespace Capstone.Views
                 slotIdLength = slotId.Length;
                 if (highlightIdentifier && slot.HasStock)
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = menuOptionColor;
                 }
                 Console.Write(slotId);
-                Console.ForegroundColor = ConsoleColor.White;
-                int displayWidth = slotsColumnWidth[i % columnCount] + 2 - slotIdLength;
+                Console.ForegroundColor = defaultColor;
+                int rightPad = i % columnCount == columnCount - 1 ? 0 : 2;
+                int displayWidth = slotsColumnWidth[i % columnCount] + rightPad - slotIdLength;
                 string displayInfo = PadWidth($" {SlotInfo(slot)}", displayWidth);
                 Console.Write($"{displayInfo}");
                 if (columnCounter == columnCount - 1)
@@ -187,6 +200,11 @@ namespace Capstone.Views
             }
         }
 
+        /// <summary>
+        /// Generate display for a specific slot.
+        /// </summary>
+        /// <param name="slot">The slot to display.</param>
+        /// <returns>Formatted slot information.</returns>
         protected string SlotInfo(Slot slot)
         {
             if (slot.HasStock)
@@ -215,6 +233,11 @@ namespace Capstone.Views
             return str;
         }
 
+        /// <summary>
+        /// Converts money into a string.
+        /// </summary>
+        /// <param name="monies">List of money.</param>
+        /// <returns>Formatted string of money (e.g. "2 quarters")</returns>
         public string MoneyDisplay(List<Money> monies)
         {
             string moneyDisplay = "";
@@ -223,7 +246,7 @@ namespace Capstone.Views
                 moneyDisplay = "";
                 for (int i = 0; i < monies.Count; i++)
                 {
-                    string currency = monies[i].Count + " " + monies[i].Name;
+                    string currency = monies[i].ToString();
                     if (i == monies.Count - 1)
                     {
                         if (i == 0)
@@ -347,7 +370,7 @@ namespace Capstone.Views
                 DrawHeader(true);
                 DrawMenuOptions();
                 Console.Write(message + " ");
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = menuOptionColor;
                 string userInput = Console.ReadLine().Trim();
                 Console.ForegroundColor = ConsoleColor.White;
                 if (!String.IsNullOrEmpty(userInput))
