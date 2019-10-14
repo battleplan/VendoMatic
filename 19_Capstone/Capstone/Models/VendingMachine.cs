@@ -10,7 +10,7 @@ namespace Capstone.Models
         /// <summary>
         /// Current dollar amount fed into the machine.
         /// </summary>
-        public decimal Balance;
+        public decimal Balance { get; private set; }
 
         /// <summary>
         /// Total lifetime sales of the machine.
@@ -28,13 +28,26 @@ namespace Capstone.Models
         /// <summary>
         /// Products in the machine accessible by their names.
         /// </summary>
-        public Dictionary<string, Product> Products { get; private set; }
-
+        private Dictionary<string, Product> products { get; set; }
+        public Dictionary<string, Product> Products
+        {
+            get
+            {
+                return new Dictionary<string, Product>(products);
+            }
+        }
 
         /// <summary>
         /// Slots in the machine accessible by their identifier.
         /// </summary>
-        public Dictionary<string, Slot> Slots { get; private set; }
+        private Dictionary<string, Slot> slots { get; set; }
+        public Dictionary<string, Slot> Slots
+        {
+            get
+            {
+                return new Dictionary<string, Slot>(slots);
+            }
+        }
 
         // Constructor
         /// <summary>
@@ -42,8 +55,8 @@ namespace Capstone.Models
         /// </summary>
         public VendingMachine()
         {
-            Products = new Dictionary<string, Product>();
-            Slots = new Dictionary<string, Slot>();
+            products = new Dictionary<string, Product>();
+            slots = new Dictionary<string, Slot>();
             fileDirectory = Directory.GetCurrentDirectory();
         }
 
@@ -109,17 +122,16 @@ namespace Capstone.Models
                     Console.ReadKey();
                     return false;
                 }
-
-                decimal priceDecimal = 0;
-                bool priceWasParsed = decimal.TryParse(priceProduct, out priceDecimal);
+                
+                bool priceWasParsed = decimal.TryParse(priceProduct, out decimal priceDecimal);
 
                 if (priceWasParsed)
                 {
                     // Find if Product already exists
                     Product product = null;
-                    if (Products.ContainsKey(nameProduct))
+                    if (products.ContainsKey(nameProduct))
                     {
-                        product = Products[nameProduct];
+                        product = products[nameProduct];
                     }
                     if (product == null)
                     {
@@ -139,11 +151,11 @@ namespace Capstone.Models
                                 product = new Candy(nameProduct);
                                 break;
                         }
-                        Products[nameProduct] = product;
+                        products[nameProduct] = product;
                     }
                     
                     // Create slot and put product in it
-                    Slots[identifier] = (new Slot(identifier, product, priceDecimal));
+                    slots[identifier] = new Slot(identifier, product, priceDecimal);
                 }
                 else
                 {
@@ -164,7 +176,7 @@ namespace Capstone.Models
                 return false;
             }
             Balance += money;
-            string logText = ($"FEED MONEY: {money:C}"); 
+            string logText = $"FEED MONEY: {money:C}";
             TransactionLog(logText);
             return true;
         }
@@ -202,9 +214,9 @@ namespace Capstone.Models
         public bool Purchase(string slotIdentifier)
         {
             Slot slot;
-            if (Slots.ContainsKey(slotIdentifier))
+            if (slots.ContainsKey(slotIdentifier))
             {
-                slot = Slots[slotIdentifier];
+                slot = slots[slotIdentifier];
             }
             else
             {
@@ -238,10 +250,10 @@ namespace Capstone.Models
         public List<string> GetSlotsDisplayNames()
         {
             List<string> slots = new List<string>();
-            List<string> slotIdentifiers = new List<string>(Slots.Keys);
+            List<string> slotIdentifiers = new List<string>(this.slots.Keys);
             foreach (string key in slotIdentifiers)
             {
-                slots.Add(Slots[key].DisplayName);
+                slots.Add(this.slots[key].DisplayName);
             }
 
             return slots;
@@ -288,7 +300,7 @@ namespace Capstone.Models
             string outputFileName;
             try
             {
-                List<string> productsKeys = new List<string>(Products.Keys);
+                List<string> productsKeys = new List<string>(products.Keys);
                 productsKeys.Sort();
 
                 outputFileName = salesReportFileName + " " + DateTime.Now + ".txt";
@@ -306,14 +318,14 @@ namespace Capstone.Models
                 {
                     foreach (string key in productsKeys)
                     {
-                        sw.WriteLine($"{Products[key].Name}|{Products[key].QuantitySold}");
+                        sw.WriteLine($"{products[key].Name}|{products[key].QuantitySold}");
                     }
 
                     sw.WriteLine();
                     sw.WriteLine($"Total Sales: {TotalSales:C}");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "";
             }
