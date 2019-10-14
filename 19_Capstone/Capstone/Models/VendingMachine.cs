@@ -66,7 +66,7 @@ namespace Capstone.Models
         /// Currency in machine that can be used for change.
         /// </summary>
         private Dictionary<decimal, Money> currencyDenominations { get; set; }
-        public List<Money> ChangeCurrencyAvailable
+        public List<Money> CurrencyAvailable
         {
             get
             {
@@ -87,9 +87,12 @@ namespace Capstone.Models
             get
             {
                 decimal output = 0;
-                foreach (KeyValuePair<decimal, Money> currency in currencyDenominations)
+                foreach (decimal denomination in validChangeDenominations)
                 {
-                    output += currency.Value.TotalValue;
+                    if (currencyDenominations.ContainsKey(denomination))
+                    {
+                        output += currencyDenominations[denomination].TotalValue;
+                    }
                 }
                 return output;
             }

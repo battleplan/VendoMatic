@@ -27,9 +27,9 @@ namespace Capstone.Views
         {
             string presentCurrency = "";
             int lineLength = 0;
-            for (int i = 0; i < vendingMachine.ChangeCurrencyAvailable.Count; i++)
+            for (int i = 0; i < vendingMachine.CurrencyAvailable.Count; i++)
             {
-                string thisCurrency = vendingMachine.ChangeCurrencyAvailable[i].ToString();
+                string thisCurrency = vendingMachine.CurrencyAvailable[i].ToString();
                 int currencyLength = thisCurrency.Length;
                 if (lineLength + currencyLength > charWidth - 40)
                 {
@@ -41,10 +41,10 @@ namespace Capstone.Views
                     lineLength += currencyLength;
                 }
                 presentCurrency += thisCurrency;
-                if (i < vendingMachine.ChangeCurrencyAvailable.Count - 1)
+                if (i < vendingMachine.CurrencyAvailable.Count - 1)
                 {
                     presentCurrency += ", ";
-                    if (i + 1 == vendingMachine.ChangeCurrencyAvailable.Count - 1)
+                    if (i + 1 == vendingMachine.CurrencyAvailable.Count - 1)
                     {
                         presentCurrency += "and ";
                     }
