@@ -1,4 +1,5 @@
 ﻿using Capstone.Models;
+using Capstone.Models.Monies;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,18 +16,10 @@ namespace Capstone.Views
         /// </summary>
         public MainMenu(VendingMachine vendingMachine) : base(vendingMachine)
         {
-            Title = @" 
- /$$    /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$   /$$$$$$  /$$      /$$  /$$$$$$  /$$$$$$$$ /$$$$$$  /$$$$$$ 
-| $$   | $$| $$_____/| $$$ | $$| $$__  $$ /$$__  $$| $$$    /$$$ /$$__  $$|__  $$__/|_  $$_/ /$$__  $$
-| $$   | $$| $$      | $$$$| $$| $$  \ $$| $$  \ $$| $$$$  /$$$$| $$  \ $$   | $$     | $$  | $$  \__/
-|  $$ / $$/| $$$$$   | $$ $$ $$| $$  | $$| $$  | $$| $$ $$/$$ $$| $$$$$$$$   | $$     | $$  | $$      
- \  $$ $$/ | $$__/   | $$  $$$$| $$  | $$| $$  | $$| $$  $$$| $$| $$__  $$   | $$     | $$  | $$      
-  \  $$$/  | $$      | $$\  $$$| $$  | $$| $$  | $$| $$\  $ | $$| $$  | $$   | $$     | $$  | $$    $$
-   \  $/   | $$$$$$$$| $$ \  $$| $$$$$$$/|  $$$$$$/| $$ \/  | $$| $$  | $$   | $$    /$$$$$$|  $$$$$$/
-    \_/    |________/|__/  \__/|_______/  \______/ |__/     |__/|__/  |__/   |__/   |______/ \______/ 
-";
+            //Title = @"Main Menu";
             menuOptions.Add("1", new MenuOption("Feed Money", true));
             menuOptions.Add("2", new MenuOption("Get Change", true));
+            menuOptions.Add("3", new MenuOption("Service Menu", false));
             menuOptions.Add("4", new MenuOption("Sales Report", false));
             menuOptions.Add("Q", new MenuOption("Quit", true));
 
@@ -48,16 +41,30 @@ namespace Capstone.Views
             choice.ToUpper();
             if (vendingMachine.Slots.ContainsKey(choice))
             {
-                bool purchaseComplete = vendingMachine.Purchase(choice);
-                if (purchaseComplete)
+                if (!vendingMachine.Slots[choice].HasStock)
                 {
-                    Console.WriteLine($"You purchased {vendingMachine.Slots[choice].Product.Name} for {vendingMachine.Slots[choice].Price:C}.");
-                    Console.WriteLine($"You have {vendingMachine.Balance:C} remaining.");
-                    Pause(vendingMachine.Slots[choice].Product.YumYum());
+                    DrawHeader(false);
+                    Pause($"{vendingMachine.Slots[choice].Product.Name} is sold out.");
+                }
+                else if (vendingMachine.Slots[choice].Price > vendingMachine.Balance)
+                {
+                    DrawHeader(false);
+                    Pause("Insufficient funds. Please feed more money.");
                 }
                 else
                 {
-                    Pause("Purchase not made.");
+                    bool purchaseComplete = vendingMachine.Purchase(choice);
+                    DrawHeader(false);
+                    if (purchaseComplete)
+                    {
+                        Console.WriteLine(" " + vendingMachine.Slots[choice].Product.YumYum());
+                        Console.WriteLine($" You purchased {vendingMachine.Slots[choice].Product.Name} for {vendingMachine.Slots[choice].Price:C}.");
+                        Pause($"You have {vendingMachine.Balance:C} remaining.");
+                    }
+                    else
+                    {
+                        Pause("Purchase not made.");
+                    }
                 }
             }
             else
@@ -65,26 +72,36 @@ namespace Capstone.Views
                 switch (choice)
                 {
                     case "1":
-                        // TODO This traps them into feeding money. Should there be an escape?
-                        bool success = vendingMachine.FeedMoney(GetInteger("Enter a whole dollar amount to feed into the machine:"));
-                        if (!success)
-                        {
-                            Pause("Unable to feed money. Please enter a whole number greater than zero.");
-                        }
+                        new FeedMoneyMenu(vendingMachine).Run();
                         return true;
                     case "2":
-                        Pause(vendingMachine.FinishTransaction());
-                        // TODO Balance on screen doesn't update till enter is pressed. Does this matter?
-                        break;
-                    case "4":
-                        string reportName = vendingMachine.CreateSalesReport();
-                        if (reportName != "")
+                        List<Money> monies = vendingMachine.FinishTransaction();
+                        string changeDisplay = MoneyDisplay(monies);
+                        if (changeDisplay == "")
                         {
-                            Pause($"Sales report generated: {reportName}");
+                            changeDisplay = "There is no change to give.";
                         }
                         else
                         {
-                            Pause("Sales report could not be generated.");
+                            changeDisplay = "Your change is " + changeDisplay + ".";
+                        }
+                        
+                        DrawHeader(false);
+                        Pause(changeDisplay);
+                        break;
+                    case "3":
+                        new ServiceMenu(vendingMachine).Run();
+                        break;
+                    case "4":
+                        string salesReport = vendingMachine.CreateSalesReport();
+                        DrawHeader(false);
+                        if (salesReport != "")
+                        {
+                            Pause($" Sales report generated: {salesReport}");
+                        }
+                        else
+                        {
+                            Pause(" Sales report could not be generated.");
                         }
                         break;
                 }

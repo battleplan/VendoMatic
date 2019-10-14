@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Capstone.Models.Monies;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -17,12 +18,24 @@ namespace Capstone.Models
         /// </summary>
         public decimal TotalSales { get; private set; }
 
+        /// <summary>
+        /// The directory the input file was found in.
+        /// </summary>
         private string fileDirectory;
 
+        /// <summary>
+        /// The name of the input file.
+        /// </summary>
         private string inputFileName;
 
+        /// <summary>
+        /// The name of the file to log transactions to.
+        /// </summary>
         private string logFileName => "Log.txt";
 
+        /// <summary>
+        /// The name of the file to write the sales report to, minus the extension.
+        /// </summary>
         private string salesReportFileName => "SalesReport";
 
         /// <summary>
@@ -49,6 +62,83 @@ namespace Capstone.Models
             }
         }
 
+        /// <summary>
+        /// Currency in machine that can be used for change.
+        /// </summary>
+        private Dictionary<decimal, Money> currencyDenominations { get; set; }
+        public List<Money> CurrencyAvailable
+        {
+            get
+            {
+                List<Money> output = new List<Money>();
+                foreach (KeyValuePair<decimal, Money> currency in currencyDenominations)
+                {
+                    output.Add(currency.Value);
+                }
+                return output;
+            }
+        }
+
+        /// <summary>
+        /// Total value of all change currency in the machine.
+        /// </summary>
+        private decimal TotalChangeAvailable
+        {
+            get
+            {
+                decimal output = 0;
+                foreach (decimal denomination in validChangeDenominations)
+                {
+                    if (currencyDenominations.ContainsKey(denomination))
+                    {
+                        output += currencyDenominations[denomination].TotalValue;
+                    }
+                }
+                return output;
+            }
+        }
+
+        /// <summary>
+        /// What currency the machine can output in change.
+        /// </summary>
+        private List<decimal> validChangeDenominations
+        {
+            get
+            {
+                List<decimal> output = new List<decimal>() { 0.25M, 0.10M, 0.05M };
+                return output;
+            }
+        }
+
+        /// <summary>
+        /// What currency the machine can be fed.
+        /// </summary>
+        private List<decimal> validFeedDenominations
+        {
+            get
+            {
+                List<decimal> output = new List<decimal>() { 1M, 2M, 5M, 10M };
+                return output;
+            }
+        }
+        public List<decimal> ValidFeedDenominations
+        {
+            get
+            {
+                return new List<decimal>(validFeedDenominations);
+            }
+        }
+
+        /// <summary>
+        /// Returns if amount is okay to desposit given current amount of change available.
+        /// </summary>
+        /// <param name="depositAmount">The amount wished to desposit.</param>
+        /// <returns>Whether or not the deposit can be made.</returns>
+        public bool CanDespositAmountGivenCurrentChange(int depositAmount)
+        {
+            return depositAmount + Balance <= TotalChangeAvailable;
+        }
+
         // Constructor
         /// <summary>
         /// Create a new vending machine.
@@ -58,6 +148,9 @@ namespace Capstone.Models
             products = new Dictionary<string, Product>();
             slots = new Dictionary<string, Slot>();
             fileDirectory = Directory.GetCurrentDirectory();
+            currencyDenominations = new Dictionary<decimal, Money>();
+            RemoveBills();
+            ReplenishChange();
         }
 
 
@@ -111,7 +204,7 @@ namespace Capstone.Models
                 try
                 {
                     string[] stockElements = line.Split("|");
-                    identifier = stockElements[0];
+                    identifier = stockElements[0].ToUpper();
                     nameProduct = stockElements[1];
                     priceProduct = stockElements[2];
                     productClass = stockElements[3];
@@ -165,16 +258,106 @@ namespace Capstone.Models
             return true;
         }
 
+        public void RemoveBills()
+        {
+            int replenishQuantity = 0;
+            Money money = null;
+
+            List<decimal> denominations = new List<decimal>(validFeedDenominations);
+            denominations.Sort();
+            denominations.Reverse();
+            foreach (decimal denomination in denominations)
+            {
+                if (currencyDenominations.ContainsKey(denomination))
+                {
+                    money = currencyDenominations[denomination];
+                    money.SetQuantity(replenishQuantity);
+                }
+                else
+                {
+                    switch (denomination)
+                    {
+                        case 100M:
+                            money = new HundredDollar(false, replenishQuantity);
+                            break;
+                        case 50M:
+                            money = new FiftyDollar(false, replenishQuantity);
+                            break;
+                        case 20M:
+                            money = new TwentyDollar(false, replenishQuantity);
+                            break;
+                        case 10M:
+                            money = new TenDollar(false, replenishQuantity);
+                            break;
+                        case 5M:
+                            money = new FiveDollar(false, replenishQuantity);
+                            break;
+                        case 2M:
+                            money = new TwoDollar(false, replenishQuantity);
+                            break;
+                        case 1M:
+                            money = new OneDollar(false, replenishQuantity);
+                            break;
+                    }
+                    if (money != null)
+                    {
+                        currencyDenominations.Add(denomination, money);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Replenishes all change up to maximum amount.
+        /// </summary>
+        public void ReplenishChange()
+        {
+            int replenishQuantity = 200;
+            Money money = null;
+
+            List<decimal> denominations = new List<decimal>(validChangeDenominations);
+            denominations.Sort();
+            denominations.Reverse();
+            foreach (decimal denomination in denominations)
+            {
+                if (currencyDenominations.ContainsKey(denomination))
+                {
+                    money = currencyDenominations[denomination];
+                    money.SetQuantity(replenishQuantity);
+                }
+                else
+                {
+                    switch (denomination)
+                    {
+                        case 0.25M:
+                            money = new Quarter(true, replenishQuantity);
+                            break;
+                        case 0.10M:
+                            money = new Dime(true, replenishQuantity);
+                            break;
+                        case 0.05M:
+                            money = new Nickel(true, replenishQuantity);
+                            break;
+                    }
+                    if (money != null)
+                    {
+                        currencyDenominations.Add(denomination, money);
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Feed money into the machine.
         /// </summary>
         /// <param name="money">Integer value of dollars to feed into the machine.</param>
         public bool FeedMoney(int money)
         {
-            if (money <= 0)
+            if (money <= 0 || money + Balance > TotalChangeAvailable)
             {
                 return false;
             }
+            currencyDenominations[money].AddQuantity(1);
             Balance += money;
             string logText = $"FEED MONEY: {money:C}";
             TransactionLog(logText);
@@ -213,6 +396,7 @@ namespace Capstone.Models
         /// <returns>Success of making the purchase.</returns>
         public bool Purchase(string slotIdentifier)
         {
+            decimal startingBalance = Balance;
             Slot slot;
             if (slots.ContainsKey(slotIdentifier))
             {
@@ -234,7 +418,7 @@ namespace Capstone.Models
                 slot.Product.SellProduct();
                 TotalSales += slot.Price;
                 Balance -= slot.Price;
-                TransactionLog($"{slot.Product.Name} {slot.Identifier} {slot.Price:C}");
+                TransactionLog($"{slot.Product.Name} {slot.Identifier} {startingBalance:C}");
                 return true;
             }
             else
@@ -244,60 +428,94 @@ namespace Capstone.Models
         }
 
         /// <summary>
-        /// Get display names of the information in all slots loading into the machine.
-        /// </summary>
-        /// <returns>List of each slot's display name.</returns>
-        public List<string> GetSlotsDisplayNames()
-        {
-            List<string> slots = new List<string>();
-            List<string> slotIdentifiers = new List<string>(this.slots.Keys);
-            foreach (string key in slotIdentifiers)
-            {
-                slots.Add(this.slots[key].DisplayName);
-            }
-
-            return slots;
-        }
-
-        /// <summary>
         /// Give change back to the machine operator.
         /// </summary>
         /// <returns></returns>
-        public string FinishTransaction()
+        public List<Money> FinishTransaction()
         {
-            decimal changeGiven = Balance;
-            int quarters = 0;
-            int dimes = 0;
-            int nickels = 0;
-            while (Balance > 0)
+            List<Money> changeCurrency = new List<Money>();
+
+            if (TotalChangeAvailable > 0 && Balance > 0)
             {
-                if (Balance >= (decimal).25)
+                decimal currencyThreshold = 0.25M;
+                if (currencyDenominations[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
                 {
-                    Balance -= (decimal).25;
-                    quarters++;
+                    Money quarters = new Quarter(true);
+                    quarters.MakeChange(currencyDenominations[currencyThreshold], Balance);
+                    changeCurrency.Add(quarters);
+                    Balance -= quarters.TotalValue;
                 }
-                else if (Balance >= (decimal).10)
+
+                currencyThreshold = 0.10M;
+                if (currencyDenominations[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
                 {
-                    Balance -= (decimal).10;
-                    dimes++;
+
+                    Money dimes = new Dime(true);
+                    dimes.MakeChange(currencyDenominations[currencyThreshold], Balance);
+                    changeCurrency.Add(dimes);
+                    Balance -= dimes.TotalValue;
                 }
-                else if (Balance >= (decimal).05)
+
+                currencyThreshold = 0.05M;
+                if (currencyDenominations[currencyThreshold].Count > 0 && Balance >= currencyThreshold)
                 {
-                    Balance -= (decimal).05;
-                    nickels++;
+
+                    Money nickels = new Nickel(true);
+                    nickels.MakeChange(currencyDenominations[currencyThreshold], Balance);
+                    changeCurrency.Add(nickels);
+                    Balance -= nickels.TotalValue;
                 }
+
+                decimal changeGiven = 0;
+                foreach (Money currency in changeCurrency)
+                {
+                    changeGiven += currency.TotalValue;
+                }
+
+                TransactionLog($"GIVE CHANGE: {changeGiven:C}");
             }
 
-            TransactionLog($"GIVE CHANGE: {changeGiven:C}");
+            return changeCurrency;
+           
+            // Old version before Money class
 
-            string totalChange = $"Your Change is {quarters} Quarter(s), {dimes} Dime(s), and {nickels} Nickel(s)";
-            return totalChange;
-            // TODO Determine return value - new Money class with subclasses of Quarter, Dime, and Nickel?
+            //decimal changeGiven = Balance;
+            //int quarters = 0;
+            //int dimes = 0;
+            //int nickels = 0;
+            //while (Balance > 0)
+            //{
+            //    if (Balance >= (decimal).25)
+            //    {
+            //        Balance -= (decimal).25;
+            //        quarters++;
+            //    }
+            //    else if (Balance >= (decimal).10)
+            //    {
+            //        Balance -= (decimal).10;
+            //        dimes++;
+            //    }
+            //    else if (Balance >= (decimal).05)
+            //    {
+            //        Balance -= (decimal).05;
+            //        nickels++;
+            //    }
+            //}
+
+            //TransactionLog($"GIVE CHANGE: {changeGiven:C}");
+
+            //string totalChange = $"Your Change is {quarters} Quarter(s), {dimes} Dime(s), and {nickels} Nickel(s)";
+            //return totalChange;
         }
 
+        /// <summary>
+        /// Creates a file with the sales of the machine since it was lasted started.
+        /// </summary>
+        /// <returns>Sales report file name and data.</returns>
         public string CreateSalesReport()
         {
             string outputFileName;
+            string result;
             try
             {
                 List<string> productsKeys = new List<string>(products.Keys);
@@ -311,18 +529,22 @@ namespace Capstone.Models
                 }
 
                 string outputPath = Path.Combine(fileDirectory, outputFileName);
-
-
+                result = outputFileName;
 
                 using (StreamWriter sw = new StreamWriter(outputPath))
                 {
                     foreach (string key in productsKeys)
                     {
-                        sw.WriteLine($"{products[key].Name}|{products[key].QuantitySold}");
+                        string line = $"{products[key].Name}|{products[key].QuantitySold}";
+                        result += "\n" + line;
+                        sw.WriteLine(line);
                     }
 
+                    string totalSales = $"Total Sales: {TotalSales:C}";
+                    result += "\n\n" + totalSales;
+
                     sw.WriteLine();
-                    sw.WriteLine($"Total Sales: {TotalSales:C}");
+                    sw.WriteLine(totalSales);
                 }
             }
             catch (Exception)
@@ -330,7 +552,7 @@ namespace Capstone.Models
                 return "";
             }
 
-            return outputFileName;
+            return result;
         }
     }
 }

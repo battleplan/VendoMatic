@@ -6,7 +6,6 @@ namespace Capstone.Models
 {
     public class Chip : Product
     {
-
         // Constructor
         /// <summary>
         /// Create new chip.

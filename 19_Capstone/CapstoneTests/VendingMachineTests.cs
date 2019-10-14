@@ -1,4 +1,5 @@
 using Capstone.Models;
+using Capstone.Models.Monies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
@@ -102,10 +103,11 @@ namespace CapstoneTests
             bobsAMachine.FeedMoney(1);
 
             // Act
-            string actualResult = bobsAMachine.FinishTransaction();
+            List<Money> actualResult = bobsAMachine.FinishTransaction();
 
             // Assert
-            Assert.AreEqual($"Your Change is 4 Quarter(s), 0 Dime(s), and 0 Nickel(s)", actualResult);
+            Assert.AreEqual(4, actualResult[0].Count);
+            Assert.AreEqual("quarters", actualResult[0].Name);
             Assert.AreEqual(0, bobsAMachine.Balance);
 
             // Change for 90 cents
@@ -116,14 +118,19 @@ namespace CapstoneTests
             actualResult = bobsAMachine.FinishTransaction();
 
             // Assert
-            Assert.AreEqual($"Your Change is 3 Quarter(s), 1 Dime(s), and 1 Nickel(s)", actualResult);
+            Assert.AreEqual(3, actualResult[0].Count);
+            Assert.AreEqual("quarters", actualResult[0].Name);
+            Assert.AreEqual(1, actualResult[1].Count);
+            Assert.AreEqual("dime", actualResult[1].Name);
+            Assert.AreEqual(1, actualResult[2].Count);
+            Assert.AreEqual("nickel", actualResult[2].Name);
 
             // Change for 0 cents
             // Arrange
             actualResult = bobsAMachine.FinishTransaction();
 
             // Assert
-            Assert.AreEqual($"Your Change is 0 Quarter(s), 0 Dime(s), and 0 Nickel(s)", actualResult);
+            Assert.AreEqual(0, actualResult.Count);
         }
 
         [TestMethod]
@@ -142,9 +149,9 @@ namespace CapstoneTests
             decimal expectedTotalSales = 3.05M;
             int expectedQuantitySold = 1;
 
-            vm.FeedMoney(4);
+            vm.FeedMoney(5);
 
-            decimal expectedBalance = 0.95M;
+            decimal expectedBalance = 1.95M;
 
             // Act
             bool actualPurchaseMade = vm.Purchase("A1");
